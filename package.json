@@ -22,5 +22,6 @@
   },
   "devDependencies": {
     "calcite-web": "github:Esri/calcite-web#v1.0.1"
-  }
+  },
+  "homepage": "https://mpayson.github.io/transit/"
 }
