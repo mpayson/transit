@@ -4,7 +4,7 @@ import RotateButton from './RotateButton'
 import './DropPanel.css';
 
 // A util component that creates a dropdown panel
-class DropPanel extends React.PureComponent {
+class DropPanel extends React.Component {
   constructor(props, context) {
     super(props, context);
 

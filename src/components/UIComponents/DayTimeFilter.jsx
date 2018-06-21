@@ -5,7 +5,7 @@ import SuFilter from '../UIComponents/SuFilter';
 //A component that controls a text query for the filter field
 //TODO
 
-const DayTimeFilter = observer(class DayTimeFilter extends React.PureComponent{
+const DayTimeFilter = observer(class DayTimeFilter extends React.Component{
   constructor(props, context){
     super(props, context)
     this.filterState = props.filterState

@@ -1,6 +1,7 @@
 import {decorate, observable, action, computed } from 'mobx';
-import esriLoader from 'esri-loader';
 import {mapConfig, layerConfig, loaderOptions} from '../config/config';
+import esriLoader from 'esri-loader';
+import MockService from '../services/MockService';
 import moment from 'moment';
 
 // Store that fetches and manages all app feature data
@@ -18,14 +19,11 @@ class FeatureStore {
     this.featureAttachments = new Map();
     this.features = [];
     this.genSearchString = '';
-    this.selFeatureIndex = 1;
+    this.selFeatureIndex = null;
   }
 
   get filteredAttributes(){
-    console.log("called")
-    const test = this.filteredFeatures.map(f => f.attributes) || [];
-    console.log(test);
-    return test;
+    return this.filteredFeatures.map(f => f.attributes) || [];
   }
 
   get filteredFeatures(){
@@ -47,15 +45,11 @@ class FeatureStore {
   get events(){
     const ftypes = layerConfig.fieldTypes;
     return this.filteredAttributes.map(a => {
-      let dayStart = a[ftypes.start].split(':')
-      let dayEnd = a[ftypes.end].split(':')
-      let start = moment.unix(a[ftypes.date]/1000).add(dayStart[0], 'hours').add(dayStart[1], 'minutes')
-      let end = moment.unix(a[ftypes.date]/1000).add(dayEnd[0], 'hours').add(dayEnd[1], 'minutes')
       return {
         id: a.ObjectId,
         title: a[ftypes.name],
-        start: start.toDate(),
-        end: end.toDate()
+        start: a[ftypes.start].toDate(),
+        end: a[ftypes.end].toDate()
       }
     });
   }
@@ -69,6 +63,10 @@ class FeatureStore {
 
   loadAttachments(){
     this.features.forEach( (f,i) => {
+      MockService.loadAttachment(f)
+        .then(res => {
+          this.featureAttachments.set(res.id, res.url)
+        })
       this.layer.queryFeatureAttachments(f)
       .then(res => {
         const firstObj = res[0];
@@ -78,6 +76,11 @@ class FeatureStore {
   }
 
   load(){
+    // MockService.loadFeatures()
+    //   .then(res => {
+    //     this.features = res.features
+    //     this.loadAttachments();
+    //   })
     esriLoader.loadModules(['esri/WebMap'], loaderOptions)
     .then(([WebMap]) => {
 
@@ -86,18 +89,25 @@ class FeatureStore {
           id: mapConfig.webmapid
         }
       });
-
-      this.map.load();
-      this.map.when(() => {
-        this.layer = this.map.layers.find(l => l.title === mapConfig.layerTitle);
-        return this.layer.queryFeatures()
-      })
-      .then(res => {
-        this.features = res.features;
-        this.loadAttachments();
-      })
-      .catch(er => console.log(er));
-      
+      return this.map.load();
+    })
+    .then(() => {
+      this.layer = this.map.layers.find(l => l.title === mapConfig.layerTitle);
+      return this.layer.queryFeatures()
+    })
+    .then(res => {
+      const ftypes = layerConfig.fieldTypes;
+      let t = res.features.reduce((acc, c) => {
+        let date = moment(c.attributes[ftypes.date]);
+        c.attributes[ftypes.date] = date;
+        c.attributes[ftypes.start] = moment(date).add(moment(c.attributes[ftypes.start], "HH:mm"));
+        c.attributes[ftypes.end] = moment(date).add(moment(c.attributes[ftypes.end], "HH:mm"));
+        acc.push(c);
+        return acc;
+      }, []);
+      console.log(t);
+      this.features = t;
+      this.loadAttachments();
     })
     .catch(err => {
       console.error(err);

@@ -4,7 +4,7 @@ import './SuFilter.css';
 
 // A util component that creates a dropdown filter (adds "apply" and "clear")
 // It handles it's own dropdown state
-class SuFilter extends React.PureComponent {
+class SuFilter extends React.Component {
 
   constructor(props, context) {
     super(props, context);

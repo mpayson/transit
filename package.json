@@ -4,18 +4,23 @@
   "private": true,
   "dependencies": {
     "esri-loader": "^2.3.0",
-    "mobx": "^5.0.0",
-    "mobx-react": "^5.2.2",
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.2.3",
     "moment": "^2.22.2",
-    "react": "^16.4.0",
+    "npm": "^6.1.0",
+    "react": "^16.4.1",
     "react-big-calendar": "^0.19.1",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.1",
     "react-scripts": "1.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "./deploy.sh"
+  },
+  "devDependencies": {
+    "calcite-web": "github:Esri/calcite-web#v1.0.1"
   }
 }

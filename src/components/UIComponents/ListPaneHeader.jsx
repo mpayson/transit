@@ -4,7 +4,7 @@ import DayTimeFilter from './DayTimeFilter';
 import './ListPaneHeader.css';
 
 //A component that wraps the filter headers for the list pane
-const ListPaneHeader = observer (class ListPaneHeader extends React.PureComponent {
+const ListPaneHeader = observer (class ListPaneHeader extends React.Component {
 
   constructor(props, context){
     super(props, context)
