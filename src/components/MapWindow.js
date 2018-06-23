@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import esriLoader from 'esri-loader';
-import {mapConfig, loaderOptions} from '../config/config'
+import {loaderOptions} from '../config/config'
 import './MapWindow.css';
 
 // Displays user locations on a map based on the layer loaded in the FeatureStore
 class MapWindow extends Component {
+  view
 
   constructor(props, context){
     super(props, context)
@@ -15,8 +16,8 @@ class MapWindow extends Component {
 
     esriLoader.loadModules(['esri/views/MapView'], loaderOptions)
     .then(([MapView]) => {
-
-      var view = new MapView({
+      console.log(this.featureStore.map);
+      this.view = new MapView({
         map: this.featureStore.map,
         container: 'view-div',
         constraints: {

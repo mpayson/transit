@@ -5,9 +5,9 @@ import './Profile.css';
 // Displays the profile for a given user based on passed feature attributes
 class Profile extends Component {
 
-  constructor(props, context){
-    super(props, context)
-  }
+  // constructor(props, context){
+  //   super(props, context)
+  // }
 
   render() {
 

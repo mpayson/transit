@@ -7,6 +7,9 @@ import MapWindow from './components/MapWindow';
 import CardWindow from './components/CardWindow';
 import CalendarWindow from './components/CalendarWindow';
 import Profile from './components/Profile';
+import LoadingPane from './components/UIComponents/LoadingPane';
+// import MockService from './services/MockService';
+import ArcService from './services/ArcService';
 import './App.css';
 
 
@@ -16,7 +19,8 @@ const App = observer(class App extends Component {
   constructor(props, context){
     super(props, context)
     this.appState = AppState;
-    this.featureStore = new FeatureStore();
+    // this.featureStore = new FeatureStore(MockService);
+    this.featureStore = new FeatureStore(ArcService);
   }
 
   // Load data when app is about to load
@@ -24,13 +28,17 @@ const App = observer(class App extends Component {
     this.featureStore.load();
   }
 
-
   render() {
+
+    if(!this.featureStore.loaded){
+      return <LoadingPane/>
+    }
 
     // Get the right window component to load based on app state
     const rightWindow = this.appState.windowIndex === 1
       ? <MapWindow featureStore={this.featureStore}/>
       : <CalendarWindow featureStore={this.featureStore}/>
+    
 
     // Get the left window component to load based on app state
     const leftWindow = this.featureStore.selFeatureAttributes

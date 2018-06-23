@@ -7,7 +7,7 @@ class AppState {
   windowIndex
 
   constructor(){
-    this.windowIndex = 2
+    this.windowIndex = 1
   }
 
   setWindowIndex(i){

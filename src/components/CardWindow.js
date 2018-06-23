@@ -29,7 +29,7 @@ const CardWindow = observer(({featureStore, appState}) => {
   
   return (
     <div>
-      {/* <ListPaneHeader featureStore={featureStore} appState={appState}/> */}
+      <ListPaneHeader featureStore={featureStore} appState={appState}/>
       <div className="block-group block-group-3-up tablet-block-group-2-up phone-block-group-1-up">
         {cards}
       </div>

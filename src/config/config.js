@@ -9,7 +9,16 @@ const layerConfig = {
     'tags': 'field_3',
     'date': 'field_5',
     'start': 'field_6',
-    'end': 'field_7'
+    'end': 'field_7',
+    'years': 'field_12'
+  },
+  filters: {
+    'field_3': 'multi-split',
+    'field_12': 'num'
+  },
+  labels: {
+    'field_3': 'Interests',
+    'field_12': 'Years @ Esri'
   }
 }
 

@@ -53,7 +53,7 @@ const TopNav = observer(class TopNav extends Component {
           <div className="column-24">
             <div className="tablet-hide">
               <a href="#" className="top-nav-title">After Office Hours</a>
-              <nav className="top-nav-list" role="navigation" aria-labelledby="topnav">
+              <nav className="top-nav-list">
                 <a className={i1cn}
                   href="#"
                   onClick={this.onElementClicked.bind(this, 1)}/>
@@ -66,7 +66,13 @@ const TopNav = observer(class TopNav extends Component {
                 onTextChange={this.onSearchTextChange}
                 value={this.featureStore.genSearchString}
                 isActive={this.featureStore.genSearchString}/>
-              <nav className="class-top-nav-list right" role="navigation" aria-labelledby="usernav">
+              <nav className="class-top-nav-list right">
+                <a className="search-top-nav font-size-1"
+                  href="https://arcg.is/0fuiCi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{paddingRight: '10px'}}>
+                  Sign Up</a>
                 <a className="icon-ui-description search-top-nav icon-ui-flush font-size-2"
                   href="#"
                   onClick={this.onInfoClicked}/>

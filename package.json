@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "esri-loader": "^2.3.0",
+    "gh-pages": "^1.2.0",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
     "moment": "^2.22.2",
@@ -18,10 +19,12 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "./deploy.sh"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "clean": "gh-pages-clean"
   },
   "devDependencies": {
     "calcite-web": "github:Esri/calcite-web#v1.0.1"
   },
-  "homepage": "https://mpayson.github.io/transit/"
+  "homepage": "https://mpayson.github.io/transit"
 }
