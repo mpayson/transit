@@ -1,3 +1,21 @@
 .nav-btn{
   border: 0px;
 }
+
+div.Banner {
+  background-color: #4c4c4c;
+  clear: both;
+  overflow: auto;
+}
+
+header.no-margin {
+  border-width:0px;
+}
+
+a.top-nav-link:active, a.top-nav-title{
+  color: white;
+}
+
+a.top-nav-link{
+  color: #efefef
+}

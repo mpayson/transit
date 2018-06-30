@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import ExpSearchInput from './UIComponents/ExpSearchInput';
-// import './TopNav.css'
+import './TopNav.css'
 
 
 // A component that renders the top navigation icons
 const TopNav = observer(class TopNav extends Component {
 
-  constructor(props, context){
+  constructor(props, context) {
     super(props, context)
     this.appState = this.props.appState
     this.featureStore = this.props.featureStore
@@ -17,25 +17,25 @@ const TopNav = observer(class TopNav extends Component {
   }
 
   // When search expands, set the search string to ""
-  onExpSearchClick(isExpanded){
-    if(!isExpanded){
+  onExpSearchClick(isExpanded) {
+    if (!isExpanded) {
       this.featureStore.setGeneralSearchString("")
     }
   }
 
   // When search text changes, update to the feature store
-  onSearchTextChange(e){
+  onSearchTextChange(e) {
     const v = e.target.value
     this.featureStore.setGeneralSearchString(v)
   }
 
   // Update the app state when a new window is selected
-  onElementClicked(index){
+  onElementClicked(index) {
     this.appState.setWindowIndex(index)
   }
 
   //TODO implement info window
-  onInfoClicked(){
+  onInfoClicked() {
     console.log("info")
   }
 
@@ -48,39 +48,41 @@ const TopNav = observer(class TopNav extends Component {
     const i2cn = baseCn + (wI === 2 ? " text-blue" : "") + " icon-ui-calendar"
 
     return (
-      <header className="top-nav">
-        <div className="grid-container">
-          <div className="column-24">
+      <div className="grid-container">
+      <div className="column-24">
+        <header className="top-nav no-margin">
+
+          <div className="Banner">
             <div className="tablet-hide">
               <a href="#" className="top-nav-title">After Office Hours</a>
               <nav className="top-nav-list">
-                <a className={i1cn}
-                  href="#"
-                  onClick={this.onElementClicked.bind(this, 1)}/>
-                <a className={i2cn}
-                  href="#"
-                  onClick={this.onElementClicked.bind(this, 2)}/>
-              </nav>
-              <ExpSearchInput
-                onExpClick={this.onExpSearchClick}
-                onTextChange={this.onSearchTextChange}
-                value={this.featureStore.genSearchString}
-                isActive={this.featureStore.genSearchString}/>
-              <nav className="class-top-nav-list right">
-                <a className="search-top-nav font-size-1"
+                <a className="top-nav-link font-size-1" href="#">Home</a>
+                <a className="top-nav-link font-size-1" href="#"
+                  onClick={this.onElementClicked.bind(this, 1)}>About</a>
+                <a className="top-nav-link font-size-1"
                   href="https://arcg.is/0fuiCi"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{paddingRight: '10px'}}>
+                  style={{ paddingRight: '10px' }}>
                   Sign Up</a>
-                <a className="icon-ui-description search-top-nav icon-ui-flush font-size-2"
+                <a className="top-nav-link font-size-1"
                   href="#"
-                  onClick={this.onInfoClicked}/>
+                  onClick={this.onElementClicked.bind(this, 2)}>Browse volunteers</a>
+              </nav>
+
+              <nav className="class-top-nav-list right">
+                <ExpSearchInput
+                  onExpClick={this.onExpSearchClick}
+                  onTextChange={this.onSearchTextChange}
+                  value={this.featureStore.genSearchString}
+                  isActive={this.featureStore.genSearchString} />
               </nav>
             </div>
           </div>
-        </div>
-      </header>
+
+        </header>
+      </div>
+      </div>
     );
   }
 })

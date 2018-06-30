@@ -8,8 +8,9 @@ import CardWindow from './components/CardWindow';
 import CalendarWindow from './components/CalendarWindow';
 import Profile from './components/Profile';
 import LoadingPane from './components/UIComponents/LoadingPane';
-// import MockService from './services/MockService';
-import ArcService from './services/ArcService';
+import MockService from './services/MockService';
+import Home from './components/Home/Home';
+//import ArcService from './services/ArcService';
 import './App.css';
 
 
@@ -20,7 +21,7 @@ const App = observer(class App extends Component {
     super(props, context)
     this.appState = AppState;
     // this.featureStore = new FeatureStore(MockService);
-    this.featureStore = new FeatureStore(ArcService);
+    this.featureStore = new FeatureStore(MockService);
   }
 
   // Load data when app is about to load
@@ -45,20 +46,39 @@ const App = observer(class App extends Component {
       ? <Profile featureAttributes={this.featureStore.selFeatureAttributes}/>
       : <CardWindow featureStore={this.featureStore} appState={this.appState}/>
 
+    const mainWindow = <Home featureStore={this.featureStore} appState={this.appState} />;
+
+    this.appState.WindowPanes = 1;
+
     // Return the JSX
-    return (
-      <div className="app">
-        <TopNav appState={this.appState} featureStore={this.featureStore}/>
-        <div className="grid-container all-container">
-          <div className="column-12 leader-0 pre-0">
-            {leftWindow}
-          </div>
-          <div className="right-container column-12 post-0">
-            {rightWindow}
+    if (this.appState.WindowPanes == 1){
+      return (
+        <div className="app">
+          <TopNav appState={this.appState} featureStore={this.featureStore}/>
+          <div className="grid-container">
+            <div className="column-24">
+              {mainWindow}
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+    else {
+      return (
+        <div className="app">
+          <TopNav appState={this.appState} featureStore={this.featureStore}/>
+          <div className="grid-container leader-2 trailer-1 padding-trailer-half">
+            <div className="column-12 leader-0 pre-0">
+              {leftWindow}
+            </div>
+            <div className="right-container column-12 post-0">
+              {rightWindow}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
   }
 })
 
