@@ -1,5 +1,7 @@
 # Local
 test.js
+build/
+.DS_Store
 
 # Logs
 logs
