@@ -8,17 +8,31 @@ class AppState {
 
   constructor(){
     this.windowIndex = 1
+    this.currentPage = 1
+    this.itemsPerPage = 4
   }
 
   setWindowIndex(i){
     this.windowIndex = i;
   }
 
+  setCurrentPage(i){
+    this.currentPage = i;
+  }
+
+  setItemsPerPage(i){
+    this.itemsPerPage = i;
+  }
+
 }
 
 decorate(AppState, {
   windowIndex: observable,
-  setWindowIndex: action.bound
+  setWindowIndex: action.bound,
+  currentPage: observable,
+  setCurrentPage: action.bound,
+  itemsPerPage: observable,
+  setItemsPerPage: action.bound
 })
 
 const singleton = new AppState()
