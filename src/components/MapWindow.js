@@ -14,11 +14,15 @@ class MapWindow extends Component {
 
   componentDidMount(){
 
-    esriLoader.loadModules(['esri/views/MapView'], loaderOptions)
-    .then(([MapView]) => {
-      console.log(this.featureStore.map);
+    esriLoader.loadModules(['esri/views/MapView', 'esri/WebMap'], loaderOptions)
+    .then(([MapView, WebMap]) => {
+      const map = new WebMap({
+        portalItem: {
+          id: '6d18e208b2354bb29969a6db0fb8c09d'
+        }
+      });
       this.view = new MapView({
-        map: this.featureStore.map,
+        map: map,
         container: 'view-div',
         constraints: {
           snapToZoom: false

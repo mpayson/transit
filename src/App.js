@@ -2,16 +2,24 @@ import React, { Component } from 'react';
 import {observer} from 'mobx-react';
 import AppState from './stores/AppState';
 import FeatureStore from './stores/FeatureStore';
-import TopNav from './components/TopNav';
-import MapWindow from './components/MapWindow';
-import CardWindow from './components/CardWindow';
-import CalendarWindow from './components/CalendarWindow';
-import Profile from './components/Profile';
-import LoadingPane from './components/UIComponents/LoadingPane';
-// import MockService from './services/MockService';
-import ArcService from './services/ArcService';
-import './App.css';
+import MockService from './services/MockService';
+import HomeWindow from './components/HomeWindow';
+import { Route, Switch, Link } from "react-router-dom";
+import BrowseWindow from './components/BrowseWindow';
+// import ArcService from './services/ArcService';
 
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  Input} from 'reactstrap';
+
+// import ArcService from './services/ArcService';
+import './App.css';
 
 // The base component that loads all other subcomponents
 const App = observer(class App extends Component {
@@ -19,46 +27,55 @@ const App = observer(class App extends Component {
   constructor(props, context){
     super(props, context)
     this.appState = AppState;
-    // this.featureStore = new FeatureStore(MockService);
-    this.featureStore = new FeatureStore(ArcService);
+    this.featureStore = new FeatureStore(MockService);
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+    // this.featureStore = new FeatureStore(ArcService);
   }
 
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
   // Load data when app is about to load
   componentWillMount(){
     this.featureStore.load();
   }
 
   render() {
-
-    if(!this.featureStore.loaded){
-      return <LoadingPane/>
-    }
-
-    // Get the right window component to load based on app state
-    const rightWindow = this.appState.windowIndex === 1
-      ? <MapWindow featureStore={this.featureStore}/>
-      : <CalendarWindow featureStore={this.featureStore}/>
-    
-
-    // Get the left window component to load based on app state
-    const leftWindow = this.featureStore.selFeatureAttributes
-      ? <Profile featureAttributes={this.featureStore.selFeatureAttributes}/>
-      : <CardWindow featureStore={this.featureStore} appState={this.appState}/>
-
-    // Return the JSX
     return (
-      <div className="app">
-        <TopNav appState={this.appState} featureStore={this.featureStore}/>
-        <div className="grid-container all-container">
-          <div className="column-12 leader-0 pre-0">
-            {leftWindow}
-          </div>
-          <div className="right-container column-12 post-0">
-            {rightWindow}
-          </div>
-        </div>
+      <div>
+        <Navbar color="light" light expand="md">
+          <NavbarBrand tag={Link} to="/">Out of Office Hours</NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav navbar>
+              <NavItem>
+                <NavLink href="#">About</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink tag={Link} to="/browse">Browse</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="https://github.com/reactstrap/reactstrap">Sign Up</NavLink>
+              </NavItem>
+            </Nav>
+            <Nav navbar className="ml-auto">
+              <NavItem>
+                <Input placeholder="search" />
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Navbar>
+        <Switch>
+          <Route exact path="/" render={(props) => <HomeWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+          <Route path="/browse" render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+        </Switch>
       </div>
-    );
+    )
   }
 })
 

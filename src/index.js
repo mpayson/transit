@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import '../node_modules/calcite-web/dist/css/calcite-web.css'
-import App from './App';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Routes from './Routes';
 import registerServiceWorker from './registerServiceWorker';
 
 //The entry point for the application
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<Routes />, document.getElementById('root'));
 registerServiceWorker();

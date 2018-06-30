@@ -1,5 +1,7 @@
 import maxImg from '../resources/max.png';
 import beauImg from '../resources/beau.png';
+import danImg from '../resources/dan.png';
+
 import {mapConfig} from '../config/config';
 
 let data = [
@@ -24,6 +26,17 @@ let data = [
       field_7: '12:00',
       field_12: 1
     }
+  },
+  {
+    attributes: {
+      ObjectId: 3,
+      field_0: 'Dan Barnes',
+      field_3: 'geography, defense, pro',
+      field_5: 1529219335165,
+      field_6: '10:00',
+      field_7: '12:00',
+      field_12: 1
+    }
   }
 ]
 let attachmentPaths = [
@@ -34,6 +47,10 @@ let attachmentPaths = [
   {
     id: 2,
     url: beauImg
+  },
+  {
+    id: 3,
+    url: danImg
   }
 ]
 
