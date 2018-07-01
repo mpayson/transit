@@ -1,6 +1,7 @@
 import {decorate, observable, action, computed } from 'mobx';
 import {mapConfig, layerConfig} from '../config/config';
 import {NumFilter, MultiSplitFilter, MultiFieldFilter} from './objects/Filters';
+import Utils from '../utils/Utils';
 import moment from 'moment';
 
 // Store that fetches and manages all app feature data
@@ -132,8 +133,8 @@ class FeatureStore {
           acc.push(c);
           return acc;
         }, []);
-        this.features = t;
-        this._allFeatures = t;
+        this.features = Utils.shuffleArr(t);
+        this._allFeatures = this.features;
         t.forEach((f,i) => {
           this.service.queryFeatureAttachments(this.layer, f)
             .then(atch => {

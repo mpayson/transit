@@ -87,7 +87,6 @@ class NumFilter extends BaseFilter{
   setMinMax(values){
     this.setNumber(values[0], false);
     this.setNumber(values[1], true);
-    console.log(values);
   }
 
   get min(){

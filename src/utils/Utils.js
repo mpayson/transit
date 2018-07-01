@@ -20,6 +20,23 @@ class Utils {
   static url(path){
     return process.env.PUBLIC_URL + path;
   }
+
+  static shuffleArr(array){
+    let counter = array.length;
+
+    while (counter > 0) {
+        // Pick a random index
+        let index = Math.floor(Math.random() * counter);
+
+        counter--;
+        let temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+    return array;
+
+  }
+
 }
 
 export default Utils;
