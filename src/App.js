@@ -71,8 +71,8 @@ const App = observer(class App extends Component {
           </Collapse>
         </Navbar>
         <Switch>
-          <Route exact path="/" render={(props) => <HomeWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
-          <Route path="/browse" render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+          <Route exact path={process.env.PUBLIC_URL + "/"} render={(props) => <HomeWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+          <Route path={process.env.PUBLIC_URL + "/browse"} render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
         </Switch>
       </div>
     )

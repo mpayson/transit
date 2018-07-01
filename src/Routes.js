@@ -5,7 +5,7 @@ import App from './App.js';
 const Routes = () => (
   <BrowserRouter>
     <div>
-      <Route path="/" component={App}/>
+      <Route path={process.env.PUBLIC_URL+"/"} component={App}/>
     </div>
   </BrowserRouter>
 )
