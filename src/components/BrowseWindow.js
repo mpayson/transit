@@ -74,8 +74,10 @@ class BrowseWindow extends Component {
         </Row>
         <Row>
           <Col>
-            {listview}
-              <Pagination>
+            <div style={{overflowY: "scroll", height:"500px"}}>
+              {listview}
+            </div>
+            <Pagination>
                 {renderPageNumbers}
               </Pagination>
           </Col>

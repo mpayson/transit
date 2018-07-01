@@ -23,17 +23,13 @@ const BrowseListView = observer(({featureStore, appState}) => {
       <Col sm="12" lg="12">
         <Card className="m-1">
             <Row>
-                <Col>
-                    <CardImg src={att}/>
-                </Col>
+                    <img src={att} style={{height: "150px", width: "150px"}}/>
                 <Col style={{padding:"0.5rem"}}>
                     <h4>{fa[fTypes.name]}</h4>
                     <h6>4 years at Esri</h6>
                     <p>Interests: <i>{fa[fTypes.tags]}</i><br />
                     <i>{fa[fTypes.bio]}</i></p>
-                    <Row>
-                        <Col><Button size="sm" color="blue">Schedule a meeting</Button></Col>
-                    </Row>
+                    <Button size="sm" color="blue">Schedule a meeting</Button>
                 </Col>
             </Row>
         </Card>
