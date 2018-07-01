@@ -43,9 +43,8 @@ class FeatureStore {
           break;
         case 'num':
           console.log("num")
-          newFilter = new NumFilter(key);
+          newFilter = new NumFilter(key, this);
           break;
-
         default:
           console.log("default")
           newFilter = new NumFilter(key);

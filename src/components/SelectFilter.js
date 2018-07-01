@@ -79,7 +79,7 @@ const SelectFilter = observer(class SelectFilter extends Component {
 
     })
 
-    const isActive = this.state.dropdownOpen || this.filterObj.isActive;
+    const isActive = this.filterObj.isActive;
     const color = isActive ? "success" : "secondary";
 
     return (
@@ -89,14 +89,18 @@ const SelectFilter = observer(class SelectFilter extends Component {
           {this.filterObj.label}
         </DropdownToggle>
         <DropdownMenu>
-          <Input
-            placeholder="sm"
-            bsSize="sm"
-            placeholder="filter"
-            value={this.state.filterStr}
-            onChange={this.onTextChange}
-            style={{paddingRight:'5px', paddingLeft:'5px'}}/>
-          {allViews}
+          <div style={{minWidth:"12rem"}}>
+            <div className="mr-1 ml-1">
+              <Input
+                placeholder="sm"
+                bsSize="sm"
+                placeholder="filter"
+                value={this.state.filterStr}
+                onChange={this.onTextChange}
+                />
+            </div>
+            {allViews}
+          </div>
         </DropdownMenu>
       </ButtonDropdown>
     );

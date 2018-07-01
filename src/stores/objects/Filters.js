@@ -67,20 +67,69 @@ decorate(MultiFieldFilter, {
 
 
 class NumFilter extends BaseFilter{
-  min
-  max
+  _min = -1;
+  _max = 100;
 
-  constructor(fieldName){
+  constructor(fieldName, featureStore){
     super(fieldName);
     this.type = 'num';
+    this.featureStore = featureStore;
   }
 
   setNumber(value, isMax){
     if(isMax){
-      this.max = value;
+      this._max = value;
     } else {
-      this.min = value;
+      this._min = value;
     }
+  }
+
+  setMinMax(values){
+    this.setNumber(values[0], false);
+    this.setNumber(values[1], true);
+    console.log(values);
+  }
+
+  get min(){
+    if(this._min > this.low){
+      return this._min;
+    }
+    return this.low;
+  }
+
+  get max(){
+    if(this._max < this.high){
+      return this._max;
+    }
+    return this.high;
+  }
+
+  get isActive(){
+    return this.min > this.low || this.max < this.high;
+  }
+
+  get low(){
+    let low = 100;
+    for(let f of this.featureStore.features){
+      const atrs = f.attributes;
+      const v = atrs[this.fieldName];
+      if(v < low){
+        low = v;
+      }
+    }
+    return low;
+  }
+
+  get high(){
+    let high = 0;
+    for(let f of this.featureStore.features){
+      const atrs = f.attributes;
+      const v = atrs[this.fieldName];
+      if(v > high){
+        high = v;
+      }
+    }
+    return high;
   }
 
   isClientFiltered(featureAttrs){
@@ -101,13 +150,20 @@ class NumFilter extends BaseFilter{
     }
   }
   clear(){
-    this.min = null;
-    this.max = null;
+    console.log("HERE");
+    this._min = this.low;
+    this._max = this.high;
   }
 }
 decorate(NumFilter, {
-  min: observable,
-  max: observable,
+  _min: observable,
+  _max: observable,
+  min: computed,
+  max: computed,
+  low: computed,
+  high: computed,
+  isActive: computed,
+  setMinMax: action.bound,
   clear: action.bound,
   setNumber: action.bound
 })
