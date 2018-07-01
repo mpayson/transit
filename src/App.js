@@ -48,7 +48,7 @@ const App = observer(class App extends Component {
   render() {
     return (
       <div>
-        <Navbar color="light" light expand="md">
+        <Navbar dark color="dark" expand="md">
           <NavbarBrand tag={Link} to="/">Out of Office Hours</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>

@@ -1,0 +1,21 @@
+{
+  "name": "custom-bootstrap",
+  "version": "0.0.1",
+  "description": "custom transit styles",
+  "main": "build/index.css",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node-sass styles.scss build/styles.css",
+    "start": "gulp"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.1.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^4.0.1",
+    "node-sass": "^4.9.0"
+  }
+}

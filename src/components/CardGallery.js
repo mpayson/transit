@@ -28,7 +28,7 @@ const CardGallery = observer(({featureStore, appState}) => {
           <CardBody>
             <CardTitle>{fa[fTypes.name]}</CardTitle>
             <CardText>{fa[fTypes.tags]}</CardText>
-            <Button>See availability</Button>
+            <Button color="primary">See availability</Button>
           </CardBody>
         </Card>
       </Col>
