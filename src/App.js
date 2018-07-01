@@ -6,6 +6,7 @@ import MockService from './services/MockService';
 import HomeWindow from './components/HomeWindow';
 import { Route, Switch, Link } from "react-router-dom";
 import BrowseWindow from './components/BrowseWindow';
+import Utils from './utils/Utils';
 // import ArcService from './services/ArcService';
 
 import {
@@ -49,7 +50,7 @@ const App = observer(class App extends Component {
     return (
       <div>
         <Navbar dark color="dark" expand="md">
-          <NavbarBrand tag={Link} to="/">Out of Office Hours</NavbarBrand>
+          <NavbarBrand tag={Link} to={Utils.url("/")}>Out of Office Hours</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav navbar>
@@ -57,7 +58,7 @@ const App = observer(class App extends Component {
                 <NavLink href="#">About</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink tag={Link} to="/browse">Browse</NavLink>
+                <NavLink tag={Link} to={Utils.url("/browse")}>Browse</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="https://github.com/reactstrap/reactstrap">Sign Up</NavLink>
@@ -71,8 +72,8 @@ const App = observer(class App extends Component {
           </Collapse>
         </Navbar>
         <Switch>
-          <Route exact path={process.env.PUBLIC_URL + "/"} render={(props) => <HomeWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
-          <Route path={process.env.PUBLIC_URL + "/browse"} render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+          <Route exact path={Utils.url("/")} render={(props) => <HomeWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+          <Route path={Utils.url("/browse")} render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
         </Switch>
       </div>
     )

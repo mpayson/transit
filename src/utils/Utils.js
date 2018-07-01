@@ -16,6 +16,10 @@ class Utils {
     })
     return test;
   }
+
+  static url(path){
+    return process.env.PUBLIC_URL + path;
+  }
 }
 
 export default Utils;
