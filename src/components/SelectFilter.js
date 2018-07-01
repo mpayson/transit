@@ -80,7 +80,7 @@ const SelectFilter = observer(class SelectFilter extends Component {
     })
 
     const isActive = this.filterObj.isActive;
-    const color = isActive ? "success" : "secondary";
+    const color = isActive ? "success" : "light";
 
     return (
       <ButtonDropdown id="dropbutton" isOpen={this.state.dropdownOpen} toggle={this.toggle}>

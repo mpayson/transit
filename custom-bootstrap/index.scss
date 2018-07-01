@@ -1,0 +1,21 @@
+// Your variable overrides
+$primary: #5AB8E8;
+$success: #66CABE;
+
+// Bootstrap and its default variables
+@import "node_modules/bootstrap/scss/bootstrap";
+
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    @include button-variant(theme-color($color), theme-color($color), $hover-background: darken(theme-color($color), 7.5%), $hover-border: darken(theme-color($color), 10%), $active-background: darken(theme-color($color), 10%), $active-border: darken(theme-color($color), 12.5%));
+    color: white;
+  }
+  .btn-#{$color}:hover {
+    color: white;
+  }
+}
+
+.e-bloc-jumbo{
+  background: $dark;
+  color: white;
+}
