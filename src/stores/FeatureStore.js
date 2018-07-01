@@ -1,6 +1,6 @@
 import {decorate, observable, action, computed } from 'mobx';
 import {mapConfig, layerConfig} from '../config/config';
-import {NumFilter, MultiSplitFilter} from './objects/Filters';
+import {NumFilter, MultiSplitFilter, MultiFieldFilter} from './objects/Filters';
 import moment from 'moment';
 
 // Store that fetches and manages all app feature data
@@ -28,7 +28,13 @@ class FeatureStore {
     this.loaded = false;
     this.filters = [];
 
-    for(let key of Object.keys(layerConfig.filters)){
+    let keys = [...Object.keys(layerConfig.filters)];
+    let interestKeys = keys.filter(k => layerConfig.filters[k] === 'interests');
+    let interestFilter = new MultiFieldFilter('Interests', interestKeys, 'multi-split', this);
+    this.filters.push(interestFilter);
+
+    let otherKeys = keys.filter(k => layerConfig.filters[k] !== 'interests')
+    for(let key of otherKeys){
       let newFilter;
       switch(layerConfig.filters[key]){
         case 'multi-split':
@@ -39,6 +45,7 @@ class FeatureStore {
           console.log("num")
           newFilter = new NumFilter(key);
           break;
+
         default:
           console.log("default")
           newFilter = new NumFilter(key);
@@ -51,6 +58,15 @@ class FeatureStore {
     return this.filteredFeatures.map(f => f.attributes) || [];
   }
 
+  // this.features = this._allFeatures.filter(f => {
+  //   for(let [k,v] of this.activeFilterMap){
+  //     if(v.isClientFiltered(f.attributes)){
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // })
+
   get filteredFeatures(){
     return this.features.filter(f => {
       if(this.selObjId){
@@ -62,6 +78,11 @@ class FeatureStore {
         const tags = f.attributes[ftypes.tags].toLowerCase();
         const subst = this.genSearchString.toLowerCase();
         if(!(name.includes(subst) || tags.includes(subst))){
+          return false;
+        }
+      }
+      for(let v of this.filters){
+        if(v.isClientFiltered(f.attributes)){
           return false;
         }
       }
@@ -141,30 +162,30 @@ class FeatureStore {
     this.selFeatureIndex = index;
   }
 
-  applyFilter(filterObj){
-    this.activeFilterMap.set(filterObj.fieldName, filterObj);
-    this.features = this._allFeatures.filter(f => {
-      for(let [k,v] of this.activeFilterMap){
-        if(v.isClientFiltered(f.attributes)){
-          return false;
-        }
-      }
-      return true;
-    })
-  }
+  // applyFilter(filterObj){
+  //   this.activeFilterMap.set(filterObj.fieldName, filterObj);
+  //   this.features = this._allFeatures.filter(f => {
+  //     for(let [k,v] of this.activeFilterMap){
+  //       if(v.isClientFiltered(f.attributes)){
+  //         return false;
+  //       }
+  //     }
+  //     return true;
+  //   })
+  // }
 
-  deleteActiveFilter(filterObj){
-    this.activeFilterMap.delete(filterObj.fieldName);
-    this.features = this._allFeatures.filter(f => {
-      for(let v of this.activeFilterMap.values()){
-        if(v.isClientFiltered(f.attributes)){
-          return false;
-        }
-      }
-      return true;
-    })
+  // deleteActiveFilter(filterObj){
+  //   this.activeFilterMap.delete(filterObj.fieldName);
+  //   this.features = this._allFeatures.filter(f => {
+  //     for(let v of this.activeFilterMap.values()){
+  //       if(v.isClientFiltered(f.attributes)){
+  //         return false;
+  //       }
+  //     }
+  //     return true;
+  //   })
 
-  }
+  // }
 
 }
 

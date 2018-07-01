@@ -49,6 +49,7 @@ const App = observer(class App extends Component {
     return (
       <div className="app">
         <TopNav appState={this.appState} featureStore={this.featureStore}/>
+        <h1>HELLO WORLD</h1>
         <div className="grid-container all-container">
           <div className="column-12 leader-0 pre-0">
             {leftWindow}

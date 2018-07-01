@@ -1,5 +1,8 @@
 import React from 'react';
 import CardGallery from './CardGallery';
+import FilterGroup from './UIComponents/FilterGroup';
+import {observer} from'mobx-react';
+// import SelectFilter from './SelectFilter';
 
 import {
 Button,
@@ -8,7 +11,7 @@ Col,
 Container,
 Jumbotron} from 'reactstrap';
 
-const HomeWindow = ({appState, featureStore}) => (
+const HomeWindow = observer(({appState, featureStore}) => (
   <div>
     <Jumbotron fluid>
       <Container fluid>
@@ -17,9 +20,7 @@ const HomeWindow = ({appState, featureStore}) => (
         <hr className="my-4"/>
         <p>Start here to find colleagues who match your interests:</p>
         <div style={{marginBottom: '5px'}}>
-          <Button outline color="secondary">secondary</Button>
-          &nbsp;&nbsp;&nbsp;
-          <Button outline color="secondary">secondary</Button>
+          <FilterGroup appState={appState} featureStore={featureStore}/>
         </div>
         <a href="#">Browse all volunteers</a>
       </Container>
@@ -42,6 +43,6 @@ const HomeWindow = ({appState, featureStore}) => (
       <Button color="success">Let us know!</Button>
     </div>
   </div>
-)
+))
 
 export default HomeWindow;

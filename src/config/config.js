@@ -13,8 +13,8 @@ const layerConfig = {
     'years': 'field_12'
   },
   filters: {
-    'field_3': 'multi-split',
-    'field_12': 'num'
+    'field_3': 'interests'
+    // 'field_12': 'num'
   },
   labels: {
     'field_3': 'Interests',

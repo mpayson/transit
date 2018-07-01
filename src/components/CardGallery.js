@@ -18,7 +18,7 @@ const CardGallery = observer(({featureStore, appState}) => {
     const objId = fa.ObjectId;
     const att = attachMap.get(objId);
     return (
-      <Col sm="4">
+      <Col key={objId} sm="4">
         <Card className="text-center">
           <div style={{width: "100%", backgroundColor:"#e9ecef"}}>
             <div style={{marginRight:"20%", marginLeft:"20%"}}>
