@@ -79,8 +79,8 @@ class BrowseWindow extends Component {
               {listview}
             </div>
             <Pagination>
-                {renderPageNumbers}
-              </Pagination>
+              {renderPageNumbers}
+            </Pagination>
           </Col>
           <Col>
             {map}

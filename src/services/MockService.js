@@ -2,7 +2,7 @@ import maxImg from '../resources/max.png';
 import beauImg from '../resources/beau.png';
 import danImg from '../resources/dan.png';
 
-import {mapConfig} from '../config/config';
+import { mapConfig } from '../config/config';
 
 let data = [
   {
@@ -145,9 +145,9 @@ let attachmentPaths = [
 
 ]
 
-class MockService{
+class MockService {
 
-  static loadMap(mapId){
+  static loadMap(mapId) {
     return Promise.resolve({
       layers: [{
         title: mapConfig.layerTitle
@@ -156,13 +156,13 @@ class MockService{
   }
 
 
-  static queryAllLayerFeatures(layer){
-    return Promise.resolve({features: data});
+  static queryAllLayerFeatures(layer) {
+    return Promise.resolve({ features: data });
   }
-  static queryFeatureAttachments(layer, feature){
+  static queryFeatureAttachments(layer, feature) {
     const id = feature.attributes.ObjectId;
     return Promise.resolve([
-      attachmentPaths[id-1]
+      attachmentPaths[id - 1]
     ])
   }
 }
