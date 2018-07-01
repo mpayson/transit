@@ -51,11 +51,11 @@ class MultiFieldFilter{
   isClientFiltered(featureAttrs){
     for(let f of this.fields){
       const flt = this.filterMap.get(f);
-      if(!flt.isClientFiltered(featureAttrs)){
-        return false;
+      if(flt.isClientFiltered(featureAttrs)){
+        return true;
       }
     }
-    return true;
+    return false;
   }
 
 }
@@ -149,7 +149,6 @@ class NumFilter extends BaseFilter{
     }
   }
   clear(){
-    console.log("HERE");
     this._min = this.low;
     this._max = this.high;
   }
@@ -187,6 +186,9 @@ class MultiSplitFilter extends BaseFilter{
     let optionMap = new Map();
     for(let f of this.featureStore.features){
       const atrs = f.attributes;
+      if(!atrs.hasOwnProperty(this.fieldName) || !atrs[this.fieldName]){
+        continue;
+      }
       const newOpts = atrs[this.fieldName].split(this.delimeter);
       for(let opt of newOpts){
         const tOpt = opt.trim();
@@ -202,11 +204,12 @@ class MultiSplitFilter extends BaseFilter{
   }
 
   isClientFiltered(featureAttrs){
-    if (typeof featureAttrs[this.fieldName] === 'undefined'){
-      return true;
-    }
     if(this.optionMap.size < 1){
       return false;
+    }
+    if(!featureAttrs.hasOwnProperty(this.fieldName) || !featureAttrs[this.fieldName]){
+      console.log("HERE");
+      return true;
     }
     let attrArr = featureAttrs[this.fieldName].split(this.delimeter);
     for(let i = 0; i < attrArr.length; i++){

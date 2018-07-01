@@ -89,7 +89,7 @@ const SelectFilter = observer(class SelectFilter extends Component {
           {this.filterObj.label}
         </DropdownToggle>
         <DropdownMenu>
-          <div style={{minWidth:"12rem"}}>
+          <div style={{minWidth:"12rem", maxHeight:"20rem", overflowY:"scroll"}}>
             <div className="mr-1 ml-1">
               <Input
                 placeholder="sm"

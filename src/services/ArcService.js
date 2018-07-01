@@ -18,17 +18,48 @@ class ArcService {
   }
 
   static queryAllLayerFeatures(layer, where){
-    // const dField = layerConfig.fieldTypes.date;
-    // const queryParams = layer.createQuery();
-    // const d = new Date();
-    // queryParams.where = ;
-    // console.log(queryParams.where);
     return layer.queryFeatures();
   }
 
-  static queryFeatureAttachments(layer, feature){
-    return layer.queryFeatureAttachments(feature);
+  static fetchAttachMap(layer, features){
+    const promises = features.map(f => 
+      layer.queryFeatureAttachments(f)
+    )
+    return Promise.all(promises)
+      .then(res => {
+        return res.reduce((acc, cur) => {
+          if(cur.length < 1){
+            return acc;
+          }
+          const firstObj = cur[0];
+          acc.set(firstObj.id, firstObj.url);
+          return acc;
+        }, new Map())
+      })
   }
+
+  static queryRelatedRecords(layer){
+    return esriLoader.loadModules(["esri/tasks/QueryTask", "esri/tasks/support/RelationshipQuery"], loaderOptions)
+      .then(([QueryTask, RelationshipQuery]) => {
+        const queryTask = new QueryTask({
+          url: layer.parsedUrl.path
+        });
+        let relQuery = new RelationshipQuery()
+        relQuery.relationshipId = layer.relationships[0].id;
+        relQuery.returnGeometry = true;
+        relQuery.outFields = ["*"];
+        relQuery.definitionExpression = "1=1";
+        return queryTask.executeRelationshipQuery(relQuery);
+      })
+      .then(res => {
+        const relMap = new Map();
+        for(let id in res){
+          relMap.set(id, res[id].features)
+        }
+        return relMap;
+      })
+  }
+
 }
 
 export default ArcService;

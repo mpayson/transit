@@ -11,11 +11,11 @@ class FeatureStore {
   layer
   features
   featureAttachments
+  featureRelates
   map
   selObjId
   selFeatureIndex
   activeFilterMap
-  _allFeatures
   loaded
 
   constructor(service){
@@ -58,17 +58,8 @@ class FeatureStore {
     return this.filteredFeatures.map(f => f.attributes) || [];
   }
 
-  // this.features = this._allFeatures.filter(f => {
-  //   for(let [k,v] of this.activeFilterMap){
-  //     if(v.isClientFiltered(f.attributes)){
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  // })
-
   get filteredFeatures(){
-    return this.features.filter(f => {
+    let t = this.features.filter(f => {
       if(this.selObjId){
         return f.attributes.ObjectId === this.selObjId;
       }
@@ -86,9 +77,10 @@ class FeatureStore {
           return false;
         }
       }
-
       return true;
     })
+    console.log(t);
+    return t;
   }
 
   get events(){
@@ -110,38 +102,42 @@ class FeatureStore {
     return null;
   }
 
+  _buildFeautres(features){
+    const ftypes = layerConfig.fieldTypes;
+    return features.reduce((acc, c) => {
+      // let date = moment(c.attributes[ftypes.date]);
+      // c.attributes[ftypes.date] = date;
+      // let start = c.attributes[ftypes.start].split(":");
+      // let end = c.attributes[ftypes.end].split(":");
+      // c.attributes[ftypes.start] = moment(date).add(start[0], 'hours').add(start[1], 'minutes');
+      // c.attributes[ftypes.end] = moment(date).add(end[0], 'hours').add(end[1], 'minutes');
+      c.attributes[ftypes.years] = moment().diff(moment(c.attributes[ftypes.years]), 'years');
+      acc.push(c);
+      return acc;
+    }, [])
+  }
+
   load(){
     this.service.loadMap(mapConfig.webmapid)
       .then(map => {
         this.map = map;
-        this.layer = this.map.layers.find(l => l.title === mapConfig.layerTitle);
-        const date = new Date();
-        const dField = layerConfig.fieldTypes.date;
-        this.layer.definitionExpression = `${dField} >= '${date.toISOString()}'`
+        this.layer = this.map.layers.find(l => 
+          l.title === mapConfig.layerTitle
+        );
         this.layer.outFields = "*";
         return this.service.queryAllLayerFeatures(this.layer);
       })
       .then(res => {
-        const ftypes = layerConfig.fieldTypes;
-        let t = res.features.reduce((acc, c) => {
-          let date = moment(c.attributes[ftypes.date]);
-          c.attributes[ftypes.date] = date;
-          let start = c.attributes[ftypes.start].split(":");
-          let end = c.attributes[ftypes.end].split(":");
-          c.attributes[ftypes.start] = moment(date).add(start[0], 'hours').add(start[1], 'minutes');
-          c.attributes[ftypes.end] = moment(date).add(end[0], 'hours').add(end[1], 'minutes');
-          acc.push(c);
-          return acc;
-        }, []);
+        const t = this._buildFeautres(res.features);
         this.features = Utils.shuffleArr(t);
-        this._allFeatures = this.features;
-        t.forEach((f,i) => {
-          this.service.queryFeatureAttachments(this.layer, f)
-            .then(atch => {
-              const firstObj = atch[0];
-              this.featureAttachments.set(firstObj.id, firstObj.url)
-            })
-        })
+        return this.service.fetchAttachMap(this.layer, this.features)
+      })
+      .then(map => {
+        this.featureAttachments = map;
+        return this.service.queryRelatedRecords(this.layer);
+      })
+      .then(map => {
+        this.featureRelates = map;
         this.loaded = true;
       })
       .catch(err => {
@@ -161,31 +157,6 @@ class FeatureStore {
   setSelectedFeature(index){
     this.selFeatureIndex = index;
   }
-
-  // applyFilter(filterObj){
-  //   this.activeFilterMap.set(filterObj.fieldName, filterObj);
-  //   this.features = this._allFeatures.filter(f => {
-  //     for(let [k,v] of this.activeFilterMap){
-  //       if(v.isClientFiltered(f.attributes)){
-  //         return false;
-  //       }
-  //     }
-  //     return true;
-  //   })
-  // }
-
-  // deleteActiveFilter(filterObj){
-  //   this.activeFilterMap.delete(filterObj.fieldName);
-  //   this.features = this._allFeatures.filter(f => {
-  //     for(let v of this.activeFilterMap.values()){
-  //       if(v.isClientFiltered(f.attributes)){
-  //         return false;
-  //       }
-  //     }
-  //     return true;
-  //   })
-
-  // }
 
 }
 

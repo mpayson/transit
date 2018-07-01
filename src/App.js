@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import {observer} from 'mobx-react';
 import AppState from './stores/AppState';
 import FeatureStore from './stores/FeatureStore';
-import MockService from './services/MockService';
 import HomeWindow from './components/HomeWindow';
 import { Route, Switch, Link } from "react-router-dom";
 import BrowseWindow from './components/BrowseWindow';
 import HomeCanvas from './components/HomeCanvas';
 import Utils from './utils/Utils';
-// import ArcService from './services/ArcService';
+// import MockService from './services/MockService';
+import ArcService from './services/ArcService';
 
 import {
   Collapse,
@@ -29,7 +29,7 @@ const App = observer(class App extends Component {
   constructor(props, context){
     super(props, context)
     this.appState = AppState;
-    this.featureStore = new FeatureStore(MockService);
+    this.featureStore = new FeatureStore(ArcService);
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false

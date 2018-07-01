@@ -1,6 +1,7 @@
 import React from 'react';
 import {observer} from "mobx-react";
-import {layerConfig} from '../config/config';
+import {layerConfig, cardConfig} from '../config/config';
+import Utils from '../utils/Utils';
 
 
 import { Card, CardImg, CardText, CardBody,
@@ -15,8 +16,9 @@ const CardGallery = observer(({featureStore, appState}) => {
   // Iterates over all features to create a new card for each
   const fTypes = layerConfig.fieldTypes;
   const cards = featureAttrs.slice(0,3).map(fa => {
-    const objId = fa.ObjectId;
+    const objId = fa[fTypes.oid];
     const att = attachMap.get(objId);
+    const desc = Utils.getDescriptValue(cardConfig.description, fa);
     return (
       <Col key={objId} sm="4">
         <Card className="text-center">
@@ -27,7 +29,7 @@ const CardGallery = observer(({featureStore, appState}) => {
           </div>
           <CardBody>
             <CardTitle>{fa[fTypes.name]}</CardTitle>
-            <CardText>{fa[fTypes.tags]}</CardText>
+            <CardText>{desc}</CardText>
             <Button color="primary">See availability</Button>
           </CardBody>
         </Card>

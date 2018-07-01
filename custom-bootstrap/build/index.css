@@ -6501,3 +6501,6 @@ a.text-dark:hover, a.text-dark:focus {
 .e-bloc-jumbo {
   background: #343a40;
   color: white; }
+
+.hr-dark {
+  border-top: 1px solid white; }

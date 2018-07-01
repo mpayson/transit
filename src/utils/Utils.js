@@ -1,3 +1,4 @@
+const MAXSTRINGSIZE = 250
 
 class Utils {
   static alphSort(entries, key=null, rev=false){
@@ -35,6 +36,24 @@ class Utils {
     }
     return array;
 
+  }
+
+  static getDescriptValue(cObj, atrs){
+    if(cObj === null){
+      return null
+    }
+    if(typeof cObj !== 'object'){
+      return atrs[cObj]
+    }
+    return cObj.add.map(field => atrs[field])
+      .filter(field => field)
+      .join(cObj.separator)
+  }
+
+  static trimString(str, nMax=MAXSTRINGSIZE) {
+    if(!str) return null
+    nMax -= 3
+    return (str.length > nMax ? (str.substring(0, nMax) + '...') : str)
   }
 
 }
