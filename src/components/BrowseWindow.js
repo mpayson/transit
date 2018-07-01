@@ -12,6 +12,7 @@ import {
 
 import BrowseListView from './BrowseListView'
 import MapWindow from './MapWindow'
+import './BrowseWindow.css'
 
 class BrowseWindow extends Component {
   view
@@ -64,7 +65,7 @@ class BrowseWindow extends Component {
           </Col>
         </Row>
         <Row>
-          <Col><p>{featureAttrs.length} volunteers can't wait to meet with you!</p></Col>
+          <Col><h6>{featureAttrs.length} volunteers can't wait to meet with you!</h6></Col>
           <Col>
             <ButtonGroup className="float-right">
               <Button outline color="secondary">Calendar</Button>
@@ -74,7 +75,7 @@ class BrowseWindow extends Component {
         </Row>
         <Row>
           <Col>
-            <div style={{overflowY: "scroll", height:"500px"}}>
+            <div className="view-div">
               {listview}
             </div>
             <Pagination>
