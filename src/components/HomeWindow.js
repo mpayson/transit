@@ -2,6 +2,7 @@ import React from 'react';
 import CardGallery from './CardGallery';
 import FilterGroup from './UIComponents/FilterGroup';
 import {observer} from'mobx-react';
+import backImg from '../resources/group-stars.png';
 // import SelectFilter from './SelectFilter';
 
 import {
