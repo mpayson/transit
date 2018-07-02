@@ -53,7 +53,7 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
               <Route path={Utils.url("/browse/:id")} render={(props) => <Profile {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
             </Switch>
           </Col>
-          <Col>
+          <Col className="d-none d-lg-block">
             <ButtonGroup className="float-right mb-2 d-none d-lg-block">
                 <Button outline={isMap} color={isMap ? "secondary" : "primary"} size="sm">
                   Calendar
@@ -62,7 +62,7 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
                   Map
                 </Button>
             </ButtonGroup>
-            <div className="d-none d-lg-block">
+            <div>
               {pane}
             </div>
           </Col>
