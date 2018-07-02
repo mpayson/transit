@@ -17,20 +17,21 @@ const layerConfig = {
     'communities': 'interests',
     'tech': 'interests',
     'free_time': 'interests',
+    'other': 'interests',
     'start_date': 'num'
   },
   labels: {
-    'communities': 'Communities',
+    'communities': 'Communirties',
     'tech': 'Tech',
     'free_time': 'Free Time',
-    'start_date': 'Years @ Esri'
+    'start_date': 'Years @ Esri',
+    'other': 'Other'
   }
 }
 
 const cardConfig = {
   description: {
-    add: ["communities", "tech", "free_time"],
-    separator: " || "
+    badges: ["communities", "tech", "free_time", "other"]
   }
 }
 

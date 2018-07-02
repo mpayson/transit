@@ -4,7 +4,7 @@ import {layerConfig, cardConfig} from '../config/config';
 import Utils from '../utils/Utils';
 
 
-import { Card, CardImg, CardText, CardBody,
+import { Badge, Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button, Row, Col, Container } from 'reactstrap';
 
 // Displays cards for all the users
@@ -18,7 +18,12 @@ const CardGallery = observer(({featureStore, appState}) => {
   const cards = featureAttrs.slice(0,3).map(fa => {
     const objId = fa[fTypes.oid];
     const att = attachMap.get(objId);
-    const desc = Utils.getDescriptValue(cardConfig.description, fa);
+    const bc = Utils.getBadges(cardConfig.description, fa);
+    const badges = bc.map(b =>{
+      const label = layerConfig.labels[b[0]] || b[0];
+      return <Badge className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
+    })
+
     return (
       <Col key={objId} sm="4">
         <Card className="text-center">
@@ -29,8 +34,12 @@ const CardGallery = observer(({featureStore, appState}) => {
           </div>
           <CardBody>
             <CardTitle>{fa[fTypes.name]}</CardTitle>
-            <CardText>{desc}</CardText>
-            <Button color="primary">See availability</Button>
+            <CardSubtitle>Interests</CardSubtitle>
+            <div>
+              {badges}
+            </div>
+
+            <Button className="mt-3" color="primary">See availability</Button>
           </CardBody>
         </Card>
       </Col>

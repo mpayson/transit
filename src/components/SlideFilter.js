@@ -44,7 +44,8 @@ const SlideFilter = observer(class SlideFilter extends Component {
   render() {
 
     const isActive = this.filterObj.isActive;
-    const color = isActive ? "success" : "light";
+    const dark = this.props.dark ? "secondary" : "light";
+    const color = isActive ? "success" : dark;``
 
     return (
       <ButtonDropdown id="dropbutton" isOpen={this.state.dropdownOpen} toggle={this.toggle}>

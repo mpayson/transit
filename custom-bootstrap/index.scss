@@ -13,6 +13,11 @@ $success: #66CABE;
   .btn-#{$color}:hover {
     color: white;
   }
+  .badge-outline.badge-#{$color} {
+    color: theme-color($color);
+    background-color: transparent;
+    border: 1px solid theme-color($color);
+  }
 }
 
 .e-bloc-jumbo{

@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from "mobx-react";
-import { layerConfig } from '../config/config';
-
+import { layerConfig, cardConfig } from '../config/config';
+import Utils from '../utils/Utils';
 
 import {
-  Card, CardImg, CardText, CardBody,
+  Badge, Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Panel, Button, Row, Col, Container
 } from 'reactstrap';
 
@@ -19,31 +19,44 @@ const BrowseListView = observer(({ featureStore, appState }) => {
   const indexLast = appState.currentPage * appState.itemsPerPage;
   const indexFirst = indexLast - appState.itemsPerPage;
   const cards = featureAttrs.slice(indexFirst, indexLast).map(fa => {
-    const objId = fa.ObjectId;
+    const objId = fa[fTypes.oid];
     const att = attachMap.get(objId);
+    const bc = Utils.getBadges(cardConfig.description, fa);
+    const badges = bc.map(b =>{
+      const label = layerConfig.labels[b[0]] || b[0];
+      return <Badge className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
+    })
+
+
     return (
-      <Col sm="12" lg="12">
-        <Card className="m-1">
-          <Row>
-            <img src={att} style={{ height: "150px", width: "150px" }} />
-            <Col style={{ padding: "0.5rem" }}>
-              <h4>{fa[fTypes.name]}</h4>
-              <h6>4 years at Esri</h6>
-              <p>Interests: <i>{fa[fTypes.tags]}</i><br />
-                <i>{fa[fTypes.bio]}</i></p>
-              <Button size="sm" color="blue">Schedule a meeting</Button>
-            </Col>
-          </Row>
-        </Card>
-      </Col>
+      
+      <Card key={objId} className="mt-2">
+        <Row className="align-items-center">
+          <Col xs="4">
+            <img src={att} style={{padding:"0.2rem", width:"100%", height:"100%"}}/>
+          </Col>
+          <Col xs="8">
+            <h6>
+              <span className="h4">{fa[fTypes.name]}</span>
+              <small className={'font-weight-light ml-2'}>4 years</small>
+            </h6>
+            <div>
+              {badges}
+            </div>
+            <Button size="sm" color="primary" className="mt-4 mb-2">Learn more</Button>
+            <Button size="sm" color="primary" className="mt-4 mb-2 ml-2">
+              In
+            </Button>
+          </Col>
+        </Row>
+      </Card>
+      
     )
   })
 
   return (
     <Container>
-      <Row>
         {cards}
-      </Row>
     </Container>
   )
 });

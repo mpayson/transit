@@ -38,16 +38,16 @@ class Utils {
 
   }
 
-  static getDescriptValue(cObj, atrs){
-    if(cObj === null){
-      return null
-    }
-    if(typeof cObj !== 'object'){
-      return atrs[cObj]
-    }
-    return cObj.add.map(field => atrs[field])
-      .filter(field => field)
-      .join(cObj.separator)
+  static getBadges(badgeObj, atrs, delim=","){
+    return badgeObj.badges.reduce((acc, b) => {
+      if(!atrs.hasOwnProperty(b) || !atrs[b]){
+        return acc;
+      }
+      const count = atrs[b].split(delim).length;
+      // console.log("HERE", count);
+      acc.push([b, count]);
+      return acc;
+    }, [])
   }
 
   static trimString(str, nMax=MAXSTRINGSIZE) {
