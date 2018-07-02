@@ -34,6 +34,7 @@ const App = observer(class App extends Component {
     this.state = {
       isOpen: false
     };
+    this.onSearchChange = this.onSearchChange.bind(this);
     // this.featureStore = new FeatureStore(ArcService);
   }
 
@@ -45,6 +46,11 @@ const App = observer(class App extends Component {
   // Load data when app is about to load
   componentWillMount(){
     this.featureStore.load();
+  }
+
+  onSearchChange(e){
+    let v = e.target.value;
+    this.featureStore.setGeneralSearchString(v);
   }
 
   render() {
@@ -67,7 +73,11 @@ const App = observer(class App extends Component {
             </Nav>
             <Nav navbar className="ml-auto">
               <NavItem>
-                <Input placeholder="search" />
+                <Input  
+                  placeholder="search"
+                  value={this.featureStore.genSearchString}
+                  onChange={this.onSearchChange}
+                  />
               </NavItem>
             </Nav>
           </Collapse>

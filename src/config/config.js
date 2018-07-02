@@ -26,7 +26,8 @@ const layerConfig = {
     'free_time': 'Free Time',
     'start_date': 'Years @ Esri',
     'other': 'Other'
-  }
+  },
+  search: ['name', 'communities', 'tech', 'free_time', 'other']
 }
 
 const cardConfig = {

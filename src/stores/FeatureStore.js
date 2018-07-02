@@ -67,14 +67,25 @@ class FeatureStore {
         return f.attributes.ObjectId === this.selObjId;
       }
       const ftypes = layerConfig.fieldTypes;
+
       if(this.genSearchString){
-        const name = f.attributes[ftypes.name].toLowerCase();
-        const tags = f.attributes[ftypes.tags].toLowerCase();
         const subst = this.genSearchString.toLowerCase();
-        if(!(name.includes(subst) || tags.includes(subst))){
+        let isVis = false;
+        for(let s of layerConfig.search){
+          if(isVis){
+            continue;
+          }
+          if(!f.attributes.hasOwnProperty(s) || !f.attributes[s]){
+            continue;
+          }
+          const slwr = f.attributes[s].toLowerCase();
+          isVis = slwr.includes(subst);
+        }
+        if(!isVis){
           return false;
         }
       } 
+
       for(let v of this.filters){
         if(v.isClientFiltered(f.attributes)){
           return false;
