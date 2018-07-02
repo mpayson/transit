@@ -21,7 +21,7 @@ const layerConfig = {
     'start_date': 'num'
   },
   labels: {
-    'communities': 'Communirties',
+    'communities': 'Communities',
     'tech': 'Tech',
     'free_time': 'Free Time',
     'start_date': 'Years @ Esri',

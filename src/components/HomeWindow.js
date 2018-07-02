@@ -2,6 +2,8 @@ import React from 'react';
 import CardGallery from './CardGallery';
 import FilterGroup from './UIComponents/FilterGroup';
 import {observer} from'mobx-react';
+import { Link } from "react-router-dom";
+import Utils from '../utils/Utils';
 import backImg from '../resources/group-stars.png';
 // import SelectFilter from './SelectFilter';
 
@@ -23,7 +25,7 @@ const HomeWindow = observer(({appState, featureStore}) => (
         <div style={{marginBottom: '5px'}}>
           <FilterGroup appState={appState} featureStore={featureStore}/>
         </div>
-        <a href="#">Browse all volunteers</a>
+        <Link to={Utils.url('/browse')}>Browse all volunteers</Link>
       </Container>
     </Jumbotron>
     <div className="mb-5" style={{width:"100%", textAlign:"center"}}>
@@ -34,7 +36,9 @@ const HomeWindow = observer(({appState, featureStore}) => (
       <Row>
         <Col/>
         <Col sm="6">
-          <Button outline color="secondary" size="lg" block>Browse all colleagues</Button>
+          <Link to={Utils.url('/browse')} style={{color:"none", textDecoration: "none"}}>
+            <Button outline color="secondary" size="lg" block>Browse all volunteers</Button>
+          </Link>
         </Col>
         <Col/>
       </Row>

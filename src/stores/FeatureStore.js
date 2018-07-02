@@ -9,7 +9,6 @@ class FeatureStore {
 
   genSearchString
   layer
-  features
   featureAttachments
   featureRelates
   map
@@ -17,6 +16,8 @@ class FeatureStore {
   selFeatureIndex
   activeFilterMap
   loaded
+  featureIdMap
+  features
 
   constructor(service){
     this.service = service;
@@ -28,6 +29,8 @@ class FeatureStore {
     this.activeFilterMap = new Map();
     this.loaded = false;
     this.filters = [];
+    this._featureIds = [];
+    this.featureIdMap = new Map();
 
     let keys = [...Object.keys(layerConfig.filters)];
     let interestKeys = keys.filter(k => layerConfig.filters[k] === 'interests');
@@ -71,7 +74,7 @@ class FeatureStore {
         if(!(name.includes(subst) || tags.includes(subst))){
           return false;
         }
-      }
+      } 
       for(let v of this.filters){
         if(v.isClientFiltered(f.attributes)){
           return false;
@@ -129,6 +132,10 @@ class FeatureStore {
       })
       .then(res => {
         const t = this._buildFeautres(res.features);
+        const ftypes = layerConfig.fieldTypes;
+        for(let i=0; i < t.length; i++){
+          this.featureIdMap.set(t[i].attributes[ftypes.oid], t[i])
+        }
         this.features = Utils.shuffleArr(t);
         return this.service.fetchAttachMap(this.layer, this.features)
       })
@@ -168,6 +175,7 @@ decorate(FeatureStore, {
   selFeatureIndex: observable,
   activeFilterMap: observable,
   loaded: observable,
+  featureIdMap: observable,
   filteredFeatures: computed,
   filteredAttributes: computed,
   events: computed,

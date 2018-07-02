@@ -1,10 +1,11 @@
 import React from 'react';
 import {observer} from "mobx-react";
 import {layerConfig, cardConfig} from '../config/config';
+import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';
 
 
-import { Badge, Card, CardImg, CardText, CardBody,
+import { Badge, Card, CardImg, Fade, CardBody,
   CardTitle, CardSubtitle, Button, Row, Col, Container } from 'reactstrap';
 
 // Displays cards for all the users
@@ -21,27 +22,31 @@ const CardGallery = observer(({featureStore, appState}) => {
     const bc = Utils.getBadges(cardConfig.description, fa);
     const badges = bc.map(b =>{
       const label = layerConfig.labels[b[0]] || b[0];
-      return <Badge className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
+      return <Badge key={label} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
     })
 
     return (
       <Col key={objId} sm="4">
-        <Card className="text-center">
-          <div style={{width: "100%", backgroundColor:"#e9ecef"}}>
-            <div style={{marginRight:"20%", marginLeft:"20%"}}>
-              <CardImg top src={att} className="rounded-circle"/>
+        <Fade in>
+          <Card className="text-center">
+            <div style={{width: "100%", backgroundColor:"#e9ecef"}}>
+              <div style={{marginRight:"20%", marginLeft:"20%"}}>
+                <CardImg top src={att} className="rounded-circle"/>
+              </div>
             </div>
-          </div>
-          <CardBody>
-            <CardTitle>{fa[fTypes.name]}</CardTitle>
-            <CardSubtitle>Interests</CardSubtitle>
-            <div>
-              {badges}
-            </div>
+            <CardBody>
+              <CardTitle>{fa[fTypes.name]}</CardTitle>
+              <CardSubtitle>Interests</CardSubtitle>
+              <div>
+                {badges}
+              </div>
 
-            <Button className="mt-3" color="primary">See availability</Button>
-          </CardBody>
-        </Card>
+              <Link to={Utils.url(`/browse/${objId}`)}>
+                <Button className="mt-3" color="primary">Learn more</Button>
+              </Link>
+            </CardBody>
+          </Card>
+        </Fade>
       </Col>
     )
   })
