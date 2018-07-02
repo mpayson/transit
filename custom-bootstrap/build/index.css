@@ -6309,6 +6309,11 @@ a.text-dark:hover, a.text-dark:focus {
 .btn-primary:hover {
   color: white; }
 
+.badge-outline.badge-primary {
+  color: #5AB8E8;
+  background-color: transparent;
+  border: 1px solid #5AB8E8; }
+
 .btn-secondary {
   color: #fff;
   background-color: #6c757d;
@@ -6335,6 +6340,11 @@ a.text-dark:hover, a.text-dark:focus {
 
 .btn-secondary:hover {
   color: white; }
+
+.badge-outline.badge-secondary {
+  color: #6c757d;
+  background-color: transparent;
+  border: 1px solid #6c757d; }
 
 .btn-success {
   color: #212529;
@@ -6363,6 +6373,11 @@ a.text-dark:hover, a.text-dark:focus {
 .btn-success:hover {
   color: white; }
 
+.badge-outline.badge-success {
+  color: #66CABE;
+  background-color: transparent;
+  border: 1px solid #66CABE; }
+
 .btn-info {
   color: #fff;
   background-color: #17a2b8;
@@ -6389,6 +6404,11 @@ a.text-dark:hover, a.text-dark:focus {
 
 .btn-info:hover {
   color: white; }
+
+.badge-outline.badge-info {
+  color: #17a2b8;
+  background-color: transparent;
+  border: 1px solid #17a2b8; }
 
 .btn-warning {
   color: #212529;
@@ -6417,6 +6437,11 @@ a.text-dark:hover, a.text-dark:focus {
 .btn-warning:hover {
   color: white; }
 
+.badge-outline.badge-warning {
+  color: #ffc107;
+  background-color: transparent;
+  border: 1px solid #ffc107; }
+
 .btn-danger {
   color: #fff;
   background-color: #dc3545;
@@ -6443,6 +6468,11 @@ a.text-dark:hover, a.text-dark:focus {
 
 .btn-danger:hover {
   color: white; }
+
+.badge-outline.badge-danger {
+  color: #dc3545;
+  background-color: transparent;
+  border: 1px solid #dc3545; }
 
 .btn-light {
   color: #212529;
@@ -6471,6 +6501,11 @@ a.text-dark:hover, a.text-dark:focus {
 .btn-light:hover {
   color: white; }
 
+.badge-outline.badge-light {
+  color: #f8f9fa;
+  background-color: transparent;
+  border: 1px solid #f8f9fa; }
+
 .btn-dark {
   color: #fff;
   background-color: #343a40;
@@ -6498,6 +6533,14 @@ a.text-dark:hover, a.text-dark:focus {
 .btn-dark:hover {
   color: white; }
 
+.badge-outline.badge-dark {
+  color: #343a40;
+  background-color: transparent;
+  border: 1px solid #343a40; }
+
 .e-bloc-jumbo {
   background: #343a40;
   color: white; }
+
+.hr-dark {
+  border-top: 1px solid white; }

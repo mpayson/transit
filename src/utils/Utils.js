@@ -1,3 +1,4 @@
+const MAXSTRINGSIZE = 250
 
 class Utils {
   static alphSort(entries, key=null, rev=false){
@@ -35,6 +36,24 @@ class Utils {
     }
     return array;
 
+  }
+
+  static getBadges(badgeObj, atrs, delim=","){
+    return badgeObj.badges.reduce((acc, b) => {
+      if(!atrs.hasOwnProperty(b) || !atrs[b]){
+        return acc;
+      }
+      const count = atrs[b].split(delim).length;
+      // console.log("HERE", count);
+      acc.push([b, count]);
+      return acc;
+    }, [])
+  }
+
+  static trimString(str, nMax=MAXSTRINGSIZE) {
+    if(!str) return null
+    nMax -= 3
+    return (str.length > nMax ? (str.substring(0, nMax) + '...') : str)
   }
 
 }

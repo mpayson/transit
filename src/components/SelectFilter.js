@@ -80,7 +80,8 @@ const SelectFilter = observer(class SelectFilter extends Component {
     })
 
     const isActive = this.filterObj.isActive;
-    const color = isActive ? "success" : "light";
+    const dark = this.props.dark ? "secondary" : "light";
+    const color = isActive ? "success" : dark;
 
     return (
       <ButtonDropdown id="dropbutton" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -89,7 +90,7 @@ const SelectFilter = observer(class SelectFilter extends Component {
           {this.filterObj.label}
         </DropdownToggle>
         <DropdownMenu>
-          <div style={{minWidth:"12rem"}}>
+          <div style={{minWidth:"12rem", maxHeight:"20rem", overflowY:"scroll"}}>
             <div className="mr-1 ml-1">
               <Input
                 placeholder="sm"

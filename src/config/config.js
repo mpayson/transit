@@ -1,24 +1,37 @@
 const mapConfig = {
   webmapid: '6d18e208b2354bb29969a6db0fb8c09d',
-  layerTitle: 'transit'
+  layerTitle: 'Out of Office Hours'
 }
 
 const layerConfig = {
   fieldTypes: {
-    'name': 'field_0',
-    'tags': 'field_3',
-    'date': 'field_5',
-    'start': 'field_6',
-    'end': 'field_7',
-    'years': 'field_12'
+    'name': 'name',
+    'email': 'email',
+    'date': 'CreationDate',
+    'start': 'EditDate',
+    'end': 'EditDate',
+    'years': 'start_date',
+    'oid': 'objectid'
   },
   filters: {
-    'field_3': 'interests',
-    'field_12': 'num'
+    'communities': 'interests',
+    'tech': 'interests',
+    'free_time': 'interests',
+    'other': 'interests',
+    'start_date': 'num'
   },
   labels: {
-    'field_3': 'Interests',
-    'field_12': 'Years @ Esri'
+    'communities': 'Communirties',
+    'tech': 'Tech',
+    'free_time': 'Free Time',
+    'start_date': 'Years @ Esri',
+    'other': 'Other'
+  }
+}
+
+const cardConfig = {
+  description: {
+    badges: ["communities", "tech", "free_time", "other"]
   }
 }
 
@@ -31,4 +44,4 @@ const loaderOptions = {
   }
 };
 
-export {mapConfig, layerConfig, loaderOptions}
+export {mapConfig, layerConfig, loaderOptions, cardConfig}

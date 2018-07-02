@@ -7,9 +7,10 @@ class AppState {
   windowIndex
 
   constructor(){
-    this.windowIndex = 1
-    this.currentPage = 1
-    this.itemsPerPage = 4
+    this.windowIndex = 1;
+    this.currentPage = 1;
+    this.itemsPerPage = 4;
+    this.browsePane = "map";
   }
 
   setWindowIndex(i){
@@ -24,6 +25,10 @@ class AppState {
     this.itemsPerPage = i;
   }
 
+  setBrowsePane(paneStr){
+    this.browsePane = paneStr;
+  }
+
 }
 
 decorate(AppState, {
@@ -32,7 +37,8 @@ decorate(AppState, {
   currentPage: observable,
   setCurrentPage: action.bound,
   itemsPerPage: observable,
-  setItemsPerPage: action.bound
+  setItemsPerPage: action.bound,
+  setBrowsePane: action.bound
 })
 
 const singleton = new AppState()

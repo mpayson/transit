@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import FilterGroup from './UIComponents/FilterGroup';
+
 import { observer } from "mobx-react";
 import { layerConfig } from '../config/config';
 import {
@@ -14,7 +16,7 @@ import BrowseListView from './BrowseListView'
 import MapWindow from './MapWindow'
 import './BrowseWindow.css'
 
-class BrowseWindow extends Component {
+const BrowseWindow = observer(class BrowseWindow extends Component {
   view
 
   constructor(props, context) {
@@ -33,8 +35,14 @@ class BrowseWindow extends Component {
 
   render() {
     const featureAttrs = this.featureStore.filteredAttributes;
-    const map = <MapWindow />
-
+    
+    let pane;
+    let isMap;
+    if(this.appState.browsePane === 'map'){
+      pane = <MapWindow />;
+      isMap = true;
+    }
+    
     // pagination
     const indexLast = this.appState.currentPage * this.appState.itemsPerPage;
     const indexFirst = indexLast - this.appState.itemsPerPage;
@@ -58,37 +66,38 @@ class BrowseWindow extends Component {
     return (
       <Container className="mt-3">
         <Row style={{ marginBottom: '5px' }}>
-          <Col>
-            <Button outline color="secondary">secondary</Button>
-            &nbsp;&nbsp;&nbsp;
-          <Button outline color="secondary">secondary</Button>
-          </Col>
+          <FilterGroup dark featureStore={this.featureStore} appState={this.appState}/>
         </Row>
+        <hr className="my-4"/>
         <Row>
           <Col><h6>{featureAttrs.length} volunteers can't wait to meet with you!</h6></Col>
           <Col>
-            <ButtonGroup className="float-right">
-              <Button outline color="secondary">Calendar</Button>
-              <Button outline color="secondary">Map</Button>
+            <ButtonGroup className="float-right mb-2 d-none d-lg-block">
+              <Button outline={isMap} color={isMap ? "secondary" : "primary"} size="sm">
+                Calendar
+              </Button>
+              <Button outline={!isMap} color={isMap ? "primary" : "secondary"} size="sm">
+                Map
+              </Button>
             </ButtonGroup>
           </Col>
         </Row>
         <Row>
           <Col>
-            <div className="view-div">
+            <div className="view-div mb-2">
               {listview}
             </div>
-            <Pagination>
+            <Pagination className="align-self-center">
               {renderPageNumbers}
             </Pagination>
           </Col>
-          <Col>
-            {map}
+          <Col className="d-none d-lg-block">
+            {pane}
           </Col>
         </Row>
       </Container>
     )
   }
-}
+})
 
 export default BrowseWindow;
