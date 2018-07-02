@@ -8,7 +8,7 @@ const layerConfig = {
     'name': 'name',
     'email': 'email',
     'date': 'CreationDate',
-    'start': 'EditDate',
+    'start': 'start_oooh',
     'end': 'EditDate',
     'years': 'start_date',
     'oid': 'objectid'
@@ -33,7 +33,8 @@ const layerConfig = {
 const cardConfig = {
   description: {
     badges: ["communities", "tech", "free_time", "other"]
-  }
+  },
+  tabs: ["communities", "tech", "free_time", "other"]
 }
 
 const loaderOptions = {

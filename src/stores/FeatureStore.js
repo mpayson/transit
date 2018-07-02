@@ -31,6 +31,7 @@ class FeatureStore {
     this.filters = [];
     this._featureIds = [];
     this.featureIdMap = new Map();
+    this.featureRelates = new Map();
 
     let keys = [...Object.keys(layerConfig.filters)];
     let interestKeys = keys.filter(k => layerConfig.filters[k] === 'interests');
@@ -93,7 +94,7 @@ class FeatureStore {
       }
       return true;
     })
-    console.log(t);
+    // console.log(t);
     return t;
   }
 
@@ -155,6 +156,7 @@ class FeatureStore {
         return this.service.queryRelatedRecords(this.layer);
       })
       .then(map => {
+        console.log(map);
         this.featureRelates = map;
         this.loaded = true;
       })
@@ -187,6 +189,7 @@ decorate(FeatureStore, {
   activeFilterMap: observable,
   loaded: observable,
   featureIdMap: observable,
+  featureRelates: observable,
   filteredFeatures: computed,
   filteredAttributes: computed,
   events: computed,

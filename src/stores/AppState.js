@@ -11,6 +11,7 @@ class AppState {
     this.currentPage = 1;
     this.itemsPerPage = 4;
     this.browsePane = "map";
+    this.profileTab = 0;
   }
 
   setWindowIndex(i){
@@ -29,6 +30,10 @@ class AppState {
     this.browsePane = paneStr;
   }
 
+  setProfileTab(tab){
+    this.profileTab = tab;
+  }
+
 }
 
 decorate(AppState, {
@@ -38,7 +43,9 @@ decorate(AppState, {
   setCurrentPage: action.bound,
   itemsPerPage: observable,
   setItemsPerPage: action.bound,
-  setBrowsePane: action.bound
+  setBrowsePane: action.bound,
+  profileTab: observable,
+  setProfileTab: action.bound
 })
 
 const singleton = new AppState()
