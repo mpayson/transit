@@ -30,7 +30,7 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
         <Card className="mt-2">
           <Row className="align-items-center">
             <Col xs="4">
-              <img src={att} style={{padding:"0.2rem", width:"100%", height:"100%"}}/>
+              <img src={att} style={{padding:"0.2rem", width:"10rem", height:"10rem", objectFit:"cover", maxWidth:"30vw", maxHeight:"30vw"}}/>
             </Col>
             <Col xs="8">
               <h6>

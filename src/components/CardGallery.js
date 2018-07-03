@@ -30,9 +30,7 @@ const CardGallery = observer(({featureStore, appState}) => {
         <Fade in>
           <Card className="text-center">
             <div style={{width: "100%", backgroundColor:"#e9ecef"}}>
-              <div style={{marginRight:"20%", marginLeft:"20%"}}>
-                <CardImg top src={att} className="rounded-circle"/>
-              </div>
+              <CardImg top src={att} className="rounded-circle" style={{height:"10rem", width:"10rem", objectFit:"cover"}}/>
             </div>
             <CardBody>
               <CardTitle>{fa[fTypes.name]}</CardTitle>
