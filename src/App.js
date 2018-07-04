@@ -5,7 +5,6 @@ import FeatureStore from './stores/FeatureStore';
 import HomeWindow from './components/HomeWindow';
 import { Route, Switch, Link } from "react-router-dom";
 import BrowseWindow from './components/BrowseWindow';
-import HomeCanvas from './components/HomeCanvas';
 import Utils from './utils/Utils';
 // import MockService from './services/MockService';
 import ArcService from './services/ArcService';
@@ -82,7 +81,6 @@ const App = observer(class App extends Component {
             </Nav>
           </Collapse>
         </Navbar>
-        {/* <HomeCanvas/> */}
         <Switch>
           <Route exact path={Utils.url("/")} render={(props) => <HomeWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
           <Route path={Utils.url("/browse")} render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>

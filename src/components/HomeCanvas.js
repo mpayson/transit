@@ -1,30 +1,48 @@
 import React, { Component } from 'react';
 
-const dotMargin = 25;
-const numRows = 5;
-const numCols = 10;
+const numDots = 50;
 // Set the colors you want to support in this array
-const colors = ['#F03C69', '#FFCD32', '#2BAD5D', '#2ABABF', '#CDDC28', '#B91E8C'];
-const directions = ['+', '-'];
+const colors = ['#46B482', '#5E4C80', '#955DFB', '#5AB8E8'];
 const speeds = [0.5, 1, 1.5, 2, 2.5, 3, 3.5];
-const radii = [2.5, 4.5, 6.5];
+const radii = [1.5, 2.5, 3.5];
 
 class Dot {
   x
   y
+  ox
+  oy
 
-  constructor(x, y, radius=null){
-    this.x = x;
-    this.y = y;
+  constructor(width, height, radius=null){
+    this.draw = this.draw.bind(this);
+    this.move = this.move.bind(this);
+
+
+    this.x = width - (Math.pow(Math.random(), 5) * width);
+    this.y = Math.pow(Math.random(), 3) * height;
     this.radius = radius ? radius : radii[Math.floor(Math.random()*radii.length)];
     this.color = colors[Math.floor(Math.random()*colors.length)];
   }
 
+  move(width, height, ctx){
+    const step = 0.5;
+    if(this.x < 0 || this.y < 0){
+      this.x = width - (Math.pow(Math.random(), 5) * width);
+      this.y = height - (Math.pow(Math.random(), 3) * height);
+    } else {
+      this.x = this.x - step;
+      this.y = this.y - step;
+    }
+    this.draw(ctx);
+    // console.log(this.x, this.y, ctx);
+  }
+
   draw(ctx){
+
     ctx.globalAlpha = 0.8;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
     ctx.fillStyle = this.color;
+    ctx.closePath();
     ctx.fill();
   }
 }
@@ -32,131 +50,84 @@ class Dot {
 
 class HomeCanvas extends Component {
 
-  mouseOver
-  mouseMoved
+  timeout
+  animation
   dots = []
   context
   canvas
+  isIn
 
   constructor(props, context){
     super(props, context);
-    this.drawDot = this.drawDot.bind(this);
-    this.moveDot = this.moveDot.bind(this);
+    this.animate = this.animate.bind(this);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
   }
-
-  drawDot(dot) {
-    // Set transparency on the dots.
-    this.context.globalAlpha = 0.9;
-    this.context.beginPath();
-    this.context.arc(dot.x, dot.y, dot.radius, 0, 2 * Math.PI, false);
-    this.context.fillStyle = dot.color;
-    this.context.fill();
-  }
-
-  moveDot() {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    const dots = this.dots;
-    
-    for(let i = 0; i < dots.length; i++ ) {
   
-      if( dots[i].xMove == '+' ) {
-        dots[i].x += dots[i].speed;
-      } else {
-        dots[i].x -= dots[i].speed;
-      }
-      if( dots[i].yMove == '+' ) {
-        dots[i].y += dots[i].speed;
-      } else {
-        dots[i].y -= dots[i].speed;
-      }
-  
-      this.drawDot(dots[i])
-  
-      if( (dots[i].x + dots[i].radius) >= this.canvas.canvasWidth ) {
-        dots[i].xMove = '-';
-      }
-      if( (dots[i].x - dots[i].radius) <= 0 ) {
-        dots[i].xMove = '+';
-      }
-      if( (dots[i].y + dots[i].radius) >= this.canvas.canvasHeight ) {
-        dots[i].yMove = '-';
-      }
-      if( (dots[i].y - dots[i].radius) <= 0 ) {
-        dots[i].yMove = '+';
-      }
+  animate(){
+    if(!this.isIn){
+      return;
     }
-  
-    window.requestAnimationFrame(this.moveDot);
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    for(let i = 0; i < numDots; i ++){
+      const dot = this.dots[i];
+      dot.move(this.canvas.clientWidth, this.canvas.clientHeight, this.context);
+    }
+
+    this.animation = window.requestAnimationFrame( () => {
+      this.timeout = window.setTimeout(this.animate, 5)
+    });
   }
-  
+
+  onMouseEnter(){
+    this.isIn = true;
+    this.animate();
+  }
+  onMouseLeave(){
+    this.isIn = false;
+  }
+
+  componentWillUnmount(){
+    window.clearTimeout(this.timeout);
+    window.cancelAnimationFrame(this.animation);
+  }
 
   componentDidMount() {
-
+    
+    const dpr = window.devicePixelRatio;
     this.canvas = this.refs.canvas;
-    // this.canvas.width = window.innerWidth;
-    // this.canvas.height = window.innerHeight;
-    const canvasWidth = this.canvas.width;
-    const canvasHeight = this.canvas.height;
+
+    const canvasWidth = this.canvas.clientWidth;
+    const canvasHeight = this.canvas.clientHeight;
+    this.canvas.width = dpr * canvasWidth;
+    this.canvas.height = dpr * canvasHeight;
+    this.canvas.style.width = canvasWidth+'px';
+    this.canvas.style.height = canvasHeight+'px';
+
     this.context = this.canvas.getContext("2d");
+    this.context.scale(dpr, dpr);
 
-    if (window.devicePixelRatio) {
-      var hidefCanvasWidth = this.canvas.width;
-      var hidefCanvasHeight = this.canvas.height;
-      var hidefCanvasCssWidth = hidefCanvasWidth;
-      var hidefCanvasCssHeight = hidefCanvasHeight;
-
-      this.canvas.width = hidefCanvasWidth * window.devicePixelRatio;
-      this.canvas.height = hidefCanvasHeight * window.devicePixelRatio;
-      this.canvas.style.width = hidefCanvasCssWidth;
-      this.canvas.style.height = hidefCanvasCssHeight;
-      this.context.scale(window.devicePixelRatio, window.devicePixelRatio);
-  }
-
-
-    var dotWidth = ((canvasWidth - (2 * dotMargin)) / numCols) - dotMargin;
-    var dotHeight = ((canvasHeight - (2 * dotMargin)) / numRows) - dotMargin;
-    
-    if( dotWidth > dotHeight ) {
-      var dotDiameter = dotHeight;
-      var xMargin = (canvasWidth - ((2 * dotMargin) + (numCols * dotDiameter))) / numCols;
-      var yMargin = dotMargin;
-    } else {
-      var dotDiameter = dotWidth;
-      var xMargin = dotMargin;
-      var yMargin = (canvasHeight - ((2 * dotMargin) + (numRows * dotDiameter))) / numRows;
+    for(let i = 0; i < numDots; i++){
+      let dot = new Dot(canvasWidth, canvasHeight);
+      this.dots.push(dot);
+      dot.draw(this.context);
     }
     
-    console.log(dotWidth);
-
-    var dotRadius = dotDiameter * 0.5;
-    
-    for(var i = 0; i < numRows; i++) {
-      for(var j = 0; j < numCols; j++) {
-        var x = (j * (dotDiameter + xMargin)) + dotMargin + (xMargin / 2) + dotRadius;
-        var y = (i * (dotDiameter + yMargin)) + dotMargin + (yMargin / 2) + dotRadius;
-        // Get random color, direction and speed.
-        let dot = new Dot(x, y)
-        // Set the object.
-
-        // Save it to the dots array.
-        this.dots.push(dot);
-        dot.draw(this.context);
-      }
-    }
-    
-    // Draw each dot in the dots array.
-    // for( i = 0; i < dots.length; i++ ) {
-    //   this.drawDot(dots[i]);
-    // };
-    // setTimeout(() => {
-    //   window.requestAnimationFrame(this.moveDot);
-    // }, 2500);
   }
 
   render() {
 
     return(
-      <canvas ref="canvas" id="c" style={{width: 500, height: 500}}/>
+      <div style={{width:"100%", height:"100%", overflow:"hidden", position:"absolute"}}>
+        <canvas
+          ref="canvas"
+          id="c"
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+          style={{width:"90rem", minWidth:"100%", height:"100%"}}>
+          {this.props.children}
+        </canvas>
+      </div>
     )
   }
 }
