@@ -14,6 +14,7 @@ const BrowseList = observer(class BrowseList extends Component {
     this.featureStore = props.featureStore;
     this.appState = props.appState;
     this.handleClick = this.handleClick.bind(this);
+    this.featureStore.filterByFeature(props.similar);
   }
 
   handleClick(e){

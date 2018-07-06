@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
+import './SelectFilter.css';
 import {toJS} from 'mobx';
 
 import {
-  ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
+  Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
 
 const SelectFilter = observer(class SelectFilter extends Component {
 
@@ -65,15 +66,22 @@ const SelectFilter = observer(class SelectFilter extends Component {
           return <DropdownItem style={{whiteSpace: "normal"}}
             key={o[0]} id={o[0]} onClick={this.onClick}>
             {o[0]}
-            <svg className="float-right" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32"><path fill="#5a9359" d="M11.927 22l-6.882-6.883-3 3L11.927 28 31.204 8.728l-3.001-3.001z"/></svg>
+            <svg className="float-right" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32"><path fill="#47BCAD" d="M11.927 22l-6.882-6.883-3 3L11.927 28 31.204 8.728l-3.001-3.001z"/></svg>
           </DropdownItem>
         }
         return <DropdownItem key={o[0]} id={o[0]} onClick={this.onClick}>{o[0]}</DropdownItem>;
       })
+      const header = optionViews.length > 0
+        ? <DropdownItem key={field} header>{label}</DropdownItem>
+        : null;
+      const divider = optionViews.length > 0
+        ? <DropdownItem divider />
+        : null;
       return (
         <div key={field}>
-          <DropdownItem key={field} header>{label}</DropdownItem>
+          {header}
           {optionViews}
+          {divider}
         </div>
       )
 
@@ -100,6 +108,11 @@ const SelectFilter = observer(class SelectFilter extends Component {
                 onChange={this.onTextChange}
                 />
             </div>
+            {/* <Button color="link" className="float-left">link</Button>
+            <label className="switch">
+              <input type="checkbox"/>
+              <span className="slider round"></span>
+            </label> */}
             {allViews}
           </div>
         </DropdownMenu>

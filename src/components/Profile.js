@@ -26,10 +26,16 @@ const Profile = observer(class Profile extends Component {
     this.appState = props.appState;
     this.featureStore = props.featureStore;
     this.onTabClick = this.onTabClick.bind(this);
+    this.onSimilarClick = this.onSimilarClick.bind(this);
   }
 
   onTabClick(e){
     this.appState.setProfileTab(parseInt(e.target.id));
+  }
+
+  onSimilarClick(e){
+    this.featureStore.filterByFeature(parseInt(this.props.match.params.id));
+
   }
 
   render() {
@@ -117,6 +123,9 @@ const Profile = observer(class Profile extends Component {
               </div>
             </CardBody>
           </Card>
+          <Link to='/browse' onClick={this.onSimilarClick}>
+            <Button outline className="mt-4" block>See volunteers with similar interests</Button>
+          </Link>
         </Fade>
       </div>
     );

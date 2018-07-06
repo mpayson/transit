@@ -23,11 +23,10 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
   constructor(props, context) {
     super(props, context)
     this.featureStore = props.featureStore;
-    this.appState = props.appState
-    this.appState.currentPage = 1
-    this.appState.itemsPerPage = 4
+    this.appState = props.appState;
+    this.appState.currentPage = 1;
+    this.appState.itemsPerPage = 4;
   }
-
 
   render() {
     const featureAttrs = this.featureStore.filteredAttributes;
@@ -40,6 +39,7 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
     }
   
 
+
     return (
       <Container className="mt-3">
         <Row style={{ marginBottom: '5px' }}>
@@ -49,7 +49,11 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
         <Row>
           <Col>
             <Switch>
-              <Route exact path={Utils.url("/browse")} render={(props) => <BrowseList {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+              <Route 
+                exact
+                path={Utils.url("/browse")}
+                render={(props) => <BrowseList {...props} appState={this.appState} featureStore={this.featureStore}/>}
+              />
               <Route path={Utils.url("/browse/:id")} render={(props) => <Profile {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
             </Switch>
           </Col>

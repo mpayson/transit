@@ -43,7 +43,8 @@ const loaderOptions = {
     has: {
       "esri-featurelayer-webgl": 1
     }
-  }
+  },
+  url: "https://js.arcgis.com/4.8/"
 };
 
 export {mapConfig, layerConfig, loaderOptions, cardConfig}

@@ -24,9 +24,9 @@ class MapWindow extends Component {
       this.view = new MapView({
         map: map,
         container: 'view-div',
-        constraints: {
-          snapToZoom: false
-        }
+        // constraints: {
+        //   snapToZoom: false
+        // }
       });
     })
     .catch(err => {

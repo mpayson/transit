@@ -56,6 +56,22 @@ class Utils {
     return (str.length > nMax ? (str.substring(0, nMax) + '...') : str)
   }
 
+  static parseQStr(url){
+    if(url.length < 1){
+      return {}
+    }
+    const queryString = url.substring( url.indexOf('?') + 1 );
+    let params = {};
+    
+    const queries = queryString.split("&");
+    // Convert the array of strings into an object
+    for (let i = 0; i < queries.length; i++ ) {
+        const temp = queries[i].split('=');
+        params[temp[0]] = temp[1];
+    }
+    return params;
+  }
+
 }
 
 export default Utils;

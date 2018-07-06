@@ -87,8 +87,9 @@ class FeatureStore {
         }
       } 
 
+      // AND LOGIC
       for(let v of this.filters){
-        if(v.isClientFiltered(f.attributes)){
+        if(!v.clientIsVisible(f.attributes)){
           return false;
         }
       }
@@ -124,12 +125,23 @@ class FeatureStore {
       // c.attributes[ftypes.date] = date;
       // let start = c.attributes[ftypes.start].split(":");
       // let end = c.attributes[ftypes.end].split(":");
-      // c.attributes[ftypes.start] = moment(date).add(start[0], 'hours').add(start[1], 'minutes');
-      // c.attributes[ftypes.end] = moment(date).add(end[0], 'hours').add(end[1], 'minutes');
+      // c.attributes[ftypes.start] = moment(c.attributes[ftypes.start]);
+      // c.attributes[ftypes.end] = moment(c.attributes[ftypes.end]);
       c.attributes[ftypes.years] = moment().diff(moment(c.attributes[ftypes.years]), 'years');
       acc.push(c);
       return acc;
     }, [])
+  }
+
+  filterByFeature(featureId){
+    if(!featureId){
+      return;
+    }
+    let id = typeof featureId === "string" ? parseInt(featureId) : featureId;
+    const f = this.featureIdMap.get(id);
+    for(let v of this.filters){
+      v.setFromAttr(f.attributes);
+    }
   }
 
   load(){
@@ -200,7 +212,8 @@ decorate(FeatureStore, {
   onCalendarEvent: action.bound,
   setSelectedFeature: action.bound,
   applyFilter: action.bound,
-  deleteActiveFilter: action.bound
+  deleteActiveFilter: action.bound,
+  filterByFeature: action.bound
 })
 
 export default FeatureStore;

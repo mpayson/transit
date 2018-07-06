@@ -30,12 +30,12 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
         <Card className="mt-2">
           <Row className="align-items-center">
             <Col xs="4">
-              <img src={att} style={{padding:"0.2rem", width:"10rem", height:"10rem", objectFit:"cover", maxWidth:"30vw", maxHeight:"30vw"}}/>
+              <img src={att} style={{padding:"0.2rem", width:"100%", height:"10rem", objectFit:"cover", maxWidth:"30vw", maxHeight:"30vw"}}/>
             </Col>
             <Col xs="8">
               <h6>
                 <span className="h4">{fa[fTypes.name]}</span>
-                <small className={'font-weight-light ml-2'}>4 years</small>
+                <small className={'font-weight-light ml-2'}>{`${fa[fTypes.years]} years`}</small>
               </h6>
               <div>
                 {badges}

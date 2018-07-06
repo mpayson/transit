@@ -13,6 +13,9 @@ class BaseFilter{
   isClientFiltered(featureAttrs){
     console.log("IMPLEMENT IS CLIENT FILTERED");
   }
+  setFromAttr(featureAttrs){
+    return;
+  }
 
 }
 
@@ -25,16 +28,16 @@ class MultiFieldFilter{
   filterMap
   type
 
-  constructor(label, fields, filterType, featureStore=null){
+  constructor(label, fields, filterType, featureStore=null, isAnd=false){
     this.label = label;
     this.fields = fields;
     this.filterMap = new Map();
+    this.isAnd = isAnd;
     if(filterType === 'multi-split'){
       this.type = 'multi-multi-split';
       fields.forEach(f => {
-        this.filterMap.set(f, new MultiSplitFilter(f, ',', featureStore));
+        this.filterMap.set(f, new MultiSplitFilter(f, ',', featureStore, isAnd));
       })
-
     }
   }
 
@@ -48,21 +51,58 @@ class MultiFieldFilter{
     return false;
   }
 
-  isClientFiltered(featureAttrs){
+  clientIsVisible(featureAttrs){
+    let count = 0;
+
+    if(!this.isActive){
+      return true;
+    }
+
     for(let f of this.fields){
       const flt = this.filterMap.get(f);
-      if(flt.isClientFiltered(featureAttrs)){
-        return true;
+      if(flt.isActive && flt.clientIsVisible(featureAttrs)){
+        count += 1;
       }
     }
-    return false;
+    let t = this.isAnd ? count === this.fields.length : count > 0;
+    return t;
   }
 
+  setFromAttr(featureAttrs){
+    for(let f of this.fields){
+      const flt = this.filterMap.get(f);
+      flt.setFromAttr(featureAttrs);
+    }
+  }
+
+  get definitionExpression(){
+    const sep = this.isAnd ? "AND" : "OR";
+    let defExp = null;
+    for(let f of this.fields){
+      const flt = this.filterMap.get(f);
+      if(!flt.definitionExpression){
+        continue;
+      }
+      if(!defExp){
+        defExp = flt.definitionExpression;
+      } else {
+        defExp += ` ${sep} ${flt.definitionExpression}`
+      }
+    }
+    return defExp;
+  }
+
+  setIsAnd(isAnd){
+    this.isAnd = isAnd;
+  }
 }
 
 decorate(MultiFieldFilter, {
   filterMap: observable,
-  isActive: computed
+  isAnd: observable,
+  isActive: computed,
+  setIsAnd: action.bound,
+  setFromAttr: action.bound
 })
 
 
@@ -131,23 +171,52 @@ class NumFilter extends BaseFilter{
     return high;
   }
 
-  isClientFiltered(featureAttrs){
-    if (typeof featureAttrs[this.fieldName] === 'undefined'){
+  get definitionExpression(){
+    if(this.min === null && this.max === null){
+      return null;
+    }
+    const isMin = this.min || this.min === 0;
+    const isMax = this.max || this.max === 0;
+    if(isMin && isMax){
+      return this.fieldName + " <= " + this.max + " AND " + this.fieldName + " >= " + this.min;
+    }
+    if(isMax){
+      return this.fieldName + " <= " + this.max;
+    }
+    if(isMin){
+      return this.fieldName + " >= " + this.min;
+    }
+    return null
+  }
+
+  clientIsVisible(featureAttrs){
+
+    if(!this.isActive){
       return true;
     }
-    const min = parseInt(this.min, 10);
-    const max = parseInt(this.max, 10);
+
+    if (typeof featureAttrs[this.fieldName] === 'undefined'){
+      return false;
+    }
+
+    let t = true;
+
     const v = featureAttrs[this.fieldName];
-    if(min && max){
-      return (v < min || v > max);
+    const isMin = this.min || this.min === 0;
+    const isMax = this.max || this.max === 0;
+
+    if(isMin && isMax){
+      t = (v >= this.min && v <= this.max)
     }
-    if(min){
-      return (v < min)
+    else if(isMin){
+      t = (v >= this.min)
     }
-    if(max){
-      return (v > max)
+    else if(isMax){
+      t = (v <= this.max)
     }
+    return t;
   }
+
   clear(){
     this._min = this.low;
     this._max = this.high;
@@ -169,13 +238,14 @@ decorate(NumFilter, {
 
 
 class MultiSplitFilter extends BaseFilter{
-  constructor(fieldName, delimeter, featureStore){
+  constructor(fieldName, delimeter, featureStore, isAnd=false){
     super(fieldName);
     this.type = 'multi-split';
     this.featureStore = featureStore;
     this.optionMap = new Map();
     this.delimeter = delimeter;
     this.isSetAll = false;
+    this.isAnd = isAnd;
   }
 
   get isActive(){
@@ -203,22 +273,50 @@ class MultiSplitFilter extends BaseFilter{
     return Utils.alphSort([...optionMap.entries()], 0);
   }
 
-  isClientFiltered(featureAttrs){
-    if(this.optionMap.size < 1){
+  clientIsVisible(featureAttrs){
+    if(!this.isActive){
+      return true;
+    }
+
+    if(!featureAttrs.hasOwnProperty(this.fieldName) || !featureAttrs[this.fieldName]){
       return false;
     }
+
+    let attrArr = featureAttrs[this.fieldName].split(this.delimeter);
+    let count = 0;
+    for(let i = 0; i < attrArr.length; i++){
+      const tAttr = attrArr[i].trim();
+      if(this.optionMap.has(tAttr)){
+        count += 1;
+      }
+    }
+    let t = this.isAnd ? count === this.optionMap.size : count > 0;
+    return t;
+  }
+
+  get definitionExpression(){
+    const sep = this.isAnd ? "AND" : "OR";
+    let defExp = null;
+    for(let i of this.optionMap.keys()){
+      if(!defExp){
+        defExp = `${this.fieldName} LIKE '%${i}%'`;
+      } else {
+        defExp += ` ${sep} ${this.fieldName} LIKE '%${i}%'`;
+      }
+    }
+    return defExp;
+  }
+
+  setFromAttr(featureAttrs){
+    this.clear();
     if(!featureAttrs.hasOwnProperty(this.fieldName) || !featureAttrs[this.fieldName]){
-      console.log("HERE");
-      return true;
+      return;
     }
     let attrArr = featureAttrs[this.fieldName].split(this.delimeter);
     for(let i = 0; i < attrArr.length; i++){
       const tAttr = attrArr[i].trim();
-      if (this.optionMap.has(tAttr)){
-        return false;
-      }
+      this.setMultiOption(tAttr, true);
     }
-    return true;
   }
 
   setMultiOption(option, isChecked){
@@ -236,6 +334,9 @@ class MultiSplitFilter extends BaseFilter{
       this.optionMap.clear();
     }
   }
+  setIsAnd(isAnd){
+    this.isAnd = isAnd;
+  }
   clear(){
     this.setAll(false);
   }
@@ -243,11 +344,14 @@ class MultiSplitFilter extends BaseFilter{
 decorate(MultiSplitFilter, {
   optionMap: observable,
   isSetAll: observable,
+  isAnd: observable,
   isActive: computed,
   // options: computed,
   setMultiOption: action.bound,
   setAll: action.bound,
-  clear: action.bound
+  clear: action.bound,
+  setIsAnd: action.bound,
+  setFromAttr: action.bound
 })
 
 export {NumFilter, MultiSplitFilter, MultiFieldFilter}

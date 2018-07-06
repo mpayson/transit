@@ -17,8 +17,8 @@ Jumbotron} from 'reactstrap';
 
 const HomeWindow = observer(({appState, featureStore}) => (
   <div>
-    <div style={{position:"relative"}}>
-    <HomeCanvas/>
+    {/* <div style={{position:"relative"}}> */}
+    {/* <HomeCanvas/> */}
     <Jumbotron fluid className="e-bloc-jumbo">
       
         
@@ -36,7 +36,7 @@ const HomeWindow = observer(({appState, featureStore}) => (
         </Container>
       
     </Jumbotron>
-    </div>
+    {/* </div> */}
     <div className="mb-5" style={{width:"100%", textAlign:"center"}}>
       <h2>Meet some of our volunteers</h2>
     </div>
