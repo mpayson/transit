@@ -1,6 +1,7 @@
 import {decorate, observable, action, computed, toJS} from 'mobx';
 import {layerConfig} from '../../config/config';
 import Utils from '../../utils/Utils';
+import moment from 'moment';
 
 
 class BaseFilter{
@@ -85,6 +86,7 @@ class MultiFieldFilter{
       }
       if(!defExp){
         defExp = flt.definitionExpression;
+        // console.log("multi def", defExp);
       } else {
         defExp += ` ${sep} ${flt.definitionExpression}`
       }
@@ -101,14 +103,14 @@ decorate(MultiFieldFilter, {
   filterMap: observable,
   isAnd: observable,
   isActive: computed,
+  definitionExpression: computed,
   setIsAnd: action.bound,
   setFromAttr: action.bound
 })
 
-
 class NumFilter extends BaseFilter{
-  _min = -1;
-  _max = 100;
+  _min;
+  _max;
 
   constructor(fieldName, featureStore){
     super(fieldName);
@@ -148,31 +150,36 @@ class NumFilter extends BaseFilter{
   }
 
   get low(){
-    let low = 100;
+    let low;
     for(let f of this.featureStore.features){
       const atrs = f.attributes;
-      const v = atrs[this.fieldName];
-      if(v < low){
+      const rv = atrs[this.fieldName];
+      const v = this._transformValue(rv);
+      if(v < low || !low){
         low = v;
       }
     }
-    return low;
+    return Math.floor(low);
   }
 
   get high(){
-    let high = 0;
+    let high;
     for(let f of this.featureStore.features){
       const atrs = f.attributes;
-      const v = atrs[this.fieldName];
-      if(v > high){
+      const rv = atrs[this.fieldName];
+      const v = this._transformValue(rv);
+      if(v > high || !high){
         high = v;
       }
     }
-    return high;
+    return Math.ceil(high);
   }
 
   get definitionExpression(){
-    if(this.min === null && this.max === null){
+    if(!this.min && !this.max){
+      return null;
+    }
+    if(this.min <= this.low && this.max >= this.high){
       return null;
     }
     const isMin = this.min || this.min === 0;
@@ -201,7 +208,9 @@ class NumFilter extends BaseFilter{
 
     let t = true;
 
-    const v = featureAttrs[this.fieldName];
+    const rv = featureAttrs[this.fieldName];
+    const v = this._transformValue(rv);
+    
     const isMin = this.min || this.min === 0;
     const isMax = this.max || this.max === 0;
 
@@ -217,6 +226,10 @@ class NumFilter extends BaseFilter{
     return t;
   }
 
+  _transformValue(rv){
+    return rv;
+  }
+
   clear(){
     this._min = this.low;
     this._max = this.high;
@@ -230,10 +243,58 @@ decorate(NumFilter, {
   low: computed,
   high: computed,
   isActive: computed,
+  definitionExpression: computed,
   setMinMax: action.bound,
   clear: action.bound,
   setNumber: action.bound
 })
+
+class TimeSinceFilter extends NumFilter{
+
+  constructor(fieldName, unit, featureStore){
+    super(fieldName, featureStore);
+    // console.log("ABOUT TO CALL SUPER");
+    this.unit = unit;
+    this.type = 'time-since';
+  }
+
+  _transformValue(rv) {
+    return moment().diff(rv, this.unit, true);
+  }
+
+  get definitionExpression(){
+    if(!this.min && !this.max){
+      return null;
+    }
+
+    if(this.min <= this.low && this.max >= this.high){
+      return null;
+    }
+
+    let eD;
+    if(this.min || this.min === 0){
+      console.log("datefilter end", this.min, this.unit);
+      moment().subtract(this.min, this.unit);
+      eD = moment().subtract(this.min, this.unit).format();
+    }
+    let sD;
+    if(this.max || this.max === 0){
+      sD = moment().subtract(this.max, this.unit).format();
+    }
+    if(sD && eD){
+      return this.fieldName + " <= '" + eD + "' AND " + this.fieldName + " >= '" + sD + "'";
+    }
+    if(eD){
+      return this.fieldName + " <= '" + eD + "'"
+    }
+    if(sD){
+      return this.fieldName + " >= '" + sD + "'"
+    }
+    return null
+    
+  }
+
+}
 
 
 
@@ -346,6 +407,7 @@ decorate(MultiSplitFilter, {
   isSetAll: observable,
   isAnd: observable,
   isActive: computed,
+  definitionExpression: computed,
   // options: computed,
   setMultiOption: action.bound,
   setAll: action.bound,
@@ -354,4 +416,4 @@ decorate(MultiSplitFilter, {
   setFromAttr: action.bound
 })
 
-export {NumFilter, MultiSplitFilter, MultiFieldFilter}
+export {NumFilter, MultiSplitFilter, MultiFieldFilter, TimeSinceFilter}

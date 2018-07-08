@@ -3,3 +3,19 @@
   /* height: calc(100% - 5rem); */
   height: calc(80vh - 5rem);
 }
+
+.esri-zoom{
+  border-radius: 0.25rem;
+}
+
+.esri-widget--button:first-child{
+  border-radius: 0.25rem 0.25rem 0rem 0rem;
+}
+
+.esri-widget--button:last-child{
+  border-radius: 0rem 0rem 0.25rem 0.25rem;
+}
+
+.esri-home{
+  border-radius: 0.25rem !important;
+}

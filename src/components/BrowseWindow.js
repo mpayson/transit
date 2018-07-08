@@ -24,8 +24,6 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
     super(props, context)
     this.featureStore = props.featureStore;
     this.appState = props.appState;
-    this.appState.currentPage = 1;
-    this.appState.itemsPerPage = 4;
   }
 
   render() {
@@ -34,11 +32,9 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
     let pane;
     let isMap;
     if(this.appState.browsePane === 'map'){
-      pane = <MapWindow />;
+      pane = <Route path={Utils.url("/browse/:id?")} render={(props) => <MapWindow {...props} featureStore={this.featureStore}/>}/>;
       isMap = true;
     }
-  
-
 
     return (
       <Container className="mt-3">

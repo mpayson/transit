@@ -9,7 +9,7 @@ class AppState {
   constructor(){
     this.windowIndex = 1;
     this.currentPage = 1;
-    this.itemsPerPage = 4;
+    this.itemsPerPage = 3;
     this.browsePane = "map";
     this.profileTab = 0;
   }

@@ -3,10 +3,12 @@ import { observer } from "mobx-react";
 import { layerConfig, cardConfig } from '../config/config';
 import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';
+import moment from 'moment';
 
 import {
   Badge, Card, Fade, Button, Row, Col, Container
 } from 'reactstrap';
+import { ftruncate } from 'fs';
 
 // Displays cards for all the users
 const BrowseListView = observer(({ featureAttrs, featureStore }) => {
@@ -24,6 +26,9 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
       return <Badge key={label} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
     })
 
+    const dt = fa[fTypes.years];
+    const yrs = moment().diff(dt, 'years', false);
+    const yrLabel = yrs === 1 ? 'year' : 'years';
 
     return (
       <Fade in key={objId}>
@@ -35,7 +40,7 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
             <Col xs="8">
               <h6>
                 <span className="h4">{fa[fTypes.name]}</span>
-                <small className={'font-weight-light ml-2'}>{`${fa[fTypes.years]} years`}</small>
+                <small className={'font-weight-light ml-2'}>{`${yrs} ${yrLabel}`}</small>
               </h6>
               <div>
                 {badges}

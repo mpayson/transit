@@ -1,6 +1,6 @@
-import {decorate, observable, action, computed } from 'mobx';
+import {decorate, observable, action, computed, autorun } from 'mobx';
 import {mapConfig, layerConfig} from '../config/config';
-import {NumFilter, MultiSplitFilter, MultiFieldFilter} from './objects/Filters';
+import {NumFilter, MultiSplitFilter, MultiFieldFilter, TimeSinceFilter} from './objects/Filters';
 import Utils from '../utils/Utils';
 import moment from 'moment';
 
@@ -15,7 +15,7 @@ class FeatureStore {
   selObjId
   selFeatureIndex
   activeFilterMap
-  loaded
+  isLoaded
   featureIdMap
   features
 
@@ -27,11 +27,15 @@ class FeatureStore {
     this.genSearchString = '';
     this.selFeatureIndex = null;
     this.activeFilterMap = new Map();
-    this.loaded = false;
     this.filters = [];
     this._featureIds = [];
     this.featureIdMap = new Map();
     this.featureRelates = new Map();
+    this.loadStatus = {
+      mapLoaded: false,
+      layerLoaded: false,
+      featsLoaded: false
+    }
 
     let keys = [...Object.keys(layerConfig.filters)];
     let interestKeys = keys.filter(k => layerConfig.filters[k] === 'interests');
@@ -43,19 +47,36 @@ class FeatureStore {
       let newFilter;
       switch(layerConfig.filters[key]){
         case 'multi-split':
-          console.log("multi")  
           newFilter = new MultiSplitFilter(key, ',', this);
           break;
         case 'num':
-          console.log("num")
           newFilter = new NumFilter(key, this);
           break;
+        case 'time-since':
+          newFilter = new TimeSinceFilter(key, 'year', this);
+          break;
         default:
-          console.log("default")
-          newFilter = new NumFilter(key);
+          throw "UNKNOWN FILTER TYPE"
       }
       this.filters.push(newFilter);
     }
+
+    this.autoHandler = autorun(() => {
+      let defExp;
+      for(let f of this.filters){
+        if(!defExp){
+          defExp = f.definitionExpression;
+        } else if(f.definitionExpression) {
+          defExp += ` AND ${f.definitionExpression}`
+        }
+      }
+      if(!this.layer){
+        return;
+      }
+      let fDefExp = defExp ? defExp : "1=1";
+      this.layer.definitionExpression = fDefExp;
+    })
+
   }
 
   get filteredAttributes(){
@@ -118,18 +139,19 @@ class FeatureStore {
     return null;
   }
 
-  _buildFeautres(features){
-    const ftypes = layerConfig.fieldTypes;
+  _buildFeautres(features, layer){
+    
+    
     return features.reduce((acc, c) => {
-      // let date = moment(c.attributes[ftypes.date]);
-      // c.attributes[ftypes.date] = date;
-      // let start = c.attributes[ftypes.start].split(":");
-      // let end = c.attributes[ftypes.end].split(":");
-      // c.attributes[ftypes.start] = moment(c.attributes[ftypes.start]);
-      // c.attributes[ftypes.end] = moment(c.attributes[ftypes.end]);
-      c.attributes[ftypes.years] = moment().diff(moment(c.attributes[ftypes.years]), 'years');
+      for(let f of layer.fields){
+        let n = f.name;
+        if(f.type === 'date'){
+          c.attributes[n] = moment(c.attributes[n])
+        }
+      }
       acc.push(c);
       return acc;
+
     }, [])
   }
 
@@ -145,22 +167,28 @@ class FeatureStore {
   }
 
   load(){
-    this.service.loadMap(mapConfig.webmapid)
+    this.service.getMap(mapConfig.webmapid)
       .then(map => {
+        this.loadStatus.mapLoaded = true;
         this.map = map;
+        return this.service.loadMap(this.map);
+      })
+      .then(() => {
         this.layer = this.map.layers.find(l => 
           l.title === mapConfig.layerTitle
         );
+        this.loadStatus.layerLoaded = true;
         this.layer.outFields = "*";
         return this.service.queryAllLayerFeatures(this.layer);
       })
       .then(res => {
-        const t = this._buildFeautres(res.features);
+        const t = this._buildFeautres(res.features, this.layer);
         const ftypes = layerConfig.fieldTypes;
         for(let i=0; i < t.length; i++){
           this.featureIdMap.set(t[i].attributes[ftypes.oid], t[i])
         }
         this.features = Utils.shuffleArr(t);
+        this.loadStatus.featsLoaded = true;
         return this.service.fetchAttachMap(this.layer, this.features)
       })
       .then(map => {
@@ -170,7 +198,6 @@ class FeatureStore {
       .then(map => {
         console.log(map);
         this.featureRelates = map;
-        this.loaded = true;
       })
       .catch(err => {
         console.error(err);
@@ -199,7 +226,7 @@ decorate(FeatureStore, {
   selObjId: observable,
   selFeatureIndex: observable,
   activeFilterMap: observable,
-  loaded: observable,
+  loadStatus: observable,
   featureIdMap: observable,
   featureRelates: observable,
   filteredFeatures: computed,
