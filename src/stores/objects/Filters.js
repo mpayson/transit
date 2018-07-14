@@ -51,6 +51,24 @@ class MultiFieldFilter{
     }
     return false;
   }
+  
+  get totalActive(){
+    let active = 0;
+    for(let f of this.fields){
+      const flt = this.filterMap.get(f);
+      if(flt.isActive){
+        active += 1;
+      }
+    }
+    return active;
+  }
+
+  clear(){
+    for(let f of this.fields){
+      const flt = this.filterMap.get(f);
+      flt.clear();
+    }
+  }
 
   clientIsVisible(featureAttrs){
     let count = 0;
@@ -65,11 +83,12 @@ class MultiFieldFilter{
         count += 1;
       }
     }
-    let t = this.isAnd ? count === this.fields.length : count > 0;
+    let t = this.isAnd ? count === this.totalActive : count > 0;
     return t;
   }
 
   setFromAttr(featureAttrs){
+    this.setIsAnd(false);
     for(let f of this.fields){
       const flt = this.filterMap.get(f);
       flt.setFromAttr(featureAttrs);
@@ -86,7 +105,6 @@ class MultiFieldFilter{
       }
       if(!defExp){
         defExp = flt.definitionExpression;
-        // console.log("multi def", defExp);
       } else {
         defExp += ` ${sep} ${flt.definitionExpression}`
       }
@@ -96,6 +114,10 @@ class MultiFieldFilter{
 
   setIsAnd(isAnd){
     this.isAnd = isAnd;
+    for(let f of this.fields){
+      const flt = this.filterMap.get(f);
+      flt.setIsAnd(isAnd);
+    }
   }
 }
 
@@ -105,6 +127,7 @@ decorate(MultiFieldFilter, {
   isActive: computed,
   definitionExpression: computed,
   setIsAnd: action.bound,
+  clear: action.bound,
   setFromAttr: action.bound
 })
 
@@ -315,7 +338,11 @@ class MultiSplitFilter extends BaseFilter{
 
   get options(){
     let optionMap = new Map();
-    for(let f of this.featureStore.features){
+    let fs = this.isAnd
+      ? this.featureStore.filteredFeatures
+      : this.featureStore.features;
+    
+    for(let f of fs){
       const atrs = f.attributes;
       if(!atrs.hasOwnProperty(this.fieldName) || !atrs[this.fieldName]){
         continue;
@@ -408,7 +435,7 @@ decorate(MultiSplitFilter, {
   isAnd: observable,
   isActive: computed,
   definitionExpression: computed,
-  // options: computed,
+  options: computed,
   setMultiOption: action.bound,
   setAll: action.bound,
   clear: action.bound,

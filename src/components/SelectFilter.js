@@ -4,7 +4,7 @@ import './SelectFilter.css';
 import {toJS} from 'mobx';
 
 import {
-  Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
+  Button, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
 
 const SelectFilter = observer(class SelectFilter extends Component {
 
@@ -15,6 +15,10 @@ const SelectFilter = observer(class SelectFilter extends Component {
     this.filterStore = props.filterStore;
 
     this.onTextChange = this.onTextChange.bind(this);
+    this.onClearClicked = this.onClearClicked.bind(this);
+    this.onAndClicked = this.onAndClicked.bind(this);
+    this.onOrClicked = this.onOrClicked.bind(this);
+
     this.toggle = this.toggle.bind(this);
     this.onClick = this.onClick.bind(this);
     this.state = {
@@ -43,6 +47,16 @@ const SelectFilter = observer(class SelectFilter extends Component {
 
   onTextChange(e){
     this.setState({filterStr: e.target.value});
+  }
+
+  onAndClicked(e){
+    this.filterObj.setIsAnd(true);
+  }
+  onOrClicked(e){
+    this.filterObj.setIsAnd(false);
+  }
+  onClearClicked(e){
+    this.filterObj.clear();
   }
 
   render() {
@@ -108,6 +122,32 @@ const SelectFilter = observer(class SelectFilter extends Component {
                 onChange={this.onTextChange}
                 />
             </div>
+            <Button
+              className="ml-2 mt-1"
+              size="sm"
+              color="link"
+              style={{padding: '0.25rem'}}
+              onClick={this.onClearClicked}>
+              Clear
+            </Button>
+            <ButtonGroup className="float-right mt-1 mr-2">
+                <Button
+                  outline={!this.filterObj.isAnd}
+                  color={this.filterObj.isAnd ? 'primary' : 'secondary'}
+                  size="sm"
+                  style={{padding: '0.25rem', fontSize:'0.65rem'}}
+                  onClick={this.onAndClicked}>
+                  and
+                </Button>
+                <Button
+                  outline={this.filterObj.isAnd}
+                  color={this.filterObj.isAnd ? 'secondary': 'primary'}
+                  size="sm"
+                  style={{padding: '0.25rem', fontSize:'0.65rem'}}
+                  onClick={this.onOrClicked}>
+                  or
+                </Button>
+            </ButtonGroup>
             {allViews}
           </div>
         </DropdownMenu>
