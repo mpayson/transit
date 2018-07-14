@@ -3,3 +3,39 @@
   /* height: calc(100% - 5rem); */
   height: calc(80vh - 5rem);
 }
+
+.esri-zoom{
+  border-radius: 0.25rem;
+}
+
+.esri-widget--button:first-child{
+  border-radius: 0.25rem 0.25rem 0rem 0rem;
+}
+
+.esri-widget--button:last-child{
+  border-radius: 0rem 0rem 0.25rem 0.25rem;
+}
+
+.esri-home{
+  border-radius: 0.25rem !important;
+}
+
+.esri-popup {
+  border-radius: 0.25rem;
+}
+
+.widget--button{
+  width: auto;
+  padding: 0.25rem;
+  border-radius: 0.25rem !important;
+}
+
+.widget--button.active{
+  background-color: #6ACABE;
+  color: white;
+  z-index: 10;
+}
+
+.esri-popup__main-container{
+  border-radius: 0.25rem;
+}

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';
 import './Profile.css';
 
+import Toggle from './UIComponents/Toggle';
 
 import { Badge, Card, CardImg, Fade, CardBody, CardText,
   CardTitle, CardSubtitle, Button, Row, Col, Container,
@@ -27,6 +28,10 @@ const Profile = observer(class Profile extends Component {
     this.featureStore = props.featureStore;
     this.onTabClick = this.onTabClick.bind(this);
     this.onSimilarClick = this.onSimilarClick.bind(this);
+    this.onToggleClick = this.onToggleClick.bind(this);
+    this.state = {
+      isActive: false
+    }
   }
 
   onTabClick(e){
@@ -36,6 +41,12 @@ const Profile = observer(class Profile extends Component {
   onSimilarClick(e){
     this.featureStore.filterByFeature(parseInt(this.props.match.params.id));
 
+  }
+
+  onToggleClick(e){
+    this.setState({
+      isActive: !this.state.isActive
+    })
   }
 
   render() {
@@ -66,9 +77,7 @@ const Profile = observer(class Profile extends Component {
         return(
           <div key={startStr} className="mt-1" style={{padding:"0.25rem", height:"2.5rem", borderRadius:"0.25rem", border:"1px solid rgba(0, 0, 0, 0.125)"}}>
             {startStr}
-            <a href={getEmail(startStr, attrs[ftypes.email])}>
-              <Button id={startStr} className="float-right" outline size="sm">Book this time</Button>
-            </a>
+          <Button href={getEmail(startStr, attrs[ftypes.email])} id={startStr} className="float-right" outline size="sm">Book this time</Button>
           </div>
         );
       })
@@ -96,15 +105,19 @@ const Profile = observer(class Profile extends Component {
         </NavItem>
       )
     })
-    let v = attrs[tab].replace(/,/g, ', ').replace(/_/g, ' ')
+    let v = attrs[tab].replace(/,/g, ', ').replace(/_/g, ' ');
+
+    const dt = attrs[ftypes.years];
+    const yrs = moment().diff(dt, 'years', false);
+    const yrLabel = yrs === 1 ? 'year' : 'years';
 
     const att = this.featureStore.featureAttachments.get(id);
     
+    const toggleClass = this.state.isActive ? "btn btn-sm btn-toggle toggle-success-uniform active" : "btn btn-sm btn-toggle toggle-success-uniform"
+
     return (
       <div>
-        <Link to={Utils.url(`/browse/`)}>
-          <Button className="mb-2" size="sm" outline>{"< Back to browse"}</Button>
-        </Link>
+        <Button tag={Link} to={Utils.url('/browse')} className="mb-2" size="sm" outline>{"< Back to browse"}</Button>
         <Fade in>
           <Card className="text-center">
             <div style={{width: "100%", height: "8rem", backgroundColor:"#e9ecef"}}>
@@ -112,7 +125,7 @@ const Profile = observer(class Profile extends Component {
             </div>
             <CardBody>
               <CardTitle>{attrs[ftypes.name]}</CardTitle>
-              <CardSubtitle className="mb-2">{`${attrs[ftypes.years]} years @ Esri`}</CardSubtitle>
+              <CardSubtitle className="mb-2">{`${yrs} ${yrLabel} @ Esri`}</CardSubtitle>
               <Nav tabs>
                 {tabs}
               </Nav>
@@ -123,10 +136,9 @@ const Profile = observer(class Profile extends Component {
               </div>
             </CardBody>
           </Card>
-          <Link to='/browse' onClick={this.onSimilarClick}>
-            <Button outline className="mt-4" block>See volunteers with similar interests</Button>
-          </Link>
+          <Button onClick={this.onSimilarClick} tag={Link} to={Utils.url('/browse')} outline className="mt-4" block>See volunteers with similar interests</Button>
         </Fade>
+
       </div>
     );
 

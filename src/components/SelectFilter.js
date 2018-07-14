@@ -108,11 +108,6 @@ const SelectFilter = observer(class SelectFilter extends Component {
                 onChange={this.onTextChange}
                 />
             </div>
-            {/* <Button color="link" className="float-left">link</Button>
-            <label className="switch">
-              <input type="checkbox"/>
-              <span className="slider round"></span>
-            </label> */}
             {allViews}
           </div>
         </DropdownMenu>

@@ -18,7 +18,7 @@ const layerConfig = {
     'tech': 'interests',
     'free_time': 'interests',
     'other': 'interests',
-    'start_date': 'num'
+    'start_date': 'time-since'
   },
   labels: {
     'communities': 'Communities',

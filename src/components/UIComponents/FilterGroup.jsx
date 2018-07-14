@@ -9,8 +9,10 @@ const getFilterView = (f, dark) => {
       return <SelectFilter dark={dark} filterStore={this.featureStore} filterObj={f}/>
     case 'num':
       return <SlideFilter dark={dark} filterStore={this.featureStore} filterObj={f}/>
+    case 'time-since':
+      return <SlideFilter dark={dark} filterStore={this.featureStore} filterObj={f}/>
     default:
-      return null;
+      throw "UNKNOWN FILTER TYPE";
   }
 }
 

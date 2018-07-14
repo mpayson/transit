@@ -3,18 +3,20 @@ import {layerConfig, loaderOptions} from '../config/config';
 
 
 class ArcService {
-  static loadMap(mapId){
-    let map;
+  static getMap(mapId){
     return esriLoader.loadModules(['esri/WebMap'], loaderOptions)
       .then(([WebMap]) => {
-        map = new WebMap({
+        const map = new WebMap({
           portalItem: {
             id: mapId
           }
         });
-        return map.load()
-      })
-      .then(() => map);
+        return map;
+      });
+  }
+
+  static loadMap(map){
+    return map.load();
   }
 
   static queryAllLayerFeatures(layer, where){
