@@ -53,17 +53,20 @@ const App = observer(class App extends Component {
   }
 
   render() {
+    
+    const path = this.props.location.pathname.split('/')[1];
+    
     return (
       <div>
         <Navbar dark color="dark" expand="md">
-          <NavbarBrand tag={Link} to={Utils.url("/")}>Out of Office Hours</NavbarBrand>
+          <NavbarBrand tag={Link} to={Utils.url("/")}>Office Hours</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav navbar>
-              <NavItem>
+              <NavItem active={path === 'about'}>
                 <NavLink href="#">About</NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem active={path === 'browse'}>
                 <NavLink tag={Link} to={Utils.url("/browse")}>Browse</NavLink>
               </NavItem>
               <NavItem>

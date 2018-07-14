@@ -152,7 +152,7 @@ const MapWindow = observer(class MapWindow extends Component {
         <Button
           id="view-button"
           style={buttonStyle}
-          className="esri-component small"
+          className="esri-component small font-weight-light"
           color={buttonColor}
           onClick={this._onPanClick}
           outline={buttonOutline}

@@ -11,7 +11,8 @@ const layerConfig = {
     'start': 'start_oooh',
     'end': 'EditDate',
     'years': 'start_date',
-    'oid': 'objectid'
+    'oid': 'objectid',
+    'linkedin': 'linkedin'
   },
   filters: {
     'communities': 'interests',

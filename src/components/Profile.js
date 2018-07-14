@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {layerConfig, cardConfig} from '../config/config';
 import {observer} from 'mobx-react';
 import moment from 'moment';
+import inImg from '../resources/linkedin.svg';
+import conImg from '../resources/contact.svg';
 import {toJS} from 'mobx';
 import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';
@@ -15,8 +17,12 @@ import { Badge, Card, CardImg, Fade, CardBody, CardText,
 import { max } from 'moment';
 
 
-const getEmail = (time, email) => {
-  return `mailto:${email}?subject=Office Hours ${time}&body=Hello, I'd like to sign up for Office Hours on ${time}, is it still available? Thank you!`;
+const getEmail = (email, time=null) => {
+  let defStr = `mailto:${email}`
+  if(time){
+    return defStr + `?subject=Office Hours ${time}&body=Hello, I'd like to sign up for Office Hours on ${time}, is it still available? Thank you!`;
+  }
+  return defStr;
 }
 
 // Displays the profile for a given user based on passed feature attributes
@@ -77,7 +83,7 @@ const Profile = observer(class Profile extends Component {
         return(
           <div key={startStr} className="mt-1" style={{padding:"0.25rem", height:"2.5rem", borderRadius:"0.25rem", border:"1px solid rgba(0, 0, 0, 0.125)"}}>
             {startStr}
-          <Button href={getEmail(startStr, attrs[ftypes.email])} id={startStr} className="float-right" outline size="sm">Book this time</Button>
+          <Button href={getEmail(attrs[ftypes.email], startStr)} id={startStr} className="float-right" outline size="sm">Book this time</Button>
           </div>
         );
       })
@@ -111,9 +117,17 @@ const Profile = observer(class Profile extends Component {
     const yrs = moment().diff(dt, 'years', false);
     const yrLabel = yrs === 1 ? 'year' : 'years';
 
+    const inUrl = attrs[ftypes.linkedin];
+    let inButton;
+    if(inUrl){
+      inButton = (
+        <Button href={inUrl} target="__blank" size="sm" className="mr-2" color='linkedin'
+          style={{backgroundImage: `url(${inImg})`, width: '2rem', height: '2rem'}}
+          />
+      );
+    }
+
     const att = this.featureStore.featureAttachments.get(id);
-    
-    const toggleClass = this.state.isActive ? "btn btn-sm btn-toggle toggle-success-uniform active" : "btn btn-sm btn-toggle toggle-success-uniform"
 
     return (
       <div>
@@ -124,8 +138,18 @@ const Profile = observer(class Profile extends Component {
               <img src={att} className="rounded-circle" style={{height:"100%"}}/>
             </div>
             <CardBody>
-              <CardTitle>{attrs[ftypes.name]}</CardTitle>
-              <CardSubtitle className="mb-2">{`${yrs} ${yrLabel} @ Esri`}</CardSubtitle>
+              <div>
+                <CardTitle>
+                  {attrs[ftypes.name]}
+                  <span className="font-weight-light">{` (${yrs} ${yrLabel} @ Esri)`}</span>
+                </CardTitle>
+              </div>
+              <CardSubtitle className="mb-3">
+                {inButton}
+                <Button href={getEmail(attrs[ftypes.email])} size="sm" className="mr-2"
+                  style={{backgroundImage: `url(${conImg})`, width: '2rem', height: '2rem'}}
+                />
+              </CardSubtitle>
               <Nav tabs>
                 {tabs}
               </Nav>

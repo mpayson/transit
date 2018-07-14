@@ -18,24 +18,24 @@ Jumbotron} from 'reactstrap';
 const HomeWindow = observer(({appState, featureStore}) => (
   <div>
     <div style={{position:"relative"}}>
-    <HomeCanvas/>
-    <Jumbotron fluid className="e-bloc-jumbo">
-      
+    {/* <HomeCanvas/> */}
+      <img className="d-none d-md-block" style={{position:"absolute", top:0, right: "2vw"}} src={backImg}/>
+      <Jumbotron fluid className="e-bloc-jumbo">
+
+          <Container fluid>
+          
+              <h1 className="display-4">Out of Office Hours</h1>
+              <p>Creating connections and sparking conversations across Esri <br/> Volunteers open their offices to answer your questions and help you grow your career</p>
+              <hr className="my-4 hr-dark"/>
+              <p>Start here to find colleagues who match your interests:</p>
+              <div style={{marginBottom: '5px'}}>
+                <FilterGroup appState={appState} featureStore={featureStore}/>
+              </div>
+              <Link to={Utils.url('/browse')}>Browse all volunteers</Link>
+          
+          </Container>
         
-        <Container fluid>
-        
-            <h1 className="display-4">Out of Office Hours</h1>
-            <p>Creating connections and sparking conversations across Esri <br/> Volunteers open their offices to answer your questions and help you grow your career</p>
-            <hr className="my-4 hr-dark"/>
-            <p>Start here to find colleagues who match your interests:</p>
-            <div style={{marginBottom: '5px'}}>
-              <FilterGroup appState={appState} featureStore={featureStore}/>
-            </div>
-            <Link to={Utils.url('/browse')}>Browse all volunteers</Link>
-        
-        </Container>
-      
-    </Jumbotron>
+      </Jumbotron>
     </div>
     <div className="mb-5" style={{width:"100%", textAlign:"center"}}>
       <h2>Meet some of our volunteers</h2>

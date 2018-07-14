@@ -1,9 +1,12 @@
 // Your variable overrides
 $primary: #5AB8E8;
 $success: #66CABE;
+$linkedin: #255A80;
 
 // Bootstrap and its default variables
 @import "node_modules/bootstrap/scss/bootstrap";
+
+
 
 @each $color, $value in $theme-colors {
   .btn-#{$color} {
@@ -18,6 +21,14 @@ $success: #66CABE;
     background-color: transparent;
     border: 1px solid theme-color($color);
   }
+}
+
+.btn-linkedin {
+  @include button-variant($linkedin, $linkedin, $hover-background: darken($linkedin, 7.5%), $hover-border: darken($linkedin, 10%), $active-background: darken($linkedin, 10%), $active-border: darken($linkedin, 12.5%));
+  color: white;
+}
+.btn-linkedin:hover {
+  color: white;
 }
 
 .e-bloc-jumbo{

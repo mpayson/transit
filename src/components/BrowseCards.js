@@ -2,6 +2,8 @@ import React from 'react';
 import { observer } from "mobx-react";
 import { layerConfig, cardConfig } from '../config/config';
 import { Link } from "react-router-dom";
+import inImg from '../resources/linkedin.svg';
+import conImg from '../resources/contact.svg';
 import Utils from '../utils/Utils';
 import moment from 'moment';
 
@@ -30,6 +32,20 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
     const yrs = moment().diff(dt, 'years', false);
     const yrLabel = yrs === 1 ? 'year' : 'years';
 
+    const inUrl = fa[layerConfig.fieldTypes.linkedin];
+    let inButton;
+    console.log(inUrl);
+    if(inUrl){
+      inButton = (
+        <Button href={inUrl} target="__blank" size="sm" className="mt-4 mb-2 ml-2" color='linkedin'
+          style={{backgroundImage: `url(${inImg})`, width: '2rem', height: '2rem'}}
+          />
+      );
+    }
+
+    const email = fa[layerConfig.fieldTypes.email];
+    const hrefEmail = `mailto:${email}`;
+
     return (
       <Fade in key={objId}>
         <Card className="mt-2">
@@ -48,9 +64,10 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
               <Link to={Utils.url(`/browse/${objId}`)}>
                 <Button size="sm" color="primary" className="mt-4 mb-2">Learn more</Button>
               </Link>
-              <Button size="sm" color="primary" className="mt-4 mb-2 ml-2">
-                In
-              </Button>
+              {inButton}
+              <Button href={hrefEmail} size="sm" className="mt-4 mb-2 ml-2"
+                style={{backgroundImage: `url(${conImg})`, width: '2rem', height: '2rem'}}
+                />
             </Col>
           </Row>
         </Card>

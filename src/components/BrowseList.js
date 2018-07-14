@@ -23,19 +23,24 @@ const BrowseList = observer(class BrowseList extends Component {
   }
 
   render(){
-    const indexLast = this.appState.currentPage * this.appState.itemsPerPage;
+    const allAttrs = this.featureStore.filteredAttributes;
+    
+    const maxPages = Math.ceil(allAttrs.length / this.appState.itemsPerPage);
+
+    let cPage = Math.min(this.appState.currentPage, maxPages)
+
+    const indexLast = cPage * this.appState.itemsPerPage;
     const indexFirst = indexLast - this.appState.itemsPerPage;
     const featureAttrs = this.featureStore.filteredAttributes.slice(indexFirst, indexLast);
     const listView = <BrowseCards featureStore={this.featureStore} featureAttrs={featureAttrs}/>
 
-    const allAttrs = this.featureStore.filteredAttributes;
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(allAttrs.length / this.appState.itemsPerPage); i++) {
       pageNumbers.push(i);
     }
 
     const renderPageNumbers = pageNumbers.map(number => {
-      const isActive = number === this.appState.currentPage;
+      const isActive = number === cPage;
       return (
         <PaginationItem key={number} active={isActive}>
           <PaginationLink id={number} onClick={this.handleClick}>

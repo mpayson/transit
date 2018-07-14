@@ -52,7 +52,7 @@ const TopNav = observer(class TopNav extends Component {
         <div className="grid-container">
           <div className="column-24">
             <div className="tablet-hide">
-              <a href="#" className="top-nav-title">After Office Hours</a>
+              <a href="#" className="top-nav-title">Office Hours</a>
               <nav className="top-nav-list">
                 <a className={i1cn}
                   href="#"

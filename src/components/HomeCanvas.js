@@ -124,7 +124,7 @@ class HomeCanvas extends Component {
           id="c"
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
-          style={{width:"90rem", minWidth:"100%", height:"100%"}}>
+          style={{width:"90rem", minWidth:"100%", height:"100%", zIndex: -4}}>
           {this.props.children}
         </canvas>
       </div>

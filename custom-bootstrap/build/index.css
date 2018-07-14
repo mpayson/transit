@@ -6538,6 +6538,33 @@ a.text-dark:hover, a.text-dark:focus {
   background-color: transparent;
   border: 1px solid #343a40; }
 
+.btn-linkedin {
+  color: #fff;
+  background-color: #255A80;
+  border-color: #255A80;
+  color: white; }
+  .btn-linkedin:hover {
+    color: #fff;
+    background-color: #1c4562;
+    border-color: #1a3e58; }
+  .btn-linkedin:focus, .btn-linkedin.focus {
+    box-shadow: 0 0 0 0.2rem rgba(37, 90, 128, 0.5); }
+  .btn-linkedin.disabled, .btn-linkedin:disabled {
+    color: #fff;
+    background-color: #255A80;
+    border-color: #255A80; }
+  .btn-linkedin:not(:disabled):not(.disabled):active, .btn-linkedin:not(:disabled):not(.disabled).active,
+  .show > .btn-linkedin.dropdown-toggle {
+    color: #fff;
+    background-color: #1a3e58;
+    border-color: #17374f; }
+    .btn-linkedin:not(:disabled):not(.disabled):active:focus, .btn-linkedin:not(:disabled):not(.disabled).active:focus,
+    .show > .btn-linkedin.dropdown-toggle:focus {
+      box-shadow: 0 0 0 0.2rem rgba(37, 90, 128, 0.5); }
+
+.btn-linkedin:hover {
+  color: white; }
+
 .e-bloc-jumbo {
   background: #343a40;
   color: white; }
