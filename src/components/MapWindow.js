@@ -111,7 +111,7 @@ const MapWindow = observer(class MapWindow extends Component {
           id: "learn-more",
           className: "esri-icon-review"
         });
-        this._popupHandler = this.view.popup.on("trigger-action", this._handlePopupAction);
+        this._popupHandle = this.view.popup.on("trigger-action", this._handlePopupAction);
         return when(() => this.featureStore.loadStatus.featsLoaded);
       })
       .then(() => this._centerZoomHighlight())
@@ -121,7 +121,7 @@ const MapWindow = observer(class MapWindow extends Component {
   }
 
   componentWillUnmount(){
-    if(this._popupHandler){
+    if(this._popupHandle){
       this._popupHandle.remove();
     }
     if(this._extentHandle){
