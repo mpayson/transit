@@ -18,6 +18,8 @@ class FeatureStore {
   isLoaded
   featureIdMap
   features
+  mappedFeatures
+  isFilterByExtent
 
   constructor(service){
     this.service = service;
@@ -84,7 +86,8 @@ class FeatureStore {
   }
 
   get filteredFeatures(){
-    let t = this.features.filter(f => {
+    const fsToFilter = this.mappedFeatures ? this.mappedFeatures : this.features;
+    let t = fsToFilter.filter(f => {
       if(this.selObjId){
         return f.attributes.ObjectId === this.selObjId;
       }
@@ -140,8 +143,6 @@ class FeatureStore {
   }
 
   _buildFeautres(features, layer){
-    
-    
     return features.reduce((acc, c) => {
       for(let f of layer.fields){
         let n = f.name;
@@ -217,6 +218,21 @@ class FeatureStore {
     this.selFeatureIndex = index;
   }
 
+  updateFilterExtent(extent){
+    if(!this.isFilterByExtent || !extent){
+      return;
+    }
+    this.mappedFeatures = this.features.filter(f => extent.contains(f.geometry));
+  }
+  setIsFilterByExtent(isByExtent, extent=null){
+    this.isFilterByExtent = isByExtent;
+    if(isByExtent){
+      this.updateFilterExtent(extent);
+    } else {
+      this.mappedFeatures = null;
+    }
+  }
+
 }
 
 decorate(FeatureStore, {
@@ -229,6 +245,8 @@ decorate(FeatureStore, {
   loadStatus: observable,
   featureIdMap: observable,
   featureRelates: observable,
+  isFilterByExtent: observable,
+  mappedFeatures: observable,
   filteredFeatures: computed,
   filteredAttributes: computed,
   events: computed,
@@ -240,7 +258,9 @@ decorate(FeatureStore, {
   setSelectedFeature: action.bound,
   applyFilter: action.bound,
   deleteActiveFilter: action.bound,
-  filterByFeature: action.bound
+  filterByFeature: action.bound,
+  updateFilterExtent: action.bound,
+  setIsFilterByExtent: action.bound
 })
 
 export default FeatureStore;

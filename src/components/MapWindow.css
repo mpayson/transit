@@ -19,3 +19,23 @@
 .esri-home{
   border-radius: 0.25rem !important;
 }
+
+.esri-popup {
+  border-radius: 0.25rem;
+}
+
+.widget--button{
+  width: auto;
+  padding: 0.25rem;
+  border-radius: 0.25rem !important;
+}
+
+.widget--button.active{
+  background-color: #6ACABE;
+  color: white;
+  z-index: 10;
+}
+
+.esri-popup__main-container{
+  border-radius: 0.25rem;
+}
