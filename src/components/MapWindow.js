@@ -14,6 +14,8 @@ const MapWindow = observer(class MapWindow extends Component {
   centerId
   lyrView
   _highlight
+  _popupHandle
+  _extentHandle
 
   constructor(props, context){
     super(props, context);
@@ -96,7 +98,7 @@ const MapWindow = observer(class MapWindow extends Component {
         this.view.ui.add("view-button", "top-right");
         this.view.ui.add([homeBtn], "top-right");
 
-        watchUtils.whenTrue(this.view, 'stationary', this._handleExtentChange);
+        this._extentHandle = watchUtils.whenTrue(this.view, 'stationary', this._handleExtentChange);
 
         return when(() => this.featureStore.loadStatus.layerLoaded);
       })
@@ -109,13 +111,22 @@ const MapWindow = observer(class MapWindow extends Component {
           id: "learn-more",
           className: "esri-icon-review"
         });
-        this.view.popup.on("trigger-action", this._handlePopupAction);
+        this._popupHandler = this.view.popup.on("trigger-action", this._handlePopupAction);
         return when(() => this.featureStore.loadStatus.featsLoaded);
       })
       .then(() => this._centerZoomHighlight())
       .catch(err => {
         console.error(err);
       });
+  }
+
+  componentWillUnmount(){
+    if(this._popupHandler){
+      this._popupHandle.remove();
+    }
+    if(this._extentHandle){
+      this._extentHandle.remove();
+    }
   }
 
   _onPanClick(e){
