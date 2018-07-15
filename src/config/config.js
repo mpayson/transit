@@ -12,7 +12,8 @@ const layerConfig = {
     'end': 'EditDate',
     'years': 'start_date',
     'oid': 'objectid',
-    'linkedin': 'linkedin'
+    'linkedin': 'linkedin',
+    'relateemail': 'repeat_email'
   },
   filters: {
     'communities': 'interests',

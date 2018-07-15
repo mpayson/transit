@@ -9,8 +9,6 @@ import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';
 import './Profile.css';
 
-import Toggle from './UIComponents/Toggle';
-
 import { Badge, Card, CardImg, Fade, CardBody, CardText,
   CardTitle, CardSubtitle, Button, Row, Col, Container,
   Nav, NavItem, NavLink} from 'reactstrap';
@@ -72,14 +70,15 @@ const Profile = observer(class Profile extends Component {
     const feature = this.featureStore.featureIdMap.get(id);
     const attrs = feature.attributes;
 
-    const relates = this.featureStore.featureRelates.get(id.toString());
+    const emailStartMap = this.featureStore.upcomingEmailStartMap;
+    const email = attrs[ftypes.email].toLowerCase();
+
+    const starts = emailStartMap.get(email);
+  
     let events = null;
-    if(relates) {
-      events = relates.map(r => {
-        const rAtr = r.attributes;
-        const start = moment(rAtr[ftypes.start]);
+    if(starts) {
+      events = starts.map(start => {
         const startStr = start.format("ddd (M/D) @ h:mm a");
-        console.log(start.format("dddd, M/D, h:mm a"));
         return(
           <div key={startStr} className="mt-1" style={{padding:"0.25rem", height:"2.5rem", borderRadius:"0.25rem", border:"1px solid rgba(0, 0, 0, 0.125)"}}>
             {startStr}

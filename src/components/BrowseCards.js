@@ -89,9 +89,7 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
               <div>
                 {badges}
               </div>
-              <Link to={Utils.url(`/browse/${objId}`)}>
-                <Button size="sm" color="primary" className="mt-4 mb-2">Learn more</Button>
-              </Link>
+              <Button tag={Link} to={Utils.url(`/browse/${objId}`)} size="sm" color="primary" className="mt-4 mb-2">Learn more</Button>
               {inButton}
               <Button href={hrefEmail} size="sm" className="mt-4 mb-2 ml-2"
                 style={{backgroundImage: `url(${conImg})`, width: '2rem', height: '2rem'}}

@@ -24,14 +24,14 @@ const HomeWindow = observer(({appState, featureStore}) => (
 
           <Container fluid>
           
-              <h1 className="display-4">Out of Office Hours</h1>
-              <p>Creating connections and sparking conversations across Esri <br/> Volunteers open their offices to answer your questions and help you grow your career</p>
-              <hr className="my-4 hr-dark"/>
-              <p>Start here to find colleagues who match your interests:</p>
-              <div style={{marginBottom: '5px'}}>
-                <FilterGroup appState={appState} featureStore={featureStore}/>
-              </div>
-              <Link to={Utils.url('/browse')}>Browse all volunteers</Link>
+            <h1 className="display-4">Office Hours</h1>
+            <p>Creating connections and sparking conversations across Esri <br/> Volunteers open their offices to answer your questions and help you grow your career</p>
+            <hr className="my-4 hr-dark"/>
+            <p>Start here to find colleagues who match your interests:</p>
+            <div style={{marginBottom: '5px'}}>
+              <FilterGroup appState={appState} featureStore={featureStore}/>
+            </div>
+            <Link to={Utils.url('/browse')}>Browse all volunteers</Link>
           
           </Container>
         
