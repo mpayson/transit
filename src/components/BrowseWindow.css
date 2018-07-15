@@ -3,4 +3,5 @@ div.view-div{
     /* height: calc(100% - 5rem); */
     height: calc(95vh - 15rem);
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
   }

@@ -22,6 +22,10 @@ class Utils {
     return process.env.PUBLIC_URL + path;
   }
 
+  static baseUrl(path){
+    return path.replace(process.env.PUBLIC_URL, '');
+  }
+
   static shuffleArr(array){
     let counter = array.length;
 

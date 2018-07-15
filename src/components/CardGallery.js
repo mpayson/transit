@@ -64,9 +64,7 @@ const CardGallery = observer(({featureStore, appState}) => {
                 {badges}
               </div>
 
-              <Link to={Utils.url(`/browse/${objId}`)}>
-                <Button className="mt-3" color="primary">Learn more</Button>
-              </Link>
+              <Button tag={Link} to={Utils.url(`/browse/${objId}`)} className="mt-3" color="primary">Learn more</Button>
             </CardBody>
           </Card>
         </Col>

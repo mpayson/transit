@@ -81,7 +81,7 @@ const MapWindow = observer(class MapWindow extends Component {
   // a cascade of promises to make sure map moves appropriately
   // once items are updated
   componentDidMount(){
-
+    console.log("HERE");
     when(() => this.featureStore.loadStatus.mapLoaded)
       .then(() => esriLoader.loadModules(
         ['esri/views/MapView', 'esri/widgets/Home', "esri/core/watchUtils"]

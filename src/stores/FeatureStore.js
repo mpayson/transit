@@ -1,4 +1,4 @@
-import {decorate, observable, action, computed, autorun } from 'mobx';
+import {decorate, observable, action, computed, autorun, values } from 'mobx';
 import {mapConfig, layerConfig} from '../config/config';
 import {NumFilter, MultiSplitFilter, MultiFieldFilter, TimeSinceFilter} from './objects/Filters';
 import Utils from '../utils/Utils';
@@ -142,6 +142,78 @@ class FeatureStore {
     return null;
   }
 
+  get emailStartMap(){
+    let emap = new Map();
+    let kemail = layerConfig.fieldTypes.relateemail;
+    let kstart = layerConfig.fieldTypes.start;
+    this.featureRelates.forEach((v, k) => {
+      v.forEach(f => {
+        const atrs = f.attributes;
+        if(!atrs.hasOwnProperty(kstart) || !atrs.hasOwnProperty(kemail)){
+          return;
+        }
+        const rStart = f.attributes[kstart];
+        const start = moment(rStart);
+        const rEmail = f.attributes[kemail];
+        const email = rEmail.toLowerCase();
+        if(emap.has(email)){
+          let cAr = emap.get(email);
+          cAr.push(start);
+          emap.set(email, cAr);
+        } else {
+          emap.set(email, [start]);
+        }
+      });
+    });
+    return emap;
+  }
+
+  get upcomingEmailStartMap(){
+    let emap = new Map();
+    const cDate = moment();
+    this.emailStartMap.forEach((v, k) => {
+      const starts = v.filter(s => cDate.isBefore(s));
+      emap.set(k, starts);
+    });
+    return emap;
+  }
+
+  get emailStreakMap(){
+    const cDate = moment();
+    const cMonth = cDate.get('month');
+    const cYear = cDate.get('year');
+    let emap = new Map();
+
+    this.emailStartMap.forEach((v,k) => {
+      let events = v;
+      let count = 0;
+      const sortEvents = events.sort((a,b) => a.isBefore(b));
+      let diffYr = cYear;
+      let diffM = cMonth;
+      for(let e of sortEvents){
+        const y = e.get('year');
+        const m = e.get('month');
+        if(y < diffYr || (y === diffYr && m < diffM)){
+          break;
+        }
+        if(y > diffYr || (y === diffYr && m > diffM)){
+          continue;
+        }
+        if(y === diffYr && (m === diffM + 1)){
+          continue;
+        }
+        count += 1;
+        diffM -= 1;
+        if(diffM < 0){
+          diffM = 11;
+          diffYr -= 1;
+        }
+      }
+      emap.set(k, count);
+    });
+    return emap;
+  }
+
   _buildFeautres(features, layer){
     return features.reduce((acc, c) => {
       for(let f of layer.fields){
@@ -251,6 +323,9 @@ decorate(FeatureStore, {
   filteredAttributes: computed,
   events: computed,
   selFeatureAttributes: computed,
+  emailStartMap: computed,
+  emailStreakMap: computed,
+  upcomingEmailStartMap: computed,
   setGeneralSearchString: action.bound,
   load: action.bound,
   loadAttachments: action.bound,

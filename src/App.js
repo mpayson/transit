@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { Route, Switch, Link } from "react-router-dom";
 import {observer} from 'mobx-react';
 import AppState from './stores/AppState';
 import FeatureStore from './stores/FeatureStore';
 import HomeWindow from './components/HomeWindow';
-import { Route, Switch, Link } from "react-router-dom";
 import BrowseWindow from './components/BrowseWindow';
+import AboutWindow from './components/AboutWindow';
 import Utils from './utils/Utils';
 // import MockService from './services/MockService';
 import ArcService from './services/ArcService';
@@ -54,7 +55,8 @@ const App = observer(class App extends Component {
 
   render() {
     
-    const path = this.props.location.pathname.split('/')[1];
+    const basePath = Utils.baseUrl(this.props.location.pathname);
+    const path = basePath.split('/')[1];
     
     return (
       <div>
@@ -64,7 +66,7 @@ const App = observer(class App extends Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav navbar>
               <NavItem active={path === 'about'}>
-                <NavLink href="#">About</NavLink>
+                <NavLink tag={Link} to={Utils.url("/about")}>About</NavLink>
               </NavItem>
               <NavItem active={path === 'browse'}>
                 <NavLink tag={Link} to={Utils.url("/browse")}>Browse</NavLink>
@@ -87,6 +89,7 @@ const App = observer(class App extends Component {
         <Switch>
           <Route exact path={Utils.url("/")} render={(props) => <HomeWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
           <Route path={Utils.url("/browse")} render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+          <Route exact path={Utils.url("/about")} render={(props) => <AboutWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
         </Switch>
       </div>
     )

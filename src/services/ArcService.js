@@ -54,6 +54,7 @@ class ArcService {
         return queryTask.executeRelationshipQuery(relQuery);
       })
       .then(res => {
+        console.log(res);
         const relMap = new Map();
         for(let id in res){
           relMap.set(id, res[id].features)
