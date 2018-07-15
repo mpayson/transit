@@ -70,7 +70,7 @@ const App = observer(class App extends Component {
                 <NavLink tag={Link} to={Utils.url("/browse")}>Browse</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">Sign Up</NavLink>
+                <NavLink target="__blank" href="https://survey123.arcgis.com/share/61323239e7f64ebe8e65122acf021117">Sign Up</NavLink>
               </NavItem>
             </Nav>
             <Nav navbar className="ml-auto">
