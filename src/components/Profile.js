@@ -110,7 +110,7 @@ const Profile = observer(class Profile extends Component {
         </NavItem>
       )
     })
-    let v = attrs[tab].replace(/,/g, ', ').replace(/_/g, ' ');
+    let v = Utils.formatSurveyStr(attrs[tab]);
 
     const dt = attrs[ftypes.years];
     const yrs = moment().diff(dt, 'years', false);

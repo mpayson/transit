@@ -54,6 +54,13 @@ class Utils {
     }, [])
   }
 
+  static formatSurveyStr(str){
+    if(!str){
+      return null;
+    }
+    return str.replace(/,/g, ', ').replace(/_/g, ' ');
+  }
+
   static trimString(str, nMax=MAXSTRINGSIZE) {
     if(!str) return null
     nMax -= 3

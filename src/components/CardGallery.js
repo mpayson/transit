@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';
 
 
-import { Badge, Card, CardImg, Fade, CardBody,
+import { Badge, Card, CardImg, Fade, CardBody, UncontrolledTooltip,
   CardTitle, CardSubtitle, Button, Row, Col, Container } from 'reactstrap';
 
 
@@ -47,9 +47,19 @@ const CardGallery = observer(({featureStore, appState}) => {
       const objId = fa[fTypes.oid];
       const att = attachMap.get(objId);
       const bc = Utils.getBadges(cardConfig.description, fa);
+      
       const badges = bc.map(b =>{
+        const v = Utils.formatSurveyStr(fa[b[0]]);
         const label = layerConfig.labels[b[0]] || b[0];
-        return <Badge key={label} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
+        const tUid = `${label}${objId}`.toLowerCase().replace(' ', '-');
+        return (
+          <div key={tUid} style={{display:'inline-block'}}>
+            <Badge id={tUid} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
+            <UncontrolledTooltip target={tUid} delay={{ show: 0, hide: 0 }}>
+              {v}
+            </UncontrolledTooltip>
+          </div>
+        )
       })
       return (
         <Col key={objId} sm="4">

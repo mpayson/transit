@@ -8,7 +8,7 @@ import Utils from '../utils/Utils';
 import moment from 'moment';
 
 import {
-  Badge, Card, CardBody, Fade, Button, Row, Col, Container, CardImg
+  Badge, Card, CardBody, Fade, Button, Row, Col, Container, CardImg, UncontrolledTooltip
 } from 'reactstrap';
 import { ftruncate } from 'fs';
 
@@ -46,9 +46,19 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
       const objId = fa[fTypes.oid];
       const att = attachMap.get(objId);
       const bc = Utils.getBadges(cardConfig.description, fa);
+      
       const badges = bc.map(b =>{
+        const v = Utils.formatSurveyStr(fa[b[0]]);
         const label = layerConfig.labels[b[0]] || b[0];
-        return <Badge key={label} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
+        const tUid = `${label}${objId}`.toLowerCase().replace(' ', '-');
+        return (
+          <div key={tUid} style={{display:'inline-block'}}>
+            <Badge id={tUid} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
+            <UncontrolledTooltip target={tUid} delay={{ show: 0, hide: 0 }}>
+              {v}
+            </UncontrolledTooltip>
+          </div>
+        )
       })
   
       const dt = fa[fTypes.years];
