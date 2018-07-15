@@ -8,6 +8,28 @@ import Utils from '../utils/Utils';
 import { Badge, Card, CardImg, Fade, CardBody,
   CardTitle, CardSubtitle, Button, Row, Col, Container } from 'reactstrap';
 
+
+const MockCard = () => (
+  <Col sm="4">
+    <Fade in>
+      <Card className="text-center">
+        <div style={{width: "100%", backgroundColor:"#e9ecef"}}>
+          <CardImg top className="rounded-circle" style={{height:"10rem", width:"10rem", objectFit:"cover", backgroundColor: "#6C757C"}}/>
+        </div>
+        <CardBody>
+          <div className="mb-2" style={{backgroundColor: "#e9ecef", height:"1.2rem", width: "70%", margin: "auto"}}/>
+          <div className="mb-2" style={{backgroundColor: "#e9ecef", height:"1rem", width: "60%", margin: "auto"}}/>
+          <div>
+            <div className="float-left mr-1" style={{backgroundColor: "#e9ecef", height:"1.5rem", width: "30%", borderRadius:'0.25rem'}}/>
+            <div className="float-left mr-1" style={{backgroundColor: "#e9ecef", height:"1.5rem", width: "30%", borderRadius:'0.25rem'}}/>
+            <div className="float-left" style={{backgroundColor: "#e9ecef", height:"1.5rem", width: "30%", borderRadius:'0.25rem'}}/>
+          </div>
+        </CardBody>
+      </Card>
+    </Fade>
+  </Col>
+)
+
 // Displays cards for all the users
 const CardGallery = observer(({featureStore, appState}) => {
 
@@ -16,21 +38,24 @@ const CardGallery = observer(({featureStore, appState}) => {
 
   // Iterates over all features to create a new card for each
   const fTypes = layerConfig.fieldTypes;
-  const cards = featureAttrs.slice(0,3).map(fa => {
-    const objId = fa[fTypes.oid];
-    const att = attachMap.get(objId);
-    const bc = Utils.getBadges(cardConfig.description, fa);
-    const badges = bc.map(b =>{
-      const label = layerConfig.labels[b[0]] || b[0];
-      return <Badge key={label} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
-    })
 
-    return (
-      <Col key={objId} sm="4">
-        <Fade in>
+  let cards;
+  if(!featureAttrs || featureAttrs.length < 1){
+    cards = ['1','2','3'].map(i => <MockCard key={i}/>)
+  } else {
+    cards = featureAttrs.slice(0,3).map(fa => {
+      const objId = fa[fTypes.oid];
+      const att = attachMap.get(objId);
+      const bc = Utils.getBadges(cardConfig.description, fa);
+      const badges = bc.map(b =>{
+        const label = layerConfig.labels[b[0]] || b[0];
+        return <Badge key={label} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
+      })
+      return (
+        <Col key={objId} sm="4">
           <Card className="text-center">
             <div style={{width: "100%", backgroundColor:"#e9ecef"}}>
-              <CardImg top src={att} className="rounded-circle" style={{height:"10rem", width:"10rem", objectFit:"cover"}}/>
+              <CardImg top src={att} className="rounded-circle" style={{height:"10rem", width:"10rem", objectFit:"cover", backgroundColor: "#6C757C"}}/>
             </div>
             <CardBody>
               <CardTitle>{fa[fTypes.name]}</CardTitle>
@@ -44,10 +69,10 @@ const CardGallery = observer(({featureStore, appState}) => {
               </Link>
             </CardBody>
           </Card>
-        </Fade>
-      </Col>
-    )
-  })
+        </Col>
+      )
+    })
+  }
   
   return (
     <Container>

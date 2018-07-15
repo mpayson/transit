@@ -8,9 +8,27 @@ import Utils from '../utils/Utils';
 import moment from 'moment';
 
 import {
-  Badge, Card, Fade, Button, Row, Col, Container
+  Badge, Card, CardBody, Fade, Button, Row, Col, Container, CardImg
 } from 'reactstrap';
 import { ftruncate } from 'fs';
+
+const MockCard = () => (
+  <Card className="mt-2">
+    <Row className="align-items-center">
+      <Col xs="4">
+        <div style={{backgroundColor: "#e9ecef", width:"100%", height:"10rem", maxWidth:"30vw", maxHeight:"30vw"}}/>
+      </Col>
+      <CardBody>
+        <div className="mb-2 float-left" style={{backgroundColor: "#e9ecef", height:"1.5rem", width: "70%", margin: "auto"}}/>
+        <div>
+          <div className="float-left mr-1" style={{backgroundColor: "#e9ecef", height:"1.5rem", width: "30%", borderRadius:'0.25rem'}}/>
+          <div className="float-left mr-1" style={{backgroundColor: "#e9ecef", height:"1.5rem", width: "30%", borderRadius:'0.25rem'}}/>
+          <div className="float-left" style={{backgroundColor: "#e9ecef", height:"1.5rem", width: "30%", borderRadius:'0.25rem'}}/>
+        </div>
+      </CardBody>
+    </Row>
+  </Card>
+)
 
 // Displays cards for all the users
 const BrowseListView = observer(({ featureAttrs, featureStore }) => {
@@ -19,39 +37,49 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
 
   // Iterates over all features to create a new card for each
   const fTypes = layerConfig.fieldTypes;
-  const cards = featureAttrs.map(fa => {
-    const objId = fa[fTypes.oid];
-    const att = attachMap.get(objId);
-    const bc = Utils.getBadges(cardConfig.description, fa);
-    const badges = bc.map(b =>{
-      const label = layerConfig.labels[b[0]] || b[0];
-      return <Badge key={label} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
-    })
-
-    const dt = fa[fTypes.years];
-    const yrs = moment().diff(dt, 'years', false);
-    const yrLabel = yrs === 1 ? 'year' : 'years';
-
-    const inUrl = fa[layerConfig.fieldTypes.linkedin];
-    let inButton;
-    console.log(inUrl);
-    if(inUrl){
-      inButton = (
-        <Button href={inUrl} target="__blank" size="sm" className="mt-4 mb-2 ml-2" color='linkedin'
-          style={{backgroundImage: `url(${inImg})`, width: '2rem', height: '2rem'}}
-          />
-      );
-    }
-
-    const email = fa[layerConfig.fieldTypes.email];
-    const hrefEmail = `mailto:${email}`;
-
-    return (
-      <Fade in key={objId}>
-        <Card className="mt-2">
+  
+  let cards;
+  if(!featureAttrs || featureAttrs.length < 1){
+    cards = ['1','2','3'].map(i => <MockCard key={i}/>)
+  } else {
+    cards = featureAttrs.map(fa => {
+      const objId = fa[fTypes.oid];
+      const att = attachMap.get(objId);
+      const bc = Utils.getBadges(cardConfig.description, fa);
+      const badges = bc.map(b =>{
+        const label = layerConfig.labels[b[0]] || b[0];
+        return <Badge key={label} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
+      })
+  
+      const dt = fa[fTypes.years];
+      const yrs = moment().diff(dt, 'years', false);
+      const yrLabel = yrs === 1 ? 'year' : 'years';
+  
+      const inUrl = fa[layerConfig.fieldTypes.linkedin];
+      let inButton;
+      console.log(inUrl);
+      if(inUrl){
+        inButton = (
+          <Button href={inUrl} target="__blank" size="sm" className="mt-4 mb-2 ml-2" color='linkedin'
+            style={{backgroundImage: `url(${inImg})`, width: '2rem', height: '2rem'}}
+            />
+        );
+      }
+  
+      const email = fa[layerConfig.fieldTypes.email];
+      const hrefEmail = `mailto:${email}`;
+      const imgItem = att
+        ? <CardImg src={att} style={{backgroundColor: "#e9ecef", objectFit:"cover", width:"100%", height: "100%"}}/>
+        : <div style={{backgroundColor: "#e9ecef", width: "100%", height: "100%"}}/>
+  
+      return (
+        <Card key={objId} className="mt-2">
           <Row className="align-items-center">
             <Col xs="4">
-              <img src={att} style={{padding:"0.2rem", width:"100%", height:"10rem", objectFit:"cover", maxWidth:"30vw", maxHeight:"30vw"}}/>
+              <div style={{width:"100%", height:"10rem", maxWidth:"30vw", maxHeight:"30vw"}}>
+                {imgItem}
+              </div>
+                
             </Col>
             <Col xs="8">
               <h6>
@@ -71,10 +99,13 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
             </Col>
           </Row>
         </Card>
-      </Fade>
-      
-    )
-  })
+      )
+    })
+  }
+
+
+
+
 
   return (
     <Container>
