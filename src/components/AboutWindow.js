@@ -64,7 +64,7 @@ const AboutWindow = observer(({appState, featureStore}) => {
         <h2>How can I participate?</h2>
         <p>To find new connections, <Link to={Utils.url('/browse')}><strong>browse our volunteers</strong></Link>. Or, to share your time with others, <a href='https://survey123.arcgis.com/share/61323239e7f64ebe8e65122acf021117' target="__blank"><strong>sign up</strong></a> as a volunteer!</p>
 
-        <p>As always, this is a grassroots, community effort. Here are some ways we'd <span><strong>love</strong></span> for you to help!</p>
+        <p>As always, this is a community effort. Here are some ways we'd <span><strong>love</strong></span> for you to help!</p>
         <ul className="mb-4">
           <li>Share suggested improvements or thoughts for this app <a target="__blank" href="https://github.com/mpayson/transit/issues"><strong>on Github</strong></a>, or even PR</li>
           <li>Provide feedback about e-bloc as a whole through <a target="__blank" href="https://survey123.arcgis.com/share/7eaddc94e92142f6b74d69bc8b0c9c4c"><strong>this survey</strong></a></li>
