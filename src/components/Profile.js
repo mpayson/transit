@@ -70,19 +70,21 @@ const Profile = observer(class Profile extends Component {
     const feature = this.featureStore.featureIdMap.get(id);
     const attrs = feature.attributes;
 
-    const emailStartMap = this.featureStore.upcomingEmailStartMap;
+    const emailEventMap = this.featureStore.upcomingEmailEventMap;
     const email = attrs[ftypes.email].toLowerCase();
 
-    const starts = emailStartMap.get(email);
+    const eventObjs = emailEventMap.get(email);
   
     let events = null;
-    if(starts) {
-      events = starts.map(start => {
-        const startStr = start.format("ddd (M/D) @ h:mm a");
+    if(eventObjs) {
+      events = eventObjs.map(e => {
+        const startStr = e.start.format("ddd (M/D): h:mm");
+        const endStr = e.end.format("h:mma");
+        const estr = `${startStr}-${endStr}`;
         return(
-          <div key={startStr} className="mt-1" style={{padding:"0.25rem", height:"2.5rem", borderRadius:"0.25rem", border:"1px solid rgba(0, 0, 0, 0.125)"}}>
-            {startStr}
-          <Button href={getEmail(attrs[ftypes.email], startStr)} id={startStr} className="float-right" outline size="sm">Book this time</Button>
+          <div key={estr} className="mt-1" style={{padding:"0.25rem", height:"2.5rem", borderRadius:"0.25rem", border:"1px solid rgba(0, 0, 0, 0.125)"}}>
+            {estr}
+          <Button href={getEmail(attrs[ftypes.email], estr)} id={estr} className="float-right" outline size="sm">Book it</Button>
           </div>
         );
       })

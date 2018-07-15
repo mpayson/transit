@@ -9,7 +9,7 @@ const layerConfig = {
     'email': 'email',
     'date': 'CreationDate',
     'start': 'start_oooh',
-    'end': 'EditDate',
+    'end': 'end_oooh',
     'years': 'start_date',
     'oid': 'objectid',
     'linkedin': 'linkedin',

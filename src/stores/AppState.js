@@ -1,6 +1,5 @@
 import {decorate, observable, action } from 'mobx';
 
-
 // Store the control all "app state" data like open windows etc
 class AppState {
 
@@ -45,7 +44,9 @@ decorate(AppState, {
   setItemsPerPage: action.bound,
   setBrowsePane: action.bound,
   profileTab: observable,
-  setProfileTab: action.bound
+  setProfileTab: action.bound,
+  browsePane: observable,
+  setBrowsePane: action.bound
 })
 
 const singleton = new AppState()

@@ -15,6 +15,7 @@ import {
 } from 'reactstrap';
 
 import MapWindow from './MapWindow'
+import CalendarWindow from './CalendarWindow';
 import './BrowseWindow.css'
 
 const BrowseWindow = observer(class BrowseWindow extends Component {
@@ -24,6 +25,15 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
     super(props, context)
     this.featureStore = props.featureStore;
     this.appState = props.appState;
+    this._onMapClicked = this._onMapClicked.bind(this);
+    this._onCalendarClicked = this._onCalendarClicked.bind(this);
+  }
+
+  _onMapClicked(e){
+    this.appState.setBrowsePane("map");
+  }
+  _onCalendarClicked(e){
+    this.appState.setBrowsePane("cal");
   }
 
   render() {
@@ -34,6 +44,9 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
     if(this.appState.browsePane === 'map'){
       pane = <Route path={Utils.url("/browse/:id?")} render={(props) => <MapWindow {...props} featureStore={this.featureStore}/>}/>;
       isMap = true;
+    } else {
+      pane = <Route path={Utils.url("/browse/:id?")} render={(props) => <CalendarWindow {...props} featureStore={this.featureStore}/>}/>;
+      isMap = false;
     }
 
     return (
@@ -54,15 +67,15 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
             </Switch>
           </Col>
           <Col className="d-none d-lg-block">
-            <ButtonGroup className="float-right mb-2 d-none d-lg-block">
-                <Button outline={isMap} color={isMap ? "secondary" : "primary"} size="sm">
-                  Calendar
-                </Button>
-                <Button outline={!isMap} color={isMap ? "primary" : "secondary"} size="sm">
-                  Map
-                </Button>
-            </ButtonGroup>
-            <div>
+              <ButtonGroup className="float-right clearfix mb-1 d-none d-lg-block">
+                  <Button onClick={this._onCalendarClicked} outline={isMap} color={isMap ? "secondary" : "primary"} size="sm">
+                    Calendar
+                  </Button>
+                  <Button onClick={this._onMapClicked} outline={!isMap} color={isMap ? "primary" : "secondary"} size="sm">
+                    Map
+                  </Button>
+              </ButtonGroup>
+            <div style={{clear:"both", width:"100%", height:"calc(80vh - 5rem)"}}>
               {pane}
             </div>
           </Col>

@@ -1,9 +1,10 @@
-.calendar-container{
-  height: calc(100vh - 10rem);
-}
-
 .rbc-event{
-  background-color: #004575 !important;
-  border-radius: 0 !important;
+  background-color: #A695C6 !important;
+  border-radius: 0.25rem !important;
+  color: #A695C6;
+  width: 5vw;
+  height: 1rem;
+  font-size: 80%;
+  font-weight: 400;
   padding: 0;
 }

@@ -33,7 +33,7 @@ class Dot {
       this.y = this.y - step;
     }
     this.draw(ctx);
-    // console.log(this.x, this.y, ctx);
+
   }
 
   draw(ctx){

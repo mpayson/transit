@@ -276,7 +276,6 @@ class TimeSinceFilter extends NumFilter{
 
   constructor(fieldName, unit, featureStore){
     super(fieldName, featureStore);
-    // console.log("ABOUT TO CALL SUPER");
     this.unit = unit;
     this.type = 'time-since';
   }
@@ -296,7 +295,6 @@ class TimeSinceFilter extends NumFilter{
 
     let eD;
     if(this.min || this.min === 0){
-      console.log("datefilter end", this.min, this.unit);
       moment().subtract(this.min, this.unit);
       eD = moment().subtract(this.min, this.unit).format();
     }

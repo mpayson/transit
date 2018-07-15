@@ -119,20 +119,7 @@ class FeatureStore {
       }
       return true;
     })
-    // console.log(t);
     return t;
-  }
-
-  get events(){
-    const ftypes = layerConfig.fieldTypes;
-    return this.filteredAttributes.map(a => {
-      return {
-        id: a.ObjectId,
-        title: a[ftypes.name],
-        start: a[ftypes.start].toDate(),
-        end: a[ftypes.end].toDate()
-      }
-    });
   }
 
   get selFeatureAttributes(){
@@ -142,39 +129,92 @@ class FeatureStore {
     return null;
   }
 
-  get emailStartMap(){
+  get emailEventMap(){
     let emap = new Map();
     let kemail = layerConfig.fieldTypes.relateemail;
     let kstart = layerConfig.fieldTypes.start;
+    let kend = layerConfig.fieldTypes.end;
+
     this.featureRelates.forEach((v, k) => {
-      v.forEach(f => {
+      v.forEach( (f,i) => {
         const atrs = f.attributes;
-        if(!atrs.hasOwnProperty(kstart) || !atrs.hasOwnProperty(kemail)){
+        if(!atrs.hasOwnProperty(kemail) || !atrs.hasOwnProperty(kstart) || !atrs.hasOwnProperty(kend)){
           return;
         }
-        const rStart = f.attributes[kstart];
-        const start = moment(rStart);
-        const rEmail = f.attributes[kemail];
-        const email = rEmail.toLowerCase();
+
+        const start = moment(atrs[kstart]);
+        const end = moment(atrs[kend]);
+        const email = atrs[kemail].toLowerCase();
+        
+        const event = {
+          id: i,
+          title: email,
+          start: start,
+          end: end
+        }
+
         if(emap.has(email)){
           let cAr = emap.get(email);
-          cAr.push(start);
+          cAr.push(event);
           emap.set(email, cAr);
         } else {
-          emap.set(email, [start]);
+          emap.set(email, [event]);
         }
-      });
+
+      })
     });
+
     return emap;
   }
 
-  get upcomingEmailStartMap(){
+  getEmailFromId(featureId){
+    let id = typeof featureId === "string" ? parseInt(featureId) : featureId;
+
+    if(!this.featureIdMap.has(id)){
+      return null;
+    }
+    const f = this.featureIdMap.get(id);
+    const rEmail = f.attributes[layerConfig.fieldTypes.email];
+    return rEmail.toLowerCase();
+  }
+
+  get events(){
+    let events = [];
+    this.emailEventMap.forEach((v, k) => {
+      events = events.concat(v);
+    })
+    return events;
+  }
+
+  get filteredEmailIdMap(){
+    let emap = new Map();
+    for(let f of this.filteredFeatures){
+      const rEmail = f.attributes[layerConfig.fieldTypes.email];
+      const email = rEmail.toLowerCase();
+      const oid = f.attributes[layerConfig.fieldTypes.oid];
+      emap.set(email, oid);
+    }
+    return emap;
+  }
+
+  get filteredEvents(){
+    let events = [];
+    this.emailEventMap.forEach((v, k) => {
+      if(this.filteredEmailIdMap.has(k)){
+        events = events.concat(v);
+      }
+    })
+    return events;
+  }
+
+  get upcomingEmailEventMap(){
     let emap = new Map();
     const cDate = moment();
-    this.emailStartMap.forEach((v, k) => {
-      const starts = v.filter(s => cDate.isBefore(s));
-      emap.set(k, starts);
-    });
+
+    this.emailEventMap.forEach((v,k) => {
+      const events = v.filter(e => cDate.isBefore(e.start));
+      emap.set(k, events);
+    })
     return emap;
   }
 
@@ -184,15 +224,17 @@ class FeatureStore {
     const cYear = cDate.get('year');
     let emap = new Map();
 
-    this.emailStartMap.forEach((v,k) => {
+    this.emailEventMap.forEach((v,k) => {
       let events = v;
       let count = 0;
-      const sortEvents = events.sort((a,b) => a.isBefore(b));
+      const sortEvents = events.sort((a,b) => a.start.isBefore(b.start));
+      
       let diffYr = cYear;
       let diffM = cMonth;
       for(let e of sortEvents){
-        const y = e.get('year');
-        const m = e.get('month');
+        let s = e.start;
+        const y = s.get('year');
+        const m = s.get('month');
         if(y < diffYr || (y === diffYr && m < diffM)){
           break;
         }
@@ -210,8 +252,9 @@ class FeatureStore {
         }
       }
       emap.set(k, count);
-    });
+    })
     return emap;
+
   }
 
   _buildFeautres(features, layer){
@@ -269,7 +312,6 @@ class FeatureStore {
         return this.service.queryRelatedRecords(this.layer);
       })
       .then(map => {
-        console.log(map);
         this.featureRelates = map;
       })
       .catch(err => {
@@ -323,9 +365,11 @@ decorate(FeatureStore, {
   filteredAttributes: computed,
   events: computed,
   selFeatureAttributes: computed,
-  emailStartMap: computed,
+  emailEventMap: computed,
   emailStreakMap: computed,
-  upcomingEmailStartMap: computed,
+  upcomingEmailEventMap: computed,
+  filteredEvents: computed,
+  filteredEmailIdMap: computed,
   setGeneralSearchString: action.bound,
   load: action.bound,
   loadAttachments: action.bound,

@@ -48,7 +48,6 @@ class Utils {
         return acc;
       }
       const count = atrs[b].split(delim).length;
-      // console.log("HERE", count);
       acc.push([b, count]);
       return acc;
     }, [])

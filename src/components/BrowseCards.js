@@ -67,7 +67,7 @@ const BrowseListView = observer(({ featureAttrs, featureStore }) => {
   
       const inUrl = fa[layerConfig.fieldTypes.linkedin];
       let inButton;
-      console.log(inUrl);
+
       if(inUrl){
         inButton = (
           <Button href={inUrl} target="__blank" size="sm" className="mt-4 mb-2 ml-2" color='linkedin'
