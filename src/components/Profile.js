@@ -130,6 +130,8 @@ const Profile = observer(class Profile extends Component {
 
     const att = this.featureStore.featureAttachments.get(id);
 
+    const timeText = (events && events.length > 0) ? "Upcoming Available Times" : "No Upcoming Available Times";
+
     return (
       <div>
         <Button tag={Link} to={Utils.url('/browse')} className="mb-2" size="sm" outline>{"< Back to browse"}</Button>
@@ -156,7 +158,7 @@ const Profile = observer(class Profile extends Component {
               </Nav>
               <CardText>{v}</CardText>
               <div style={{textAlign:"left"}}>
-                <CardSubtitle className="mb-2">Available Times</CardSubtitle>
+                <CardSubtitle className="mb-2">{timeText}</CardSubtitle>
                 {events}
               </div>
             </CardBody>
