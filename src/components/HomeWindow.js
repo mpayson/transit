@@ -1,6 +1,6 @@
 import React from 'react';
 import CardGallery from './CardGallery';
-import FilterGroup from './UIComponents/FilterGroup';
+import FilterGroup from './filters/FilterGroup';
 import {observer} from'mobx-react';
 import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';

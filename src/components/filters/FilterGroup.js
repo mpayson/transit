@@ -1,19 +1,32 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import SelectFilter from '../SelectFilter';
-import SlideFilter from '../SlideFilter';
+import DropdownFilter from './DropdownFilter';
+import SelectFilter from './SelectFilterOld';
+import SlideFilter from './SlideFilter';
 
 const getFilterView = (f, dark) => {
+
+  let FilterView;
+
   switch(f.type){
-    case 'multi-multi-split':
-      return <SelectFilter dark={dark} filterStore={this.featureStore} filterObj={f}/>
+    case 'composite':
+      FilterView = SelectFilter;
+      break;
     case 'num':
-      return <SlideFilter dark={dark} filterStore={this.featureStore} filterObj={f}/>
+      FilterView = SlideFilter;
+      break;
     case 'time-since':
-      return <SlideFilter dark={dark} filterStore={this.featureStore} filterObj={f}/>
+      FilterView = SlideFilter;
+      break;
     default:
       throw "UNKNOWN FILTER TYPE";
   }
+
+  return (
+    <DropdownFilter dark={dark} filterObj={f}>
+      <FilterView filterObj={f}/>
+    </DropdownFilter>
+  )
 }
 
 const FilterGroup = observer(({featureStore, appState, dark}) => {

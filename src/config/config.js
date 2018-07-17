@@ -16,18 +16,21 @@ const layerConfig = {
     'relateemail': 'repeat_email'
   },
   filters: {
-    'communities': 'interests',
-    'tech': 'interests',
-    'free_time': 'interests',
-    'other': 'interests',
-    'start_date': 'time-since'
+    'interests': [
+      {name: 'communities', type: 'multi-split'},
+      {name: 'tech', type: 'multi-split'},
+      {name: 'free_time', type: 'multi-split'},
+      {name: 'other', type: 'multi-split'}
+    ],
+    'start_date': 'time-since',
   },
   labels: {
     'communities': 'Communities',
     'tech': 'Tech',
     'free_time': 'Free Time',
     'start_date': 'Years @ Esri',
-    'other': 'Other'
+    'other': 'Other',
+    'interests': 'Interests'
   },
   search: ['name', 'communities', 'tech', 'free_time', 'other']
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FilterGroup from './UIComponents/FilterGroup';
+import FilterGroup from './filters/FilterGroup';
 import BrowseList from './BrowseList';
 import { observer } from "mobx-react";
 import { Route, Switch, Link } from "react-router-dom";

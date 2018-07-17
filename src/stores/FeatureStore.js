@@ -1,6 +1,6 @@
 import {decorate, observable, action, computed, autorun, values } from 'mobx';
 import {mapConfig, layerConfig} from '../config/config';
-import {NumFilter, MultiSplitFilter, MultiFieldFilter, TimeSinceFilter} from './objects/Filters';
+import {NumFilter, MultiSplitFilter, CompositeFilter, TimeSinceFilter} from './objects/Filters';
 import Utils from '../utils/Utils';
 import moment from 'moment';
 
@@ -40,25 +40,19 @@ class FeatureStore {
     }
 
     let keys = [...Object.keys(layerConfig.filters)];
-    let interestKeys = keys.filter(k => layerConfig.filters[k] === 'interests');
-    let interestFilter = new MultiFieldFilter('Interests', interestKeys, 'multi-split', this);
-    this.filters.push(interestFilter);
-
-    let otherKeys = keys.filter(k => layerConfig.filters[k] !== 'interests')
-    for(let key of otherKeys){
+    for(let k of keys){
+      const v = layerConfig.filters[k];
       let newFilter;
-      switch(layerConfig.filters[key]){
-        case 'multi-split':
-          newFilter = new MultiSplitFilter(key, ',', this);
-          break;
-        case 'num':
-          newFilter = new NumFilter(key, this);
-          break;
-        case 'time-since':
-          newFilter = new TimeSinceFilter(key, 'year', this);
-          break;
-        default:
-          throw "UNKNOWN FILTER TYPE"
+      if(Array.isArray(v)){
+        newFilter = new CompositeFilter(k, v, this);
+      } else if (v === 'multi-split'){
+        newFilter = new MultiSplitFilter(k, ',', this);
+      } else if (v === 'num'){
+        newFilter = new NumFilter(k, this);
+      } else if (v === 'time-since'){
+        newFilter = new TimeSinceFilter(k, 'year', this);
+      } else {
+        throw "UNKNOWN FILTER TYPE";
       }
       this.filters.push(newFilter);
     }

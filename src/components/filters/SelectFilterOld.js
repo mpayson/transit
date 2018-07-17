@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import Utils from '../utils/Utils';
+import Utils from '../../utils/Utils';
 import {toJS} from 'mobx';
 
 import {
@@ -12,29 +12,17 @@ const SelectFilter = observer(class SelectFilter extends Component {
     super(props, context);
 
     this.filterObj = props.filterObj;
-    this.filterStore = props.filterStore;
 
     this.onTextChange = this.onTextChange.bind(this);
     this.onClearClicked = this.onClearClicked.bind(this);
     this.onAndClicked = this.onAndClicked.bind(this);
     this.onOrClicked = this.onOrClicked.bind(this);
 
-    this.toggle = this.toggle.bind(this);
     this.onClick = this.onClick.bind(this);
     this.state = {
-      dropdownOpen: false,
       filterStr: ''
     };
     this.fieldMap = {};
-  }
-
-  toggle(e) {
-    if(e.target.id !== 'droptoggle'){
-      return;
-    }
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    });
   }
 
   onClick(e){
@@ -102,57 +90,46 @@ const SelectFilter = observer(class SelectFilter extends Component {
 
     })
 
-    const isActive = this.filterObj.isActive;
-    const dark = this.props.dark ? "secondary" : "light";
-    const color = isActive ? "success" : dark;
-
     return (
-      <ButtonDropdown id="dropbutton" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-      
-        <DropdownToggle outline={!isActive} color={color} id="droptoggle" caret>
-          {this.filterObj.label}
-        </DropdownToggle>
-        <DropdownMenu>
-          <div style={{minWidth:"12rem", maxHeight:"20rem", overflowY:"scroll"}}>
-            <div className="mr-1 ml-1">
-              <Input
-                placeholder="sm"
-                bsSize="sm"
-                placeholder="filter"
-                value={this.state.filterStr}
-                onChange={this.onTextChange}
-                />
-            </div>
+
+      <div style={{minWidth:"12rem", maxHeight:"20rem", overflowY:"scroll"}}>
+        <div className="mr-1 ml-1">
+          <Input
+            placeholder="sm"
+            bsSize="sm"
+            placeholder="filter"
+            value={this.state.filterStr}
+            onChange={this.onTextChange}
+            />
+        </div>
+        <Button
+          className="ml-2 mt-1"
+          size="sm"
+          color="link"
+          style={{padding: '0.25rem'}}
+          onClick={this.onClearClicked}>
+          Clear
+        </Button>
+        <ButtonGroup className="float-right mt-1 mr-2">
             <Button
-              className="ml-2 mt-1"
+              outline={!this.filterObj.isAnd}
+              color={this.filterObj.isAnd ? 'primary' : 'secondary'}
               size="sm"
-              color="link"
-              style={{padding: '0.25rem'}}
-              onClick={this.onClearClicked}>
-              Clear
+              style={{padding: '0.25rem', fontSize:'0.65rem'}}
+              onClick={this.onAndClicked}>
+              and
             </Button>
-            <ButtonGroup className="float-right mt-1 mr-2">
-                <Button
-                  outline={!this.filterObj.isAnd}
-                  color={this.filterObj.isAnd ? 'primary' : 'secondary'}
-                  size="sm"
-                  style={{padding: '0.25rem', fontSize:'0.65rem'}}
-                  onClick={this.onAndClicked}>
-                  and
-                </Button>
-                <Button
-                  outline={this.filterObj.isAnd}
-                  color={this.filterObj.isAnd ? 'secondary': 'primary'}
-                  size="sm"
-                  style={{padding: '0.25rem', fontSize:'0.65rem'}}
-                  onClick={this.onOrClicked}>
-                  or
-                </Button>
-            </ButtonGroup>
-            {allViews}
-          </div>
-        </DropdownMenu>
-      </ButtonDropdown>
+            <Button
+              outline={this.filterObj.isAnd}
+              color={this.filterObj.isAnd ? 'secondary': 'primary'}
+              size="sm"
+              style={{padding: '0.25rem', fontSize:'0.65rem'}}
+              onClick={this.onOrClicked}>
+              or
+            </Button>
+        </ButtonGroup>
+        {allViews}
+      </div>
     );
   }
 

@@ -9,7 +9,7 @@ class BaseFilter{
     this.fieldName = fieldName
   }
   get label(){
-    return layerConfig.labels[this.fieldName];
+    return layerConfig.labels[this.fieldName] || this.fieldName;
   }
   isClientFiltered(featureAttrs){
     console.log("IMPLEMENT IS CLIENT FILTERED");
@@ -24,21 +24,30 @@ decorate(BaseFilter, {
   label: computed
 })
 
-class MultiFieldFilter{
+class CompositeFilter extends BaseFilter{
 
   filterMap
   type
 
-  constructor(label, fields, filterType, featureStore=null, isAnd=false){
-    this.label = label;
-    this.fields = fields;
-    this.filterMap = new Map();
+  constructor(name, fieldTypeArr, featureStore=null, isAnd=false){
+    super(name);
     this.isAnd = isAnd;
-    if(filterType === 'multi-split'){
-      this.type = 'multi-multi-split';
-      fields.forEach(f => {
-        this.filterMap.set(f, new MultiSplitFilter(f, ',', featureStore, isAnd));
-      })
+    this.type = 'composite';
+
+    this.fields = [];
+    this.filterMap = new Map();
+    for(let ft of fieldTypeArr){
+      this.fields.push(ft.name);
+
+      let filter;
+      switch(ft.type){
+        case 'multi-split':
+          filter = new MultiSplitFilter(ft.name, ',', featureStore, isAnd);
+          break;
+        default:
+          throw "UNKNOWN FILTER TYPE";
+      }
+      this.filterMap.set(ft.name, filter);
     }
   }
 
@@ -121,7 +130,7 @@ class MultiFieldFilter{
   }
 }
 
-decorate(MultiFieldFilter, {
+decorate(CompositeFilter, {
   filterMap: observable,
   isAnd: observable,
   isActive: computed,
@@ -317,8 +326,6 @@ class TimeSinceFilter extends NumFilter{
 
 }
 
-
-
 class MultiSplitFilter extends BaseFilter{
   constructor(fieldName, delimeter, featureStore, isAnd=false){
     super(fieldName);
@@ -441,4 +448,4 @@ decorate(MultiSplitFilter, {
   setFromAttr: action.bound
 })
 
-export {NumFilter, MultiSplitFilter, MultiFieldFilter, TimeSinceFilter}
+export {NumFilter, MultiSplitFilter, CompositeFilter, TimeSinceFilter}
