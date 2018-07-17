@@ -1,15 +1,18 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import DropdownFilter from './DropdownFilter';
-import SelectFilter from './SelectFilterOld';
+import SelectFilterOld from './SelectFilterOld';
+import SelectFilter from './SelectFilter';
 import SlideFilter from './SlideFilter';
 
 const getFilterView = (f, dark) => {
 
   let FilterView;
-
   switch(f.type){
     case 'composite':
+      FilterView = SelectFilterOld;
+      break;
+    case 'multi-split':
       FilterView = SelectFilter;
       break;
     case 'num':

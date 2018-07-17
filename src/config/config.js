@@ -22,7 +22,8 @@ const layerConfig = {
       {name: 'free_time', type: 'multi-split'},
       {name: 'other', type: 'multi-split'}
     ],
-    'start_date': 'time-since',
+    // 'tech': 'multi-split',
+    'start_date': 'time-since'
   },
   labels: {
     'communities': 'Communities',
