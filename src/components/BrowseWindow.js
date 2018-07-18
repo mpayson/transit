@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FilterGroup from './filters/FilterGroup';
-import BrowseList from './BrowseList';
+// import BrowseList from './BrowseList';
+import BrowseList from './BrowseCardsVirt';
 import { observer } from "mobx-react";
 import { Route, Switch } from "react-router-dom";
 import Profile from './Profile';
@@ -50,7 +51,7 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
 
     return (
       <Container className="mt-3">
-        <Row style={{ marginBottom: '5px' }}>
+        <Row className='mb-2'>
           <FilterGroup dark filterObjs={this.featureStore.filters}/>
         </Row>
         <hr className="my-4"/>

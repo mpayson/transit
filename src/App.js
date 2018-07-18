@@ -9,6 +9,7 @@ import AboutWindow from './components/AboutWindow';
 import Utils from './utils/Utils';
 // import MockService from './services/MockService';
 import ArcService from './services/ArcService';
+import DevTools from 'mobx-react-devtools';
 
 import {
   Collapse,
@@ -93,6 +94,7 @@ const App = observer(class App extends Component {
           <Route path={Utils.url("/browse")} render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
           <Route exact path={Utils.url("/about")} render={(props) => <AboutWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
         </Switch>
+        {/* <DevTools /> */}
       </div>
     )
   }

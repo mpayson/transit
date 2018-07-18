@@ -12,7 +12,7 @@ const AboutWindow = observer(({featureStore}) => {
   const ftypes = layerConfig.fieldTypes;
   let countMap = featureStore.emailStreakMap;
 
-  let sortFeatures = featureStore.features.sort((a, b) => {
+  let sortFeatures = featureStore.features.slice(0, 50).sort((a, b) => {
     const eA = a.attributes[ftypes.email];
     const eAL = eA.toLowerCase();
     const eB = b.attributes[ftypes.email];

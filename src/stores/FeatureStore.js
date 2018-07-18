@@ -315,16 +315,9 @@ class FeatureStore {
 
   }
 
-  onCalendarEvent(event, synthEvent){
-    this.selObjId = this.selObjId === event.id ? null : event.id;
-  }
 
   setGeneralSearchString(strVal){
     this.genSearchString = strVal;
-  }
-
-  setSelectedFeature(index){
-    this.selFeatureIndex = index;
   }
 
   updateFilterExtent(extent){
@@ -333,6 +326,7 @@ class FeatureStore {
     }
     this.mappedFeatures = this.features.filter(f => extent.contains(f.geometry));
   }
+
   setIsFilterByExtent(isByExtent, extent=null){
     this.isFilterByExtent = isByExtent;
     if(isByExtent){
@@ -368,8 +362,6 @@ decorate(FeatureStore, {
   setGeneralSearchString: action.bound,
   load: action.bound,
   loadAttachments: action.bound,
-  onCalendarEvent: action.bound,
-  setSelectedFeature: action.bound,
   applyFilter: action.bound,
   deleteActiveFilter: action.bound,
   filterByFeature: action.bound,

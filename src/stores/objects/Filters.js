@@ -185,8 +185,7 @@ class NumFilter extends BaseFilter{
     let low;
     for(let f of this.featureStore.features){
       const atrs = f.attributes;
-      const rv = atrs[this.fieldName];
-      const v = this._transformValue(rv);
+      const v = this._transformValue(atrs);
       if(v < low || !low){
         low = v;
       }
@@ -198,8 +197,7 @@ class NumFilter extends BaseFilter{
     let high;
     for(let f of this.featureStore.features){
       const atrs = f.attributes;
-      const rv = atrs[this.fieldName];
-      const v = this._transformValue(rv);
+      const v = this._transformValue(atrs);
       if(v > high || !high){
         high = v;
       }
@@ -240,8 +238,7 @@ class NumFilter extends BaseFilter{
 
     let t = true;
 
-    const rv = featureAttrs[this.fieldName];
-    const v = this._transformValue(rv);
+    const v = this._transformValue(featureAttrs);
     
     const isMin = this.min || this.min === 0;
     const isMax = this.max || this.max === 0;
@@ -258,8 +255,8 @@ class NumFilter extends BaseFilter{
     return t;
   }
 
-  _transformValue(rv){
-    return rv;
+  _transformValue(atrs){
+    return atrs[this.fieldName];
   }
 
   clear(){
@@ -282,15 +279,29 @@ decorate(NumFilter, {
 })
 
 class TimeSinceFilter extends NumFilter{
+  _mapCache = new Map();
 
-  constructor(fieldName, unit, featureStore){
+  constructor(fieldName, unit, featureStore, cache=true){
     super(fieldName, featureStore);
     this.unit = unit;
     this.type = 'time-since';
+    this.cache = cache;
   }
 
-  _transformValue(rv) {
-    return moment().diff(rv, this.unit, true);
+  _transformValue(atrs) {
+    
+    const id = atrs[layerConfig.fieldTypes.oid];
+    const rv = atrs[this.fieldName];
+    
+    if(this._mapCache.has(id)){
+      return this._mapCache.get(id);
+    } else if (this.cache){
+      const v = moment().diff(rv, this.unit, true);
+      this._mapCache.set(id, v);
+      return v;
+    } else {
+      return moment().diff(rv, this.unit, true);
+    }
   }
 
   get definitionExpression(){
