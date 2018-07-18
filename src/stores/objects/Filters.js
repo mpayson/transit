@@ -9,9 +9,9 @@ class BaseFilter{
     this.fieldName = fieldName
   }
   get label(){
-    return layerConfig.labels[this.fieldName];
+    return layerConfig.labels[this.fieldName] || this.fieldName;
   }
-  isClientFiltered(featureAttrs){
+  clientIsFiltered(featureAttrs){
     console.log("IMPLEMENT IS CLIENT FILTERED");
   }
   setFromAttr(featureAttrs){
@@ -24,21 +24,30 @@ decorate(BaseFilter, {
   label: computed
 })
 
-class MultiFieldFilter{
+class CompositeFilter extends BaseFilter{
 
   filterMap
   type
 
-  constructor(label, fields, filterType, featureStore=null, isAnd=false){
-    this.label = label;
-    this.fields = fields;
-    this.filterMap = new Map();
+  constructor(name, fieldTypeArr, featureStore=null, isAnd=false){
+    super(name);
     this.isAnd = isAnd;
-    if(filterType === 'multi-split'){
-      this.type = 'multi-multi-split';
-      fields.forEach(f => {
-        this.filterMap.set(f, new MultiSplitFilter(f, ',', featureStore, isAnd));
-      })
+    this.type = 'composite';
+
+    this.fields = [];
+    this.filterMap = new Map();
+    for(let ft of fieldTypeArr){
+      this.fields.push(ft.name);
+
+      let filter;
+      switch(ft.type){
+        case 'multi-split':
+          filter = new MultiSplitFilter(ft.name, ',', featureStore, isAnd);
+          break;
+        default:
+          throw "UNKNOWN FILTER TYPE";
+      }
+      this.filterMap.set(ft.name, filter);
     }
   }
 
@@ -121,7 +130,7 @@ class MultiFieldFilter{
   }
 }
 
-decorate(MultiFieldFilter, {
+decorate(CompositeFilter, {
   filterMap: observable,
   isAnd: observable,
   isActive: computed,
@@ -285,11 +294,7 @@ class TimeSinceFilter extends NumFilter{
   }
 
   get definitionExpression(){
-    if(!this.min && !this.max){
-      return null;
-    }
-
-    if(this.min <= this.low && this.max >= this.high){
+    if(!this.isActive){
       return null;
     }
 
@@ -317,21 +322,105 @@ class TimeSinceFilter extends NumFilter{
 
 }
 
-
-
-class MultiSplitFilter extends BaseFilter{
-  constructor(fieldName, delimeter, featureStore, isAnd=false){
+class MultiFilter extends BaseFilter{
+  constructor(fieldName, featureStore, isAnd=false){
     super(fieldName);
-    this.type = 'multi-split';
+    this.type = 'multi';
     this.featureStore = featureStore;
     this.optionMap = new Map();
-    this.delimeter = delimeter;
     this.isSetAll = false;
     this.isAnd = isAnd;
   }
 
   get isActive(){
-    return this.optionMap.size > 0;
+    return this.optionMap.size > 0
+  }
+
+  get options(){
+    let optionMap = new Map();
+    let fs = this.isAnd
+      ? this.featureStore.filteredFeatures
+      : this.featureStore.features;
+
+    for(let f of fs){
+      const atrs = f.attributes;
+      if(!atrs.hasOwnProperty(this.fieldName) || !atrs[this.fieldName]){
+        continue;
+      }
+      let v = atrs[this.fieldName];
+      if(optionMap.has(v)){
+        const count = optionMap.get(v);
+        optionMap.set(v, count + 1);
+      } else {
+        optionMap.set(v);
+      }
+    }
+    return Utils.alphSort([...optionMap.entries()], 0);
+  }
+
+  get definitionExpression(){
+    if(!this.isActive){
+      return null;
+    }
+    const actOpts = [...this.optionMap.keys()];
+    const wstr = actOpts.join("','");
+    return `${this.fieldName} IN ('${wstr}')`;
+  }
+
+  clientIsVisible(featureAttrs){
+    if(!this.isActive){
+      return true
+    }
+    if(!featureAttrs.hasOwnProperty(this.fieldName) || !featureAttrs[this.fieldName]){
+      return false;
+    }
+    const v = featureAttrs[this.fieldName];
+    return this.optionMap.has(v);
+  }
+
+  setMultiOption(option, isChecked){
+    if(isChecked){
+      this.optionMap.set(option, isChecked);
+    } else if (this.optionMap.has(option)){
+      this.optionMap.delete(option);
+    }
+  }
+  setAll(isAll){
+    this.isSetAll = isAll;
+    if(isAll){
+      this.options.forEach(opt => this.optionMap.set(opt[0], true));
+    } else {
+      this.optionMap.clear();
+    }
+  }
+  setIsAnd(isAnd){
+    this.isAnd = isAnd;
+  }
+  clear(){
+    this.setAll(false);
+  }
+
+}
+
+decorate(MultiFilter, {
+  optionMap: observable,
+  isSetAll: observable,
+  isAnd: observable,
+  isActive: computed,
+  options: computed,
+  definitionExpression: computed,
+  setMultiOption: action.bound,
+  setAll: action.bound,
+  setIsAnd: action.bound,
+  clear: action.bound
+})
+
+class MultiSplitFilter extends MultiFilter{
+  constructor(fieldName, delimeter, featureStore, isAnd=false){
+    super(fieldName, featureStore, isAnd);
+    this.supportsAndOr = true;
+    this.type = 'multi-split';
+    this.delimeter = delimeter;
   }
 
   get options(){
@@ -405,40 +494,11 @@ class MultiSplitFilter extends BaseFilter{
     }
   }
 
-  setMultiOption(option, isChecked){
-    if(isChecked){
-      this.optionMap.set(option, isChecked);
-    } else if (this.optionMap.has(option)){
-      this.optionMap.delete(option);
-    }
-  }
-  setAll(isAll){
-    this.isSetAll = isAll;
-    if(isAll){
-      this.options.forEach(opt => this.optionMap.set(opt[0], true));
-    } else {
-      this.optionMap.clear();
-    }
-  }
-  setIsAnd(isAnd){
-    this.isAnd = isAnd;
-  }
-  clear(){
-    this.setAll(false);
-  }
 }
 decorate(MultiSplitFilter, {
-  optionMap: observable,
-  isSetAll: observable,
-  isAnd: observable,
-  isActive: computed,
   definitionExpression: computed,
   options: computed,
-  setMultiOption: action.bound,
-  setAll: action.bound,
-  clear: action.bound,
-  setIsAnd: action.bound,
   setFromAttr: action.bound
 })
 
-export {NumFilter, MultiSplitFilter, MultiFieldFilter, TimeSinceFilter}
+export {NumFilter, MultiFilter, MultiSplitFilter, CompositeFilter, TimeSinceFilter}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FilterGroup from './UIComponents/FilterGroup';
+import FilterGroup from './filters/FilterGroup';
 import BrowseList from './BrowseList';
 import { observer } from "mobx-react";
 import { Route, Switch, Link } from "react-router-dom";
@@ -37,7 +37,6 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
   }
 
   render() {
-    const featureAttrs = this.featureStore.filteredAttributes;
     
     let pane;
     let isMap;
@@ -52,7 +51,7 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
     return (
       <Container className="mt-3">
         <Row style={{ marginBottom: '5px' }}>
-          <FilterGroup dark featureStore={this.featureStore} appState={this.appState}/>
+          <FilterGroup dark filterObjs={this.featureStore.filters}/>
         </Row>
         <hr className="my-4"/>
         <Row>

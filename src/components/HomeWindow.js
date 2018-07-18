@@ -1,6 +1,6 @@
 import React from 'react';
 import CardGallery from './CardGallery';
-import FilterGroup from './UIComponents/FilterGroup';
+import FilterGroup from './filters/FilterGroup';
 import {observer} from'mobx-react';
 import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';
@@ -29,7 +29,7 @@ const HomeWindow = observer(({appState, featureStore}) => (
             <hr className="my-4 hr-dark"/>
             <p>Start here to find colleagues who match your interests:</p>
             <div style={{marginBottom: '5px'}}>
-              <FilterGroup appState={appState} featureStore={featureStore}/>
+              <FilterGroup filterObjs={featureStore.filters.slice(0,2)}/>
             </div>
             <Link to={Utils.url('/browse')}>Browse all volunteers</Link>
           
