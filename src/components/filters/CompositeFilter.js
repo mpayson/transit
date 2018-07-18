@@ -21,6 +21,7 @@ const CompositeFilter = observer(class CompositeFilter extends Component {
 
     this.refs = [];
     this.searchRef = React.createRef();
+    this._container = React.createRef();
 
     this.state = {
       filterStr: ''
@@ -45,13 +46,13 @@ const CompositeFilter = observer(class CompositeFilter extends Component {
   onFilterClicked(e){
     const sid = e.target.id;
     if(sid === 'search'){
-      this.searchRef.current.scrollIntoView({block: 'start', behavior: 'smooth'});
+      this._container.current.scrollTop = this.searchRef.current.offsetTop;
       return;
     }
     const id = parseInt(sid, 10);
     if(this.refs && id < this.refs.length){
       const node = this.refs[id];
-      node.current.scrollIntoView({block: 'start', behavior: 'smooth'});
+      this._container.current.scrollTop = node.current.offsetTop;
     }
 
     
@@ -129,7 +130,7 @@ const CompositeFilter = observer(class CompositeFilter extends Component {
               </div>
             </Col>
             <Col md="8">
-            <div style={{maxHeight:"20rem", overflowY:"scroll"}}>
+            <div ref={this._container} style={{maxHeight:"20rem", overflowY:"scroll"}}>
               <div ref={this.searchRef} id='search' className="mb-2 mt-1">
                 <Input
                   bsSize="sm"
