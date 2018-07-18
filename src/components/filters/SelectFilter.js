@@ -104,9 +104,8 @@ const SelectFilter = observer(class SelectFilter extends Component {
         <div style={{minWidth:"15rem", maxHeight:"20rem", overflowY:"scroll"}}>
           <div className="mr-1 ml-1">
             <Input
-              placeholder="sm"
               bsSize="sm"
-              placeholder="filter"
+              placeholder="search"
               value={this.state.filterStr}
               onChange={this.onTextChange}
               />

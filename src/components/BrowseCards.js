@@ -8,9 +8,8 @@ import Utils from '../utils/Utils';
 import moment from 'moment';
 
 import {
-  Badge, Card, CardBody, Fade, Button, Row, Col, Container, CardImg, UncontrolledTooltip
+  Badge, Card, CardBody, Button, Row, Col, Container, CardImg, UncontrolledTooltip
 } from 'reactstrap';
-import { ftruncate } from 'fs';
 
 const MockCard = () => (
   <Card className="mt-2">

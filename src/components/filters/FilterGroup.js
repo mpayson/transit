@@ -27,7 +27,7 @@ const FilterGroup = observer(({filterObjs, dark}) => {
         filterView = <SlideFilter filterObj={f}/>;
         break;
       default:
-        throw "UNKNOWN FILTER TYPE";
+        throw new Error("UNKNOWN FILTER TYPE");
     }
     const dropdownFilter = (
       <DropdownFilter className="mr-2" dark={dark} filterObj={f}>

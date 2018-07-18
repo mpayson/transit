@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import FilterGroup from './filters/FilterGroup';
 import BrowseList from './BrowseList';
 import { observer } from "mobx-react";
-import { Route, Switch, Link } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Profile from './Profile';
 import Utils from '../utils/Utils';
 

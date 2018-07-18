@@ -3,9 +3,7 @@ import {observer} from 'mobx-react';
 import Rheostat from 'rheostat';
 import './SlideFilter.css';
 
-import {
-  ButtonDropdown, DropdownToggle, DropdownMenu,
-  Button} from 'reactstrap';
+import {Button} from 'reactstrap';
 
 const SlideFilter = observer(class SlideFilter extends Component {
 

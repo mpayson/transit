@@ -1,18 +1,15 @@
 import React from 'react';
 import { observer } from "mobx-react";
-import {toJS} from 'mobx';
 import {layerConfig} from '../config/config';
 import { Link } from "react-router-dom";
 import { UncontrolledTooltip } from 'reactstrap';
-import moment from 'moment';
 import Utils from '../utils/Utils';
 
 import {Container, Col, Row, Table} from 'reactstrap';
 
-const AboutWindow = observer(({appState, featureStore}) => {
+const AboutWindow = observer(({featureStore}) => {
 
   const ftypes = layerConfig.fieldTypes;
-  const startMap = featureStore.emailStartMap;
   let countMap = featureStore.emailStreakMap;
 
   let sortFeatures = featureStore.features.sort((a, b) => {
@@ -32,15 +29,15 @@ const AboutWindow = observer(({appState, featureStore}) => {
 
     let h;
     if(i === 0){
-      h = <h3 className="mb-0">🥇</h3>
+      h = <h3 className="mb-0"><span role="img" aria-label="1">🥇</span></h3>
     } else if(i === 1){
-      h = <h3 className="mb-0">🥈</h3>
+      h = <h3 className="mb-0"><span role="img" aria-label="2">🥈</span></h3>
     } else if(i === 2){
-      h = <h3 className="mb-0">🥉</h3>
+      h = <h3 className="mb-0"><span role="img" aria-label="3">🥉</span></h3>
     } else if(count < 5){
-      h = <h3 className="mb-0">🐣</h3>
+      h = <h3 className="mb-0"><span role="img" aria-label="chic egg">🐣</span></h3>
     } else {
-      h = <h3 className="mb-0">🐥</h3>
+      h = <h3 className="mb-0"><span role="img" aria-label="chic">🐥</span></h3>
     }
     
     return (

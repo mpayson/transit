@@ -18,6 +18,7 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Badge,
   Input} from 'reactstrap';
 
 // import ArcService from './services/ArcService';
@@ -76,6 +77,7 @@ const App = observer(class App extends Component {
               </NavItem>
             </Nav>
             <Nav navbar className="ml-auto">
+              <h3 className='mr-2'><Badge color="danger">alpha</Badge></h3>
               <NavItem>
                 <Input  
                   placeholder="search"

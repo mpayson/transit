@@ -4,15 +4,13 @@ import {observer} from 'mobx-react';
 import moment from 'moment';
 import inImg from '../resources/linkedin.svg';
 import conImg from '../resources/contact.svg';
-import {toJS} from 'mobx';
 import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';
 import './Profile.css';
 
-import { Badge, Card, CardImg, Fade, CardBody, CardText,
-  CardTitle, CardSubtitle, Button, Row, Col, Container,
+import { Card, Fade, CardBody, CardText,
+  CardTitle, CardSubtitle, Button,
   Nav, NavItem, NavLink} from 'reactstrap';
-import { max } from 'moment';
 
 
 const getEmail = (email, time=null) => {
@@ -39,11 +37,11 @@ const Profile = observer(class Profile extends Component {
   }
 
   onTabClick(e){
-    this.appState.setProfileTab(parseInt(e.target.id));
+    this.appState.setProfileTab(parseInt(e.target.id, 10));
   }
 
   onSimilarClick(e){
-    this.featureStore.filterByFeature(parseInt(this.props.match.params.id));
+    this.featureStore.filterByFeature(parseInt(this.props.match.params.id, 10));
 
   }
 
@@ -56,7 +54,7 @@ const Profile = observer(class Profile extends Component {
   render() {
 
     // const attrs = this.props.featureAttributes;
-    const id = parseInt(this.props.match.params.id);
+    const id = parseInt(this.props.match.params.id, 10);
     const idMap = this.featureStore.featureIdMap;
 
     if(!idMap.has(id)){
@@ -138,7 +136,7 @@ const Profile = observer(class Profile extends Component {
         <Fade in>
           <Card className="text-center">
             <div style={{width: "100%", height: "8rem", backgroundColor:"#e9ecef"}}>
-              <img src={att} className="rounded-circle" style={{height:"100%"}}/>
+              <img alt={attrs[ftypes.name]} src={att} className="rounded-circle" style={{height:"100%"}}/>
             </div>
             <CardBody>
               <div>

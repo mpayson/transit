@@ -1,4 +1,4 @@
-import {decorate, observable, action, computed, autorun, values } from 'mobx';
+import {decorate, observable, action, computed, autorun } from 'mobx';
 import {mapConfig, layerConfig} from '../config/config';
 import {NumFilter, MultiSplitFilter, MultiFilter, CompositeFilter, TimeSinceFilter} from './objects/Filters';
 import Utils from '../utils/Utils';
@@ -54,7 +54,7 @@ class FeatureStore {
       } else if (v === 'time-since'){
         newFilter = new TimeSinceFilter(k, 'year', this);
       } else {
-        throw "UNKNOWN FILTER TYPE";
+        throw new Error("UNKNOWN FILTER TYPE");
       }
       this.filters.push(newFilter);
     }
@@ -87,7 +87,6 @@ class FeatureStore {
       if(this.selObjId){
         return f.attributes.ObjectId === this.selObjId;
       }
-      const ftypes = layerConfig.fieldTypes;
 
       if(this.genSearchString){
         const subst = this.genSearchString.toLowerCase();
@@ -164,7 +163,7 @@ class FeatureStore {
   }
 
   getEmailFromId(featureId){
-    let id = typeof featureId === "string" ? parseInt(featureId) : featureId;
+    let id = typeof featureId === "string" ? parseInt(featureId, 10) : featureId;
 
     if(!this.featureIdMap.has(id)){
       return null;
@@ -271,7 +270,7 @@ class FeatureStore {
     if(!featureId){
       return;
     }
-    let id = typeof featureId === "string" ? parseInt(featureId) : featureId;
+    let id = typeof featureId === "string" ? parseInt(featureId, 10) : featureId;
     const f = this.featureIdMap.get(id);
     for(let v of this.filters){
       v.setFromAttr(f.attributes);

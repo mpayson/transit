@@ -1,5 +1,5 @@
 import esriLoader from 'esri-loader';
-import {layerConfig, loaderOptions} from '../config/config';
+import {loaderOptions} from '../config/config';
 
 
 class ArcService {

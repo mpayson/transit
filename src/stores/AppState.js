@@ -45,8 +45,7 @@ decorate(AppState, {
   setBrowsePane: action.bound,
   profileTab: observable,
   setProfileTab: action.bound,
-  browsePane: observable,
-  setBrowsePane: action.bound
+  browsePane: observable
 })
 
 const singleton = new AppState()

@@ -1,4 +1,4 @@
-import {decorate, observable, action, computed, toJS} from 'mobx';
+import {decorate, observable, action, computed} from 'mobx';
 import {layerConfig} from '../../config/config';
 import Utils from '../../utils/Utils';
 import moment from 'moment';
@@ -45,7 +45,7 @@ class CompositeFilter extends BaseFilter{
           filter = new MultiSplitFilter(ft.name, ',', featureStore, isAnd);
           break;
         default:
-          throw "UNKNOWN FILTER TYPE";
+          throw new Error("UNKNOWN FILTER TYPE");
       }
       this.filterMap.set(ft.name, filter);
     }

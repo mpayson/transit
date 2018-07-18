@@ -4,7 +4,7 @@ import SelectFilter from './SelectFilter';
 import SlideFilter from './SlideFilter';
 
 import {
-  Container, Row, Col, Button, ButtonGroup, DropdownItem, Input } from 'reactstrap';
+  Container, Row, Col, Button, ButtonGroup, Input } from 'reactstrap';
 
 const CompositeFilter = observer(class CompositeFilter extends Component {
 
@@ -48,7 +48,7 @@ const CompositeFilter = observer(class CompositeFilter extends Component {
       this.searchRef.current.scrollIntoView({block: 'start', behavior: 'smooth'});
       return;
     }
-    const id = parseInt(sid);
+    const id = parseInt(sid, 10);
     if(this.refs && id < this.refs.length){
       const node = this.refs[id];
       node.current.scrollIntoView({block: 'start', behavior: 'smooth'});
@@ -86,7 +86,7 @@ const CompositeFilter = observer(class CompositeFilter extends Component {
           filterView = <SlideFilter filterObj={f}/>;
           break;
         default:
-          throw "UNKNOWN FILTER TYPE";
+          throw new Error("UNKNOWN FILTER TYPE");
       }
 
       const newView = (
@@ -132,7 +132,6 @@ const CompositeFilter = observer(class CompositeFilter extends Component {
             <div style={{maxHeight:"20rem", overflowY:"scroll"}}>
               <div ref={this.searchRef} id='search' className="mb-2 mt-1">
                 <Input
-                  placeholder="sm"
                   bsSize="sm"
                   placeholder="search"
                   value={this.state.filterStr}

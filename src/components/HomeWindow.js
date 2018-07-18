@@ -4,7 +4,7 @@ import FilterGroup from './filters/FilterGroup';
 import {observer} from'mobx-react';
 import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';
-import HomeCanvas from '../components/HomeCanvas';
+// import HomeCanvas from '../components/HomeCanvas';
 import backImg from '../resources/group-stars.png';
 // import SelectFilter from './SelectFilter';
 
@@ -19,7 +19,7 @@ const HomeWindow = observer(({appState, featureStore}) => (
   <div>
     <div style={{position:"relative"}}>
     {/* <HomeCanvas/> */}
-      <img className="d-none d-md-block" style={{position:"absolute", top:0, right: "2vw"}} src={backImg}/>
+      <img alt='e-bloc' className="d-none d-md-block" style={{position:"absolute", top:0, right: "2vw"}} src={backImg}/>
       <Jumbotron fluid className="e-bloc-jumbo">
 
           <Container fluid>

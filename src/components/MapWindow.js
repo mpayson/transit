@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import esriLoader from 'esri-loader';
 import {loaderOptions, layerConfig} from '../config/config';
 import {withRouter} from 'react-router-dom';
-import {toJS, when} from 'mobx';
+import {when} from 'mobx';
 import {observer} from 'mobx-react';
 import Utils from '../utils/Utils';
 import {Button} from 'reactstrap';
@@ -53,7 +53,7 @@ const MapWindow = observer(class MapWindow extends Component {
       return;
     }
     
-    const nId = parseInt(id);
+    const nId = parseInt(id, 10);
 
     const idMap = this.featureStore.featureIdMap;
     if(!idMap.has(nId)){
