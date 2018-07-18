@@ -1,44 +1,57 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import DropdownFilter from './DropdownFilter';
-import SelectFilterOld from './SelectFilterOld';
+import CompositeFilter from './CompositeFilter';
 import SelectFilter from './SelectFilter';
 import SlideFilter from './SlideFilter';
 
-const getFilterView = (f, dark) => {
 
-  let FilterView;
-  switch(f.type){
-    case 'composite':
-      FilterView = SelectFilterOld;
-      break;
-    case 'multi-split':
-      FilterView = SelectFilter;
-      break;
-    case 'num':
-      FilterView = SlideFilter;
-      break;
-    case 'time-since':
-      FilterView = SlideFilter;
-      break;
-    default:
-      throw "UNKNOWN FILTER TYPE";
-  }
+const FilterGroup = observer(({filterObjs, dark}) => {
 
-  return (
-    <DropdownFilter dark={dark} filterObj={f}>
-      <FilterView filterObj={f}/>
-    </DropdownFilter>
-  )
-}
+  const filterViews = filterObjs.map((f, i) => {
+    let filterView;
+    switch(f.type){
+      case 'composite':
+        filterView = <CompositeFilter filterObj={f}/>;
+        break;
+      case 'multi-split':
+        filterView = <SelectFilter filterObj={f}/>;
+        break;
+      case 'multi':
+        filterView = <SelectFilter filterObj={f}/>
+        break;
+      case 'num':
+        filterView = <SlideFilter filterObj={f}/>;
+        break;
+      case 'time-since':
+        filterView = <SlideFilter filterObj={f}/>;
+        break;
+      default:
+        throw "UNKNOWN FILTER TYPE";
+    }
+    const dropdownFilter = (
+      <DropdownFilter className="mr-2" dark={dark} filterObj={f}>
+        {filterView}
+      </DropdownFilter>
+    )
+    if(i > 1){
+      return (
+        <div key={f.label} className="float-right d-none d-sm-block">
+          {dropdownFilter}
+        </div>
+      )
+    }
 
-const FilterGroup = observer(({featureStore, appState, dark}) => {
+    return (
+      <DropdownFilter key={f.label} className="mr-2" dark={dark} filterObj={f}>
+        {filterView}
+      </DropdownFilter>
+    )
+  })
 
   return (
     <div>
-      {getFilterView(featureStore.filters[1], dark)}
-      &nbsp;&nbsp;&nbsp;
-      {getFilterView(featureStore.filters[0], dark)}
+      {filterViews}
     </div>
   )
 })

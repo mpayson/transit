@@ -28,7 +28,7 @@ const SlideFilter = observer(class SlideFilter extends Component {
   }
 
   render() {
-    
+
     return (
       <div>
         <div

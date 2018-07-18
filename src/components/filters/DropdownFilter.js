@@ -30,7 +30,8 @@ const DropdownFilter = observer(class SlideFilter extends Component {
     const color = isActive ? "success" : dark;
 
     return (
-      <ButtonDropdown id="dropbutton" isOpen={this.state.dropdownOpen} toggle={this._toggle}>
+      <ButtonDropdown
+        className={this.props.className} id="dropbutton" isOpen={this.state.dropdownOpen} toggle={this._toggle}>
         <DropdownToggle outline={!isActive} color={color} id="droptoggle" caret>
           {this.filterObj.label}
         </DropdownToggle>

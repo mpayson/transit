@@ -29,7 +29,7 @@ const HomeWindow = observer(({appState, featureStore}) => (
             <hr className="my-4 hr-dark"/>
             <p>Start here to find colleagues who match your interests:</p>
             <div style={{marginBottom: '5px'}}>
-              <FilterGroup appState={appState} featureStore={featureStore}/>
+              <FilterGroup filterObjs={featureStore.filters.slice(0,2)}/>
             </div>
             <Link to={Utils.url('/browse')}>Browse all volunteers</Link>
           
