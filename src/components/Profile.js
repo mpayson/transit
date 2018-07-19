@@ -9,7 +9,7 @@ import Utils from '../utils/Utils';
 import './Profile.css';
 
 import { Card, Fade, CardBody, CardText,
-  CardTitle, CardSubtitle, Button,
+  CardTitle, CardSubtitle, CardImg, Button,
   Nav, NavItem, NavLink} from 'reactstrap';
 
 
@@ -31,13 +31,20 @@ const Profile = observer(class Profile extends Component {
     this.onTabClick = this.onTabClick.bind(this);
     this.onSimilarClick = this.onSimilarClick.bind(this);
     this.onToggleClick = this.onToggleClick.bind(this);
+
+    this._onLoad = this._onLoad.bind(this);
     this.state = {
-      isActive: false
+      isActive: false,
+      loaded: false
     }
   }
 
   onTabClick(e){
     this.appState.setProfileTab(parseInt(e.target.id, 10));
+  }
+
+  _onLoad(e){
+    this.setState({loaded: true})
   }
 
   onSimilarClick(e){
@@ -126,7 +133,8 @@ const Profile = observer(class Profile extends Component {
       );
     }
 
-    const att = this.featureStore.featureAttachments.get(id);
+    const attUrl = this.featureStore.featureAttachments.get(id);
+    const att = this.state.loaded ? attUrl : null;
 
     const timeText = (events && events.length > 0) ? "Upcoming Available Times" : "No Upcoming Available Times";
 
@@ -135,8 +143,8 @@ const Profile = observer(class Profile extends Component {
         <Button tag={Link} to={Utils.url('/browse')} className="mb-2" size="sm" outline>{"< Back to browse"}</Button>
         <Fade in>
           <Card className="text-center">
-            <div style={{width: "100%", height: "8rem", backgroundColor:"#e9ecef"}}>
-              <img alt={attrs[ftypes.name]} src={att} className="rounded-circle" style={{height:"100%"}}/>
+            <div style={{width: "100%", backgroundColor:"#e9ecef"}}>
+              <CardImg top src={att} className="rounded-circle" style={{height:"10rem", width:"10rem", objectFit:"cover", backgroundColor: "#6C757C"}}/>
             </div>
             <CardBody>
               <div>
@@ -156,14 +164,16 @@ const Profile = observer(class Profile extends Component {
               </Nav>
               <CardText>{v}</CardText>
               <div style={{textAlign:"left"}}>
-                <CardSubtitle className="mb-2">{timeText}</CardSubtitle>
+                <CardSubtitle className="mt-2 mb-2">{timeText}</CardSubtitle>
                 {events}
               </div>
             </CardBody>
           </Card>
           <Button onClick={this.onSimilarClick} tag={Link} to={Utils.url('/browse')} outline className="mt-4" block>See volunteers with similar interests</Button>
         </Fade>
-
+        <div className='d-none'>
+          <img src={attUrl} alt='hidden load' onLoad={this._onLoad}/>
+        </div>
       </div>
     );
 

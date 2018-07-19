@@ -14,6 +14,9 @@ const SlideFilter = observer(class SlideFilter extends Component {
 
     this.handle = this.handle.bind(this);
     this.onClear = this.onClear.bind(this);
+    this.state = {
+      minmax: [1,5]
+    }
 
   }
 

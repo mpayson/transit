@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FilterGroup from './filters/FilterGroup';
-import BrowseList from './BrowseList';
+// import BrowseList from './BrowseList';
+import BrowseList from './BrowseCardsVirt';
 import { observer } from "mobx-react";
 import { Route, Switch } from "react-router-dom";
 import Profile from './Profile';
@@ -50,7 +51,7 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
 
     return (
       <Container className="mt-3">
-        <Row style={{ marginBottom: '5px' }}>
+        <Row className='mb-2'>
           <FilterGroup dark filterObjs={this.featureStore.filters}/>
         </Row>
         <hr className="my-4"/>
@@ -65,8 +66,8 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
               <Route path={Utils.url("/browse/:id")} render={(props) => <Profile {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
             </Switch>
           </Col>
-          <Col className="d-none d-lg-block">
-              <ButtonGroup className="float-right clearfix mb-1 d-none d-lg-block">
+          <Col className="d-none d-md-block">
+              <ButtonGroup className="float-right clearfix mb-1 d-none d-md-block">
                   <Button onClick={this._onCalendarClicked} outline={isMap} color={isMap ? "secondary" : "primary"} size="sm">
                     Calendar
                   </Button>

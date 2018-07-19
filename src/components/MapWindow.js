@@ -16,13 +16,16 @@ const MapWindow = observer(class MapWindow extends Component {
   _highlight
   _popupHandle
   _extentHandle
+  _popopVisHandle
 
   constructor(props, context){
     super(props, context);
     this.featureStore = props.featureStore;
+
     this._centerZoomHighlight = this._centerZoomHighlight.bind(this);
     this._handlePopupAction = this._handlePopupAction.bind(this);
     this._handleExtentChange = this._handleExtentChange.bind(this);
+
     this.state = {
       didMount: false
     }
@@ -35,7 +38,6 @@ const MapWindow = observer(class MapWindow extends Component {
   }
 
   _centerZoomHighlight(){
-
     const id = this.props.match.params.id;
 
     if(id === this.centerId || !this.view || !this.lyrView){
@@ -99,6 +101,11 @@ const MapWindow = observer(class MapWindow extends Component {
         this.view.ui.add([homeBtn], "top-right");
 
         this._extentHandle = watchUtils.whenTrue(this.view, 'stationary', this._handleExtentChange);
+        this._popopVisHandle = watchUtils.whenTrue(this.view.popup, 'visible', ()=>{
+          if(this._highlight){
+            this._highlight.remove();
+          }
+        });
 
         return when(() => this.featureStore.loadStatus.layerLoaded);
       })
@@ -126,6 +133,9 @@ const MapWindow = observer(class MapWindow extends Component {
     }
     if(this._extentHandle){
       this._extentHandle.remove();
+    }
+    if(this._popopVisHandle){
+      this._popopVisHandle.remove();
     }
   }
 
