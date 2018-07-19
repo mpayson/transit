@@ -29,79 +29,101 @@ const MockCard = () => (
   </Card>
 )
 
-const BrowseCard = observer(({ featureAttrs, featureStore}) => {
-  const fa = featureAttrs;
-  if(!featureAttrs){
-    return <MockCard/>
+const BrowseCard = observer(class BrowseCard extends React.Component{
+  constructor(props, context){
+    super(props, context);
+    this.featureStore = props.featureStore;
+    
+    this._onLoad = this._onLoad.bind(this);
+
+    this.state = {
+      loaded: false
+    }
   }
-  const fTypes = layerConfig.fieldTypes;
-  const objId = fa[fTypes.oid];
 
-  const att = featureStore.featureAttachments.get(objId);
+  _onLoad(e){
+    this.setState({loaded: true});
+  }
 
-  const bc = Utils.getBadges(cardConfig.description, fa);
-  const badges = bc.map(b => {
-    const v = Utils.formatSurveyStr(fa[b[0]]);
-    const label = layerConfig.labels[b[0]] || b[0];
-    const tUid = `${label}${objId}`.toLowerCase().replace(' ', '-');
+  render(){
+    const fa = this.props.featureAttrs;
+    const fTypes = layerConfig.fieldTypes;
+
+    if(!fa){
+      return <MockCard/>
+    }
+
+    const bc = Utils.getBadges(cardConfig.description, fa);
+    const badges = bc.map(b => {
+      const v = Utils.formatSurveyStr(fa[b[0]]);
+      const label = layerConfig.labels[b[0]] || b[0];
+      const tUid = `${label}${objId}`.toLowerCase().replace(' ', '-');
+      return (
+        <div key={tUid} style={{display:'inline-block'}}>
+          <Badge id={tUid} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
+          <UncontrolledTooltip target={tUid} delay={{ show: 0, hide: 0 }}>
+            {v}
+          </UncontrolledTooltip>
+        </div>
+      )
+    })
+
+    const dt = fa[fTypes.years];
+    const yrs = moment().diff(dt, 'years', false);
+    const yrLabel = yrs === 1 ? 'year' : 'years';
+
+    const inUrl = fa[layerConfig.fieldTypes.linkedin];
+    let inButton;
+    if(inUrl){
+      inButton = (
+        <Button href={inUrl} target="__blank" size="sm" className="mt-4 mb-2 ml-2" color='linkedin'
+          style={{backgroundImage: `url(${inImg})`, width: '2rem', height: '2rem'}}
+          />
+      );
+    }
+
+    const email = fa[layerConfig.fieldTypes.email];
+    const hrefEmail = `mailto:${email}`;
+
+    
+    const objId = fa[fTypes.oid];
+    let attUrl = this.featureStore.featureAttachments.get(objId);
+    const attSrc = this.state.loaded ? attUrl : null;
+
+    const imgItem = <CardImg src={attSrc} style={{backgroundColor: "#e9ecef", objectFit:"cover", width:"100%", height: "100%"}}/>
+    
     return (
-      <div key={tUid} style={{display:'inline-block'}}>
-        <Badge id={tUid} className="badge-outline mr-1">{`${label} (${b[1]})`}</Badge>
-        <UncontrolledTooltip target={tUid} delay={{ show: 0, hide: 0 }}>
-          {v}
-        </UncontrolledTooltip>
-      </div>
+      <Card key={objId} className="mb-2">
+        <Row className="align-items-center">
+          <Col xs="4" className="pr-0">
+            <div style={{width:"100%", height:"160px"}}>
+              {imgItem}
+            </div>
+              
+          </Col>
+          <Col xs="8">
+            <h6>
+              <span className="h4">{fa[fTypes.name]}</span>
+              <small className={'font-weight-light ml-2'}>{`${yrs} ${yrLabel}`}</small>
+            </h6>
+            <div>
+              {badges}
+            </div>
+            <Button tag={Link} to={Utils.url(`/browse/${objId}`)} size="sm" color="primary" className="mt-4 mb-2">Learn more</Button>
+            {inButton}
+            <Button href={hrefEmail} size="sm" className="mt-4 mb-2 ml-2"
+              style={{backgroundImage: `url(${conImg})`, width: '2rem', height: '2rem'}}
+              />
+          </Col>
+        </Row>
+        <div className='d-none'>
+          <img src={attUrl} onLoad={this._onLoad}/>
+        </div>
+      </Card>
     )
-  })
-
-  const dt = fa[fTypes.years];
-  const yrs = moment().diff(dt, 'years', false);
-  const yrLabel = yrs === 1 ? 'year' : 'years';
-
-  const inUrl = fa[layerConfig.fieldTypes.linkedin];
-  let inButton;
-  if(inUrl){
-    inButton = (
-      <Button href={inUrl} target="__blank" size="sm" className="mt-4 mb-2 ml-2" color='linkedin'
-        style={{backgroundImage: `url(${inImg})`, width: '2rem', height: '2rem'}}
-        />
-    );
   }
 
-  const email = fa[layerConfig.fieldTypes.email];
-  const hrefEmail = `mailto:${email}`;
+});
 
-  const imgItem = att
-  ? <CardImg src={att} style={{backgroundColor: "#e9ecef", objectFit:"cover", width:"100%", height: "100%"}}/>
-  : <div style={{backgroundColor: "#e9ecef", width: "100%", height: "100%"}}/>
-
-  return (
-    <Card key={objId} className="mb-2">
-      <Row className="align-items-center">
-        <Col xs="4" className="pr-0">
-          <div style={{width:"100%", height:"160px"}}>
-            {imgItem}
-          </div>
-            
-        </Col>
-        <Col xs="8">
-          <h6>
-            <span className="h4">{fa[fTypes.name]}</span>
-            <small className={'font-weight-light ml-2'}>{`${yrs} ${yrLabel}`}</small>
-          </h6>
-          <div>
-            {badges}
-          </div>
-          <Button tag={Link} to={Utils.url(`/browse/${objId}`)} size="sm" color="primary" className="mt-4 mb-2">Learn more</Button>
-          {inButton}
-          <Button href={hrefEmail} size="sm" className="mt-4 mb-2 ml-2"
-            style={{backgroundImage: `url(${conImg})`, width: '2rem', height: '2rem'}}
-            />
-        </Col>
-      </Row>
-    </Card>
-  )
-
-})
 
 export {BrowseCard, MockCard}
