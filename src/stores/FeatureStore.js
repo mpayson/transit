@@ -137,10 +137,14 @@ class FeatureStore {
           return;
         }
 
+        if(!atrs[kstart] || !atrs[kend]){
+          return;
+        }
+
         const start = moment(atrs[kstart]);
         const end = moment(atrs[kend]);
         const email = atrs[kemail].toLowerCase();
-        
+
         const event = {
           id: i,
           title: email,
@@ -222,7 +226,8 @@ class FeatureStore {
     this.emailEventMap.forEach((v,k) => {
       let events = v;
       let count = 0;
-      const sortEvents = events.sort((a,b) => a.start.isBefore(b.start));
+
+      const sortEvents = events.sort((a,b) => b.start.diff(a.start));
       
       let diffYr = cYear;
       let diffM = cMonth;
@@ -246,6 +251,7 @@ class FeatureStore {
           diffYr -= 1;
         }
       }
+
       emap.set(k, count);
     })
     return emap;
@@ -299,6 +305,7 @@ class FeatureStore {
           this.featureIdMap.set(t[i].attributes[ftypes.oid], t[i])
         }
         this.features = Utils.shuffleArr(t);
+        this.features = t;
         this.loadStatus.featsLoaded = true;
         return this.service.fetchAttachMap(this.layer, this.features)
       })
