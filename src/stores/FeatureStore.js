@@ -18,7 +18,7 @@ class FeatureStore {
   features
 
   mappedFeatures
-  isFilterByExtent
+  isFilterByExtent = true
 
   constructor(service){
     this.service = service;
@@ -320,7 +320,7 @@ class FeatureStore {
   }
 
   updateFilterExtent(extent){
-    if(!this.isFilterByExtent || !extent){
+    if(!this.isFilterByExtent || !extent || this.features.length < 1){
       return;
     }
     this.mappedFeatures = this.features.filter(f => extent.contains(f.geometry));
