@@ -54,7 +54,7 @@ const BrowseCardsVirt = observer(class BrowseCardsVirt extends Component{
                     {() => this._renderRow({ index, key, style })}
                   </Observer>
                 )}
-                overscanRowCount={3}
+                overscanRowCount={1}
               />
             )}
           </AutoSizer>

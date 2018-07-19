@@ -48,6 +48,7 @@ const BrowseCard = observer(class BrowseCard extends React.Component{
   render(){
     const fa = this.props.featureAttrs;
     const fTypes = layerConfig.fieldTypes;
+    const objId = fa[fTypes.oid];
 
     if(!fa){
       return <MockCard/>
@@ -85,8 +86,6 @@ const BrowseCard = observer(class BrowseCard extends React.Component{
     const email = fa[layerConfig.fieldTypes.email];
     const hrefEmail = `mailto:${email}`;
 
-    
-    const objId = fa[fTypes.oid];
     let attUrl = this.featureStore.featureAttachments.get(objId);
     const attSrc = this.state.loaded ? attUrl : null;
 
