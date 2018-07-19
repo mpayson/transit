@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { observer, Observer } from "mobx-react";
-import { layerConfig } from '../config/config';
 import {MockCard, BrowseCard} from './BrowseCard';
-
+import {layerConfig} from '../config/config';
 import {List, AutoSizer} from 'react-virtualized';
 
 import {Container} from 'reactstrap';
-import { min } from '../../node_modules/moment';
 
 
 const BrowseCardsVirt = observer(class BrowseCardsVirt extends Component{
@@ -19,9 +17,12 @@ const BrowseCardsVirt = observer(class BrowseCardsVirt extends Component{
 
   _renderRow({index, key, style}){
     let fs = this.featureStore.filteredFeatures[index];
+    let ats = fs.attributes;
+    let oid = fs.attributes[layerConfig.fieldTypes.oid];
+    let attUrl = this.featureStore.featureAttachments.get(oid);
     return (
       <div key={key} style={style}>
-        <BrowseCard  featureAttrs={fs.attributes} featureStore={this.featureStore}/>
+        <BrowseCard  featureAttrs={ats} attachmentUrl={attUrl}/>
       </div>
     )
   }

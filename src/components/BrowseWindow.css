@@ -2,6 +2,5 @@ div.view-div{
     width: 100%;
     /* height: calc(100% - 5rem); */
     height: calc(90vh - 10rem);
-    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
   }

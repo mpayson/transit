@@ -1,5 +1,4 @@
 import React from 'react';
-import { observer } from "mobx-react";
 import { layerConfig, cardConfig } from '../config/config';
 import { Link } from "react-router-dom";
 import inImg from '../resources/linkedin.svg';
@@ -8,7 +7,7 @@ import Utils from '../utils/Utils';
 import moment from 'moment';
 
 import {
-  Badge, Card, CardBody, Button, Row, Col, Container, CardImg, UncontrolledTooltip
+  Badge, Card, CardBody, Button, Row, Col, CardImg, UncontrolledTooltip
 } from 'reactstrap';
 
 const MockCard = () => (
@@ -29,10 +28,9 @@ const MockCard = () => (
   </Card>
 )
 
-const BrowseCard = observer(class BrowseCard extends React.Component{
+const BrowseCard = class BrowseCard extends React.PureComponent{
   constructor(props, context){
     super(props, context);
-    this.featureStore = props.featureStore;
     
     this._onLoad = this._onLoad.bind(this);
 
@@ -86,8 +84,7 @@ const BrowseCard = observer(class BrowseCard extends React.Component{
     const email = fa[layerConfig.fieldTypes.email];
     const hrefEmail = `mailto:${email}`;
 
-    let attUrl = this.featureStore.featureAttachments.get(objId);
-    const attSrc = this.state.loaded ? attUrl : null;
+    const attSrc = this.state.loaded ? this.props.attachmentUrl : null;
 
     const imgItem = <CardImg src={attSrc} style={{backgroundColor: "#e9ecef", objectFit:"cover", width:"100%", height: "100%"}}/>
     
@@ -116,13 +113,13 @@ const BrowseCard = observer(class BrowseCard extends React.Component{
           </Col>
         </Row>
         <div className='d-none'>
-          <img src={attUrl} onLoad={this._onLoad}/>
+          <img src={this.props.attachmentUrl} alt='hidden load' onLoad={this._onLoad}/>
         </div>
       </Card>
     )
   }
 
-});
+}
 
 
 export {BrowseCard, MockCard}

@@ -48,7 +48,7 @@ const CustomToolbar = (toolbar) => {
 
       <ButtonGroup className="float-right">
         <Button size="sm" outline={!(toolbar.view === "month")} onClick={goToMonth}>Month</Button>
-        <Button size="sm" outline={!(toolbar.view === "week")} onClick={goToWeek}>Week</Button>
+        <Button className="d-none d-lg-inline" size="sm" outline={!(toolbar.view === "week")} onClick={goToWeek}>Week</Button>
       </ButtonGroup>
     </div >
   );
