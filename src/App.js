@@ -19,7 +19,10 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Badge,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
   Input} from 'reactstrap';
 
 // import ArcService from './services/ArcService';
@@ -34,9 +37,11 @@ const App = observer(class App extends Component {
     this.featureStore = new FeatureStore(ArcService);
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      modal: false
     };
     this.onSearchChange = this.onSearchChange.bind(this);
+    this._toggleModal = this._toggleModal.bind(this);
     // this.featureStore = new FeatureStore(ArcService);
   }
 
@@ -45,6 +50,13 @@ const App = observer(class App extends Component {
       isOpen: !this.state.isOpen
     });
   }
+
+  _toggleModal(){
+    this.setState({
+      modal: !this.state.modal
+    })
+  }
+
   // Load data when app is about to load
   componentWillMount(){
     this.featureStore.load();
@@ -74,11 +86,11 @@ const App = observer(class App extends Component {
                 <NavLink tag={Link} to={Utils.url("/browse")}>Browse</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink target="__blank" href="https://survey123.arcgis.com/share/0493302b05ea4f77aefbe88a9fc51c6c">Sign Up</NavLink>
+                <NavLink href="#" onClick={this._toggleModal}>Volunteer</NavLink>
               </NavItem>
             </Nav>
             <Nav navbar className="ml-auto">
-              <h3 className='mr-2'><Badge color="danger">alpha</Badge></h3>
+              <div className="p-1"><Button outline size="sm" href="https://github.com/mpayson/transit/issues" target="__blank" color="danger" className="mr-2">alpha</Button></div>
               <NavItem>
                 <Input  
                   placeholder="search"
@@ -94,6 +106,17 @@ const App = observer(class App extends Component {
           <Route path={Utils.url("/browse")} render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
           <Route exact path={Utils.url("/about")} render={(props) => <AboutWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
         </Switch>
+        <Modal isOpen={this.state.modal} toggle={this._toggleModal}>
+          <ModalHeader toggle={this._toggleModal}>Thank you for volunteering!</ModalHeader>
+          <ModalBody>
+            <div>
+              <Button size="lg" block color="info" className="mb-2" target="__blank" href="https://survey123.arcgis.com/share/0493302b05ea4f77aefbe88a9fc51c6c">Become a volunteer</Button>
+            </div>
+            <div>
+              <Button size="lg" block outline color="info" className="mt-2">Share your time</Button>
+            </div>
+          </ModalBody>
+        </Modal>
         {/* <DevTools /> */}
       </div>
     )
