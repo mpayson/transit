@@ -43,7 +43,7 @@ const FilterGroup = observer(({filterObjs, dark}) => {
         {filterView}
       </DropdownFilter>
     )
-    if(i > 1){
+    if(i === 2){
       return (
         <div key={f.label} className="float-right d-none d-sm-block mr-2">
           {dropdownFilter}
