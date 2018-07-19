@@ -10,29 +10,25 @@ class FeatureStore {
   genSearchString
   layer
   featureAttachments
+  attIsLoadMap
   featureRelates
   map
-  selObjId
-  selFeatureIndex
-  activeFilterMap
-  isLoaded
+
   featureIdMap
   features
+
   mappedFeatures
   isFilterByExtent
 
   constructor(service){
     this.service = service;
-
     this.featureAttachments = new Map();
     this.features = [];
     this.genSearchString = '';
-    this.selFeatureIndex = null;
-    this.activeFilterMap = new Map();
     this.filters = [];
-    this._featureIds = [];
     this.featureIdMap = new Map();
     this.featureRelates = new Map();
+    this.attIsLoadMap = new Map();
     this.loadStatus = {
       mapLoaded: false,
       layerLoaded: false,
@@ -115,13 +111,6 @@ class FeatureStore {
       return true;
     })
     return t;
-  }
-
-  get selFeatureAttributes(){
-    if(this.selFeatureIndex){
-      return this.filteredAttributes[this.selFeatureIndex];
-    }
-    return null;
   }
 
   get emailEventMap(){
@@ -322,6 +311,9 @@ class FeatureStore {
 
   }
 
+  setAttIsLoad(att, isLoad){
+    this.attIsLoadMap.set(att, isLoad);
+  }
 
   setGeneralSearchString(strVal){
     this.genSearchString = strVal;
@@ -349,9 +341,6 @@ decorate(FeatureStore, {
   genSearchString: observable,
   features: observable,
   featureAttachments: observable,
-  selObjId: observable,
-  selFeatureIndex: observable,
-  activeFilterMap: observable,
   loadStatus: observable,
   featureIdMap: observable,
   featureRelates: observable,
@@ -360,7 +349,6 @@ decorate(FeatureStore, {
   filteredFeatures: computed,
   filteredAttributes: computed,
   events: computed,
-  selFeatureAttributes: computed,
   emailEventMap: computed,
   emailStreakMap: computed,
   upcomingEmailEventMap: computed,
@@ -369,11 +357,11 @@ decorate(FeatureStore, {
   setGeneralSearchString: action.bound,
   load: action.bound,
   loadAttachments: action.bound,
-  applyFilter: action.bound,
-  deleteActiveFilter: action.bound,
   filterByFeature: action.bound,
   updateFilterExtent: action.bound,
-  setIsFilterByExtent: action.bound
+  setIsFilterByExtent: action.bound,
+  attIsLoadMap: observable,
+  setAttIsLoad: action.bound
 })
 
 export default FeatureStore;
