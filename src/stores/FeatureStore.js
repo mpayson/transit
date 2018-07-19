@@ -1,6 +1,7 @@
 import {decorate, observable, action, computed, autorun } from 'mobx';
 import {mapConfig, layerConfig} from '../config/config';
-import {NumFilter, MultiSplitFilter, MultiFilter, CompositeFilter, TimeSinceFilter} from './objects/Filters';
+import {NumFilter, MultiSplitFilter, MultiFilter,
+  CompositeFilter, TimeSinceFilter, CustomAvailFilter} from './objects/Filters';
 import Utils from '../utils/Utils';
 import moment from 'moment';
 
@@ -36,6 +37,10 @@ class FeatureStore {
     }
 
     let keys = [...Object.keys(layerConfig.filters)];
+
+    let availFilter = new CustomAvailFilter(layerConfig.fieldTypes.email, this);
+    this.filters.push(availFilter);
+
     for(let k of keys){
       const v = layerConfig.filters[k];
       let newFilter;

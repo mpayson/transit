@@ -4,11 +4,20 @@ import DropdownFilter from './DropdownFilter';
 import CompositeFilter from './CompositeFilter';
 import SelectFilter from './SelectFilter';
 import SlideFilter from './SlideFilter';
+import BinaryFilter from './BinaryFilter';
 
 
 const FilterGroup = observer(({filterObjs, dark}) => {
 
   const filterViews = filterObjs.map((f, i) => {
+    if(f.type === 'binary'){
+      return (
+        <div key={f.label} className="float-left d-none d-sm-block mr-2">
+          <BinaryFilter filterObj={f} dark={dark}/>
+        </div>
+      )
+    }
+
     let filterView;
     switch(f.type){
       case 'composite':
@@ -30,13 +39,13 @@ const FilterGroup = observer(({filterObjs, dark}) => {
         throw new Error("UNKNOWN FILTER TYPE");
     }
     const dropdownFilter = (
-      <DropdownFilter className="mr-2" dark={dark} filterObj={f}>
+      <DropdownFilter dark={dark} filterObj={f}>
         {filterView}
       </DropdownFilter>
     )
     if(i > 1){
       return (
-        <div key={f.label} className="float-right d-none d-sm-block">
+        <div key={f.label} className="float-right d-none d-sm-block mr-2">
           {dropdownFilter}
         </div>
       )

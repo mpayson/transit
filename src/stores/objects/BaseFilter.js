@@ -8,7 +8,7 @@ class BaseFilter{
   get label(){
     return layerConfig.labels[this.fieldName] || this.fieldName;
   }
-  clientIsFiltered(featureAttrs){
+  clientIsVisible(featureAttrs){
     console.log("IMPLEMENT IS CLIENT FILTERED");
   }
   setFromAttr(featureAttrs){

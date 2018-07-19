@@ -17,13 +17,13 @@ const layerConfig = {
   },
   filters: {
     'start_date': 'time-since',
+    'division': 'multi',
     'interests': [
       {name: 'communities', type: 'multi-split'},
       {name: 'tech', type: 'multi-split'},
       {name: 'free_time', type: 'multi-split'},
       {name: 'other', type: 'multi-split'}
-    ],
-    'division': 'multi'
+    ]
     // 'tech': 'multi-split',
     
   },
