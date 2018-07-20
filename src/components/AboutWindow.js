@@ -50,7 +50,7 @@ const AboutWindow = observer(({featureStore}) => {
     return (
       <tr key={id}>
         <th scope="row">{h}</th>
-        <th><Link to={Utils.url(`/browse/${id}`)}>{name}</Link></th>
+        <th><Link to={`/browse/${id}`}>{name}</Link></th>
         <th>{count}</th>
       </tr>
     )
@@ -66,7 +66,7 @@ const AboutWindow = observer(({featureStore}) => {
         <h2>Who's building this?</h2>
         <p className="mb-4"><a href="https://compass.esri.com/org/HRDiv/Employee-Development-and-Training/e-bloc/Pages/E-%20Bloc%20Home.aspx?web=1" target="__blank"><strong>E-bloc</strong></a>! This is a grassroots, volunteer effort through e-bloc to engage and grow our community.</p>
         <h2>How can I participate?</h2>
-        <p>To find new connections, <Link to={Utils.url('/browse')}><strong>browse our volunteers</strong></Link>. Or, to share your time with others, <a href='https://survey123.arcgis.com/share/61323239e7f64ebe8e65122acf021117' target="__blank"><strong>sign up</strong></a> as a volunteer!</p>
+        <p>To find new connections, <Link to={'/browse'}><strong>browse our volunteers</strong></Link>. Or, to share your time with others, <a href='https://survey123.arcgis.com/share/61323239e7f64ebe8e65122acf021117' target="__blank"><strong>sign up</strong></a> as a volunteer!</p>
 
         <p>As always, this is a community effort. Here are some ways we'd <span><strong>love</strong></span> for you to help!</p>
         <ul className="mb-4">

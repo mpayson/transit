@@ -69,7 +69,7 @@ const CalendarWindow = observer(class CalendarObserver extends Component{
     const idMap = this.featureStore.filteredEmailIdMap;
     if(idMap.has(e.title)){
       const id = idMap.get(e.title);
-      this.props.history.push(Utils.url(`/browse/${id}`));
+      this.props.history.push(`/browse/${id}`);
     }
   }
 

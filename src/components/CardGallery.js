@@ -87,7 +87,7 @@ const CardGallery = observer(class CardGallery extends React.Component{
                   {badges}
                 </div>
   
-                <Button tag={Link} to={Utils.url(`/browse/${objId}`)} className="mt-3" color="primary">Learn more</Button>
+                <Button tag={Link} to={`/browse/${objId}`} className="mt-3" color="primary">Learn more</Button>
               </CardBody>
             </Card>
             <div className='d-none'>

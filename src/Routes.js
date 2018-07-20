@@ -1,14 +1,14 @@
 import React from 'react';
-import { BrowserRouter, Route } from "react-router-dom";
+import { HashRouter, Route } from "react-router-dom";
 import Utils from './utils/Utils';
 import App from './App.js';
 
 const Routes = () => (
-  <BrowserRouter>
+  <HashRouter>
     <div>
-      <Route path={Utils.url("/")} component={App}/>
+      <Route path={"/"} component={App}/>
     </div>
-  </BrowserRouter>
+  </HashRouter>
 )
 
 export default Routes

@@ -72,7 +72,7 @@ const MapWindow = observer(class MapWindow extends Component {
       const fID = layerConfig.fieldTypes.oid;
       const id = e.target.selectedFeature.attributes[fID];
       this.centerId = id;
-      this.props.history.push(Utils.url(`/browse/${id}`));
+      this.props.history.push(`/browse/${id}`);
     }
   }
 

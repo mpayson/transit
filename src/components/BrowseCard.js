@@ -85,6 +85,10 @@ const BrowseCard = class BrowseCard extends React.PureComponent{
     const hrefEmail = `mailto:${email}`;
 
     const attSrc = this.state.loaded ? this.props.attachmentUrl : null;
+    
+    const logArr = attSrc ? attSrc.split('/') : null;
+    const log = logArr ? logArr[logArr.length - 1] : null;
+    console.log(log, this.state.loaded);
 
     const imgItem = <CardImg src={attSrc} style={{backgroundColor: "#e9ecef", objectFit:"cover", width:"100%", height: "100%"}}/>
     
@@ -105,7 +109,7 @@ const BrowseCard = class BrowseCard extends React.PureComponent{
             <div>
               {badges}
             </div>
-            <Button tag={Link} to={Utils.url(`/browse/${objId}`)} size="sm" color="primary" className="mt-4 mb-2">Learn more</Button>
+            <Button tag={Link} to={`/browse/${objId}`} size="sm" color="primary" className="mt-4 mb-2">Learn more</Button>
             {inButton}
             <Button href={hrefEmail} size="sm" className="mt-4 mb-2 ml-2"
               style={{backgroundImage: `url(${conImg})`, width: '2rem', height: '2rem'}}

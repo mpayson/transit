@@ -31,7 +31,7 @@ const HomeWindow = observer(({appState, featureStore}) => (
             <div style={{marginBottom: '5px'}}>
               <FilterGroup filterObjs={[featureStore.filters[1], featureStore.filters[3]]}/>
             </div>
-            <Link to={Utils.url('/browse')}>Browse all volunteers</Link>
+            <Link to={'/browse'}>Browse all volunteers</Link>
           
           </Container>
         
@@ -45,14 +45,14 @@ const HomeWindow = observer(({appState, featureStore}) => (
       <Row>
         <Col/>
         <Col sm="6">
-          <Button tag={Link} to={Utils.url('/browse')} outline color="secondary" size="lg" block>Browse all volunteers</Button>
+          <Button tag={Link} to={'/browse'} outline color="secondary" size="lg" block>Browse all volunteers</Button>
         </Col>
         <Col/>
       </Row>
     </Container>
     <div style={{padding: "3.5rem 2.5rem", background:"#e9ecef", textAlign:"center"}}>
       <h2>Have thoughts or feedback?</h2>
-      <Button color="success">Let us know!</Button>
+      <Button color="success" href="mailto:e-bloc-admins@esri.com">Let us know!</Button>
     </div>
   </div>
 ))

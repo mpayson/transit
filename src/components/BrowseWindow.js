@@ -42,10 +42,10 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
     let pane;
     let isMap;
     if(this.appState.browsePane === 'map'){
-      pane = <Route path={Utils.url("/browse/:id?")} render={(props) => <MapWindow {...props} featureStore={this.featureStore}/>}/>;
+      pane = <Route path={"/browse/:id?"} render={(props) => <MapWindow {...props} featureStore={this.featureStore}/>}/>;
       isMap = true;
     } else {
-      pane = <Route path={Utils.url("/browse/:id?")} render={(props) => <CalendarWindow {...props} featureStore={this.featureStore}/>}/>;
+      pane = <Route path={"/browse/:id?"} render={(props) => <CalendarWindow {...props} featureStore={this.featureStore}/>}/>;
       isMap = false;
     }
 
@@ -60,10 +60,10 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
             <Switch>
               <Route 
                 exact
-                path={Utils.url("/browse")}
+                path={"/browse"}
                 render={(props) => <BrowseList {...props} appState={this.appState} featureStore={this.featureStore}/>}
               />
-              <Route path={Utils.url("/browse/:id")} render={(props) => <Profile {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+              <Route path={"/browse/:id"} render={(props) => <Profile {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
             </Switch>
           </Col>
           <Col className="d-none d-md-block">

@@ -140,7 +140,7 @@ const Profile = observer(class Profile extends Component {
 
     return (
       <div>
-        <Button tag={Link} to={Utils.url('/browse')} className="mb-2" size="sm" outline>{"< Back to browse"}</Button>
+        <Button tag={Link} to={'/browse'} className="mb-2" size="sm" outline>{"< Back to browse"}</Button>
         <Fade in>
           <Card className="text-center">
             <div style={{width: "100%", backgroundColor:"#e9ecef"}}>
@@ -169,7 +169,7 @@ const Profile = observer(class Profile extends Component {
               </div>
             </CardBody>
           </Card>
-          <Button onClick={this.onSimilarClick} tag={Link} to={Utils.url('/browse')} outline className="mt-4" block>See volunteers with similar interests</Button>
+          <Button onClick={this.onSimilarClick} tag={Link} to={'/browse'} outline className="mt-4" block>See volunteers with similar interests</Button>
         </Fade>
         <div className='d-none'>
           <img src={attUrl} alt='hidden load' onLoad={this._onLoad}/>

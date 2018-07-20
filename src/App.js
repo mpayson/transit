@@ -75,15 +75,15 @@ const App = observer(class App extends Component {
     return (
       <div>
         <Navbar dark color="dark" expand="md">
-          <NavbarBrand tag={Link} to={Utils.url("/")}>Office Hours</NavbarBrand>
+          <NavbarBrand tag={Link} to={"/"}>Office Hours</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav navbar>
               <NavItem active={path === 'about'}>
-                <NavLink tag={Link} to={Utils.url("/about")}>About</NavLink>
+                <NavLink tag={Link} to={"/about"}>About</NavLink>
               </NavItem>
               <NavItem active={path === 'browse'}>
-                <NavLink tag={Link} to={Utils.url("/browse")}>Browse</NavLink>
+                <NavLink tag={Link} to={"/browse"}>Browse</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="#" onClick={this._toggleModal}>Volunteer</NavLink>
@@ -102,9 +102,9 @@ const App = observer(class App extends Component {
           </Collapse>
         </Navbar>
         <Switch>
-          <Route exact path={Utils.url("/")} render={(props) => <HomeWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
-          <Route path={Utils.url("/browse")} render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
-          <Route exact path={Utils.url("/about")} render={(props) => <AboutWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+          <Route exact path={"/"} render={(props) => <HomeWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+          <Route path={"/browse"} render={(props) => <BrowseWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
+          <Route exact path={"/about"} render={(props) => <AboutWindow {...props} appState={this.appState} featureStore={this.featureStore}/>}/>
         </Switch>
         <Modal isOpen={this.state.modal} toggle={this._toggleModal}>
           <ModalHeader toggle={this._toggleModal}>Thank you for volunteering!</ModalHeader>
