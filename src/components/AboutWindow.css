@@ -1,0 +1,14 @@
+u.info{
+  border-bottom: 1px dotted #000;
+  text-decoration: none;
+}
+
+.border-right {
+  border-right: 1.5px solid #E9ECEF !important;
+}
+
+.table-container{
+  height: 60vh;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
