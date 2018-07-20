@@ -1,6 +1,8 @@
 const mapConfig = {
   webmapid: '6d18e208b2354bb29969a6db0fb8c09d',
-  layerTitle: 'Out of Office Hours'
+  layerTitle: 'Out of Office Hours',
+  // webmapid: '2f4911e05a02409fb80362a35b596bc2',
+  // layerTitle: 'Out of Office Hours TEST'
 }
 
 const layerConfig = {

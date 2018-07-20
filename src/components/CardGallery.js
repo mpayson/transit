@@ -39,6 +39,7 @@ const CardGallery = observer(class CardGallery extends React.Component{
   }
 
   _onLoad(e){
+    console.log('here', e.target.src)
     this.setState({[e.target.src]: true});
   }
 

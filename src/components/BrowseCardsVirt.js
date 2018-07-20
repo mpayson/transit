@@ -13,6 +13,8 @@ const BrowseCardsVirt = observer(class BrowseCardsVirt extends Component{
     this.featureStore = props.featureStore;
 
     this._renderRow = this._renderRow.bind(this);
+    this.state = {}
+
   }
 
   _renderRow({index, key, style}){

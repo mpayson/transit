@@ -25,9 +25,9 @@ const HomeWindow = observer(({appState, featureStore}) => (
           <Container fluid>
           
             <h1 className="display-4">Office Hours</h1>
-            <p>Creating connections and sparking conversations across Esri <br/> Volunteers open their offices to answer your questions and help you grow your career</p>
+            <p className="ml-4">Creating connections across Esri <br/> Colleagues open their offices for you to start a conversation</p>
             <hr className="my-4 hr-dark"/>
-            <p>Start here to find colleagues who match your interests:</p>
+            <p>Start here to find a volunteer:</p>
             <div style={{marginBottom: '5px'}}>
               <FilterGroup filterObjs={[featureStore.filters[1], featureStore.filters[3]]}/>
             </div>
@@ -37,7 +37,7 @@ const HomeWindow = observer(({appState, featureStore}) => (
         
       </Jumbotron>
     </div>
-    <div className="mb-5" style={{width:"100%", textAlign:"center"}}>
+    <div className="mb-4" style={{width:"100%", textAlign:"center"}}>
       <h2>Meet some of our volunteers</h2>
     </div>
     <CardGallery appState={appState} featureStore={featureStore}/>

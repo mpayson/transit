@@ -1,4 +1,4 @@
-import {decorate, observable, action, computed, autorun } from 'mobx';
+import {decorate, observable, action, computed, autorun, toJS } from 'mobx';
 import {mapConfig, layerConfig} from '../config/config';
 import {NumFilter, MultiSplitFilter, MultiFilter,
   CompositeFilter, TimeSinceFilter, CustomAvailFilter} from './objects/Filters';
@@ -179,24 +179,33 @@ class FeatureStore {
     return events;
   }
 
-  get filteredEmailIdMap(){
+  get emailIdMap(){
     let emap = new Map();
-    for(let f of this.filteredFeatures){
+    for(let f of this.features){
       const rEmail = f.attributes[layerConfig.fieldTypes.email];
       const email = rEmail.toLowerCase();
       const oid = f.attributes[layerConfig.fieldTypes.oid];
       emap.set(email, oid);
     }
+    console.log(toJS(emap));
     return emap;
   }
 
   get filteredEvents(){
     let events = [];
-    this.emailEventMap.forEach((v, k) => {
-      if(this.filteredEmailIdMap.has(k)){
-        events = events.concat(v);
+    let addedEmails = new Set();
+
+    for(let f of this.filteredFeatures){
+      const rEmail = f.attributes[layerConfig.fieldTypes.email];
+      const email = rEmail.toLowerCase();
+      if(addedEmails.has(email) || !this.emailEventMap.has(email)){
+        continue;
       }
-    })
+      addedEmails.add(email);
+      const newEvents = this.emailEventMap.get(email);
+      events = events.concat(newEvents);
+    }
+
     return events;
   }
 
@@ -249,7 +258,11 @@ class FeatureStore {
       emap.set(k, count);
     })
     return emap;
+  }
 
+  get sortedStreaks(){
+    const t = Utils.numSort([...this.emailStreakMap.entries()], 1);
+    return t;
   }
 
   _buildFeautres(features, layer){
@@ -358,7 +371,8 @@ decorate(FeatureStore, {
   emailStreakMap: computed,
   upcomingEmailEventMap: computed,
   filteredEvents: computed,
-  filteredEmailIdMap: computed,
+  emailIdMap: computed,
+  sortedStreaks: computed,
   setGeneralSearchString: action.bound,
   load: action.bound,
   loadAttachments: action.bound,

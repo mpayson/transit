@@ -18,6 +18,21 @@ class Utils {
     return test;
   }
 
+  static numSort(entries, key=null, rev=false){
+    const test = entries.sort((a, b) => {
+      let fA = key === null ? a : a[key];
+      let fB = key === null ? b : b[key];
+      if (!fA) {
+        return rev ? -1 : 1
+      }
+      if (!fB) {
+        return rev ? 1 : -1
+      }
+      return rev ? fA - fB : fB - fA;
+    })
+    return test;
+  }
+
   static baseUrl(path){
     return path.replace(process.env.PUBLIC_URL, '');
   }

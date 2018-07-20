@@ -7,7 +7,7 @@ import Utils from '../utils/Utils';
 import moment from 'moment';
 
 import {
-  Badge, Card, CardBody, Button, Row, Col, CardImg, UncontrolledTooltip
+  Fade, Badge, Card, CardBody, Button, Row, Col, CardImg, UncontrolledTooltip
 } from 'reactstrap';
 
 const MockCard = () => (
@@ -34,13 +34,11 @@ const BrowseCard = class BrowseCard extends React.PureComponent{
     
     this._onLoad = this._onLoad.bind(this);
 
-    this.state = {
-      loaded: false
-    }
+    this.state = {}
   }
 
   _onLoad(e){
-    this.setState({loaded: true});
+    this.setState({[e.target.src]: true});
   }
 
   render(){
@@ -84,14 +82,12 @@ const BrowseCard = class BrowseCard extends React.PureComponent{
     const email = fa[layerConfig.fieldTypes.email];
     const hrefEmail = `mailto:${email}`;
 
-    const attSrc = this.state.loaded ? this.props.attachmentUrl : null;
+    const isLoaded = this.state[this.props.attachmentUrl];
+    const attSrc = isLoaded ? this.props.attachmentUrl : null;
     
-    const logArr = attSrc ? attSrc.split('/') : null;
-    const log = logArr ? logArr[logArr.length - 1] : null;
-    console.log(log, this.state.loaded);
 
     const imgItem = <CardImg src={attSrc} style={{backgroundColor: "#e9ecef", objectFit:"cover", width:"100%", height: "100%"}}/>
-    
+
     return (
       <Card key={objId} className="mb-2">
         <Row className="align-items-center">
