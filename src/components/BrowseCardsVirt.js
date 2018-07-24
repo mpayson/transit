@@ -3,8 +3,8 @@ import { observer, Observer } from "mobx-react";
 import {MockCard, BrowseCard} from './BrowseCard';
 import {layerConfig} from '../config/config';
 import {List, AutoSizer} from 'react-virtualized';
-
 import {Container} from 'reactstrap';
+import './BrowseWindow.css';
 
 
 const BrowseCardsVirt = observer(class BrowseCardsVirt extends Component{

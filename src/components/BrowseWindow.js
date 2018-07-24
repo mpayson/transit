@@ -5,7 +5,6 @@ import BrowseList from './BrowseCardsVirt';
 import { observer } from "mobx-react";
 import { Route, Switch } from "react-router-dom";
 import Profile from './Profile';
-import Utils from '../utils/Utils';
 
 import {
   Button,
@@ -54,7 +53,7 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
         <Row className='mb-2'>
           <FilterGroup dark filterObjs={this.featureStore.filters}/>
         </Row>
-        <hr className="my-4"/>
+        <hr className="my-3"/>
         <Row>
           <Col>
             <Switch>
@@ -75,7 +74,7 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
                     Map
                   </Button>
               </ButtonGroup>
-            <div style={{clear:"both", width:"100%", height:"calc(80vh - 5rem)"}}>
+            <div style={{clear:"both", width:"100%", height:"calc(100vh - 12rem)"}}>
               {pane}
             </div>
           </Col>

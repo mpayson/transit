@@ -103,7 +103,7 @@ const CompositeFilter = observer(class CompositeFilter extends Component {
             id={i}
             size="sm"
             color="link"
-            className="text-secondary clearfix"
+            className="text-secondary clearfix p-0"
             onClick={this.onFilterClicked}>
             {label}
           </Button>
@@ -113,7 +113,7 @@ const CompositeFilter = observer(class CompositeFilter extends Component {
     }
 
     return (
-      <div style={{width: '22rem', maxWidth: '60vw'}}>
+      <div style={{width: '20rem', maxWidth: '60vw'}}>
       <Container fluid>
           <Row>
             <Col md="4" className="d-none d-sm-block mt-1 pr-0" >
@@ -122,14 +122,14 @@ const CompositeFilter = observer(class CompositeFilter extends Component {
                   id='search'
                   size="sm"
                   color="link"
-                  className="text-secondary clearfix"
+                  className="text-secondary clearfix p-0"
                   onClick={this.onFilterClicked}>
                   Search
                 </Button>
                 {headers}
               </div>
             </Col>
-            <Col md="8">
+            <Col md="8" className="pl-1">
             <div ref={this._container} style={{maxHeight:"20rem", overflowY:"scroll"}}>
               <div ref={this.searchRef} id='search' className="mb-2 mt-1">
                 <Input

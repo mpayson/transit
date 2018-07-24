@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import Utils from '../../utils/Utils';
-import WeCan from '../../resources/WeCanLogo_Red.svg';
 
 import {
   Button, ButtonGroup, DropdownItem, Input } from 'reactstrap';

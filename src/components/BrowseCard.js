@@ -7,7 +7,7 @@ import Utils from '../utils/Utils';
 import moment from 'moment';
 
 import {
-  Fade, Badge, Card, CardBody, Button, Row, Col, CardImg, UncontrolledTooltip
+  Badge, Card, CardBody, Button, Row, Col, CardImg, UncontrolledTooltip
 } from 'reactstrap';
 
 const MockCard = () => (
@@ -73,7 +73,7 @@ const BrowseCard = class BrowseCard extends React.PureComponent{
     let inButton;
     if(inUrl){
       inButton = (
-        <Button href={inUrl} target="__blank" size="sm" className="mt-4 mb-2 ml-2" color='linkedin'
+        <Button href={inUrl} target="__blank" size="sm" className="ml-2 mr-2" color='linkedin'
           style={{backgroundImage: `url(${inImg})`, width: '2rem', height: '2rem'}}
           />
       );
@@ -98,16 +98,16 @@ const BrowseCard = class BrowseCard extends React.PureComponent{
               
           </Col>
           <Col xs="8">
-            <h6>
-              <span className="h4">{fa[fTypes.name]}</span>
-              <small className={'font-weight-light ml-2'}>{`${yrs} ${yrLabel}`}</small>
-            </h6>
-            <div>
+            <h5>
+              {fa[fTypes.name]}
+              <span><small className={'font-weight-light ml-2 h6'}>{`${yrs} ${yrLabel}`}</small></span>
+            </h5>
+            <div className="mb-4">
               {badges}
             </div>
-            <Button tag={Link} to={`/browse/${objId}`} size="sm" color="primary" className="mt-4 mb-2">Learn more</Button>
+            <Button tag={Link} to={`/browse/${objId}`} size="sm" color="primary">Learn more</Button>
             {inButton}
-            <Button href={hrefEmail} size="sm" className="mt-4 mb-2 ml-2"
+            <Button href={hrefEmail} size="sm"
               style={{backgroundImage: `url(${conImg})`, width: '2rem', height: '2rem'}}
               />
           </Col>

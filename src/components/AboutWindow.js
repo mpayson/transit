@@ -1,18 +1,12 @@
 import React from 'react';
 import { observer } from "mobx-react";
-import {layerConfig} from '../config/config';
 import { Link } from "react-router-dom";
 import StreakTable from './StreakTable';
-import Utils from '../utils/Utils';
 import './AboutWindow.css';
 
 import {Container, Col, Row, Button} from 'reactstrap';
 
 const AboutWindow = observer(({featureStore}) => {
-
-  const ftypes = layerConfig.fieldTypes;
-  let countMap = featureStore.emailStreakMap;
-
 
   return (
     <div>

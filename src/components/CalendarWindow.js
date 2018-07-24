@@ -4,7 +4,6 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './CalendarWindow.css';
 import {observer} from 'mobx-react';
-import Utils from '../utils/Utils';
 
 import {Button, ButtonGroup} from 'reactstrap';
 

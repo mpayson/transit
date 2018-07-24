@@ -7,6 +7,7 @@ import conImg from '../resources/contact.svg';
 import { Link } from "react-router-dom";
 import Utils from '../utils/Utils';
 import './Profile.css';
+import './BrowseWindow.css';
 
 import { Card, Fade, CardBody, CardText,
   CardTitle, CardSubtitle, CardImg, Button,
@@ -134,15 +135,17 @@ const Profile = observer(class Profile extends Component {
     }
 
     const attUrl = this.featureStore.featureAttachments.get(id);
+    console.log("ATT URL", attUrl);
+    console.log("ATT ID", id);
     const att = this.state.loaded ? attUrl : null;
 
     const timeText = (events && events.length > 0) ? "Upcoming Available Times" : "No Upcoming Available Times";
 
     return (
       <div>
-        <Button tag={Link} to={'/browse'} className="mb-2" size="sm" outline>{"< Back to browse"}</Button>
+        <Button tag={Link} to={'/browse'} className="mb-1" size="sm" outline>{"< Back to browse"}</Button>
         <Fade in>
-          <Card className="text-center">
+          <Card className="text-center profile-div">
             <div style={{width: "100%", backgroundColor:"#e9ecef"}}>
               <CardImg top src={att} className="rounded-circle" style={{height:"10rem", width:"10rem", objectFit:"cover", backgroundColor: "#6C757C"}}/>
             </div>

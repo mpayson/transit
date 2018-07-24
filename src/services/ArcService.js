@@ -23,21 +23,29 @@ class ArcService {
     return layer.queryFeatures();
   }
 
-  static fetchAttachMap(layer, features){
+  static fetchAttachMap(layer, features, oid='objectid'){
+    
     const promises = features.map(f => 
-      layer.queryFeatureAttachments(f)
-    )
-    return Promise.all(promises)
-      .then(res => {
-        return res.reduce((acc, cur) => {
-          if(cur.length < 1){
-            return acc;
-          }
-          const firstObj = cur[0];
-          acc.set(firstObj.id, firstObj.url);
-          return acc;
-        }, new Map())
+      layer.queryFeatureAttachments(f).then(res => {
+        if(res.length < 1){
+          return []
+        }
+        const firstObj = res[0];
+        const id = f.attributes[oid];
+        const url = firstObj.url;
+        return [id, url];
       })
+    )
+    return Promise.all(promises).then(res => {
+      return res.reduce((acc, cur) => {
+        if(cur.length < 1){
+          return acc;
+        }
+        console.log(cur);
+        acc.set(cur[0], cur[1]);
+        return acc;
+      }, new Map())
+    })
   }
 
   static queryRelatedRecords(layer){

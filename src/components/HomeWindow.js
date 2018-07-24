@@ -3,7 +3,6 @@ import CardGallery from './CardGallery';
 import FilterGroup from './filters/FilterGroup';
 import {observer} from'mobx-react';
 import { Link } from "react-router-dom";
-import Utils from '../utils/Utils';
 // import HomeCanvas from '../components/HomeCanvas';
 import backImg from '../resources/group-stars.png';
 // import SelectFilter from './SelectFilter';
@@ -25,7 +24,7 @@ const HomeWindow = observer(({appState, featureStore}) => (
           <Container fluid>
           
             <h1 className="display-4">Office Hours</h1>
-            <p className="ml-4">Creating connections across Esri <br/> Colleagues open their offices for you to start a conversation</p>
+            <p className="ml-4">Creating connections across Esri <br/> Colleagues open their offices for you to <span className="text-success">start a conversation</span></p>
             <hr className="my-4 hr-dark"/>
             <p>Start here to find a volunteer:</p>
             <div style={{marginBottom: '5px'}}>

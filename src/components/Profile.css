@@ -1,0 +1,7 @@
+div.profile-div{
+  width: 100%;
+  /* height: calc(100% - 5rem); */
+  max-height: calc(100vh - 16rem);
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}

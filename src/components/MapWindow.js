@@ -4,7 +4,6 @@ import {loaderOptions, layerConfig} from '../config/config';
 import {withRouter} from 'react-router-dom';
 import {when} from 'mobx';
 import {observer} from 'mobx-react';
-import Utils from '../utils/Utils';
 import {Button} from 'reactstrap';
 import './MapWindow.css';
 
@@ -54,7 +53,6 @@ const MapWindow = observer(class MapWindow extends Component {
       }
       return;
     }
-    
     const nId = parseInt(id, 10);
 
     const idMap = this.featureStore.featureIdMap;

@@ -9,7 +9,7 @@ import AboutWindow from './components/AboutWindow';
 import Utils from './utils/Utils';
 // import MockService from './services/MockService';
 import ArcService from './services/ArcService';
-import DevTools from 'mobx-react-devtools';
+// import DevTools from 'mobx-react-devtools';
 
 import {
   Collapse,
@@ -69,8 +69,11 @@ const App = observer(class App extends Component {
 
   render() {
     
-    const basePath = Utils.baseUrl(this.props.location.pathname);
-    const path = basePath.split('/')[1];
+    let path;
+    if(this.props.location){
+      const basePath = Utils.baseUrl(this.props.location.pathname);
+      path = basePath.split('/')[1];
+    }
     
     return (
       <div>
@@ -113,7 +116,7 @@ const App = observer(class App extends Component {
               <Button size="lg" block color="info" className="mb-2" target="__blank" href="https://survey123.arcgis.com/share/0493302b05ea4f77aefbe88a9fc51c6c">Become a volunteer</Button>
             </div>
             <div>
-              <Button size="lg" block outline color="info" className="mt-2">Share your time</Button>
+              <Button size="lg" block outline color="info" className="mt-2">Add more time</Button>
             </div>
           </ModalBody>
         </Modal>

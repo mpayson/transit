@@ -12,7 +12,7 @@ class FeatureStore {
   layer
   featureAttachments
   attIsLoadMap
-  featureRelates
+  _featureRelates
   map
 
   featureIdMap
@@ -28,7 +28,7 @@ class FeatureStore {
     this.genSearchString = '';
     this.filters = [];
     this.featureIdMap = new Map();
-    this.featureRelates = new Map();
+    this._featureRelates = new Map();
     this.attIsLoadMap = new Map();
     this.loadStatus = {
       mapLoaded: false,
@@ -124,7 +124,7 @@ class FeatureStore {
     let kstart = layerConfig.fieldTypes.start;
     let kend = layerConfig.fieldTypes.end;
 
-    this.featureRelates.forEach((v, k) => {
+    this._featureRelates.forEach((v, k) => {
       v.forEach( (f,i) => {
         const atrs = f.attributes;
         if(!atrs.hasOwnProperty(kemail) || !atrs.hasOwnProperty(kstart) || !atrs.hasOwnProperty(kend)){
@@ -317,11 +317,12 @@ class FeatureStore {
         return this.service.fetchAttachMap(this.layer, this.features)
       })
       .then(map => {
+        console.log(map);
         this.featureAttachments = map;
         return this.service.queryRelatedRecords(this.layer);
       })
       .then(map => {
-        this.featureRelates = map;
+        this._featureRelates = map;
       })
       .catch(err => {
         console.error(err);
@@ -361,7 +362,7 @@ decorate(FeatureStore, {
   featureAttachments: observable,
   loadStatus: observable,
   featureIdMap: observable,
-  featureRelates: observable,
+  _featureRelates: observable,
   isFilterByExtent: observable,
   mappedFeatures: observable,
   filteredFeatures: computed,
