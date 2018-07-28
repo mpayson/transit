@@ -103,7 +103,7 @@ const CompositeFilter = observer(class CompositeFilter extends Component {
             id={i}
             size="sm"
             color="link"
-            className="text-secondary clearfix p-0"
+            className="text-secondary clearfix pr-0 pl-0"
             onClick={this.onFilterClicked}>
             {label}
           </Button>
