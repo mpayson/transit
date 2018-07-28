@@ -135,8 +135,6 @@ const Profile = observer(class Profile extends Component {
     }
 
     const attUrl = this.featureStore.featureAttachments.get(id);
-    console.log("ATT URL", attUrl);
-    console.log("ATT ID", id);
     const att = this.state.loaded ? attUrl : null;
 
     const timeText = (events && events.length > 0) ? "Upcoming Available Times" : "No Upcoming Available Times";

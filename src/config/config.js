@@ -38,7 +38,8 @@ const layerConfig = {
     'interests': 'Interests',
     'division': 'Division'
   },
-  search: ['name', 'communities', 'tech', 'free_time', 'other']
+  search: ['name', 'communities', 'tech', 'free_time', 'other'],
+  homeSearchFilters: ['interests', 'division']
 }
 
 const cardConfig = {

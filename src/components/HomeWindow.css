@@ -1,0 +1,14 @@
+.search-dropdown{
+  width: 100%;
+  max-height: 20rem;
+  position: absolute;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  background-color: white;
+  padding: 0.5rem;
+  z-index: 1;
+}
+
+.jumbo-text{
+  text-shadow: 0px 0px 5px rgba(44, 29, 91, 0.5);
+}

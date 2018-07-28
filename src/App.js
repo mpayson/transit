@@ -70,10 +70,18 @@ const App = observer(class App extends Component {
   render() {
     
     let path;
+    let search;
     if(this.props.location){
       const basePath = Utils.baseUrl(this.props.location.pathname);
       path = basePath.split('/')[1];
+
+      let isActive = this.featureStore.genSearchString ? true : false;
+      search = path === 'browse'
+        ? <Input valid={isActive} placeholder="search" value={this.featureStore.genSearchString} onChange={this.onSearchChange}/>
+        : null ;
     }
+
+
     
     return (
       <div>
@@ -93,14 +101,10 @@ const App = observer(class App extends Component {
               </NavItem>
             </Nav>
             <Nav navbar className="ml-auto">
-              <div className="p-1"><Button outline size="sm" href="https://github.com/mpayson/transit/issues" target="__blank" color="danger" className="mr-2">alpha</Button></div>
               <NavItem>
-                <Input  
-                  placeholder="search"
-                  value={this.featureStore.genSearchString}
-                  onChange={this.onSearchChange}
-                  />
+                {search}
               </NavItem>
+              <div className="p-1"><Button outline size="sm" href="https://github.com/mpayson/transit/issues" target="__blank" color="danger" className="ml-2">alpha</Button></div>
             </Nav>
           </Collapse>
         </Navbar>

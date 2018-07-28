@@ -41,7 +41,6 @@ class ArcService {
         if(cur.length < 1){
           return acc;
         }
-        console.log(cur);
         acc.set(cur[0], cur[1]);
         return acc;
       }, new Map())

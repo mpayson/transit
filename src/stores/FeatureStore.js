@@ -8,6 +8,7 @@ import moment from 'moment';
 // Store that fetches and manages all app feature data
 class FeatureStore {
 
+  homeSearchString
   genSearchString
   layer
   featureAttachments
@@ -26,6 +27,7 @@ class FeatureStore {
     this.featureAttachments = new Map();
     this.features = [];
     this.genSearchString = '';
+    this.homeSearchString = '';
     this.filters = [];
     this.featureIdMap = new Map();
     this._featureRelates = new Map();
@@ -187,7 +189,6 @@ class FeatureStore {
       const oid = f.attributes[layerConfig.fieldTypes.oid];
       emap.set(email, oid);
     }
-    console.log(toJS(emap));
     return emap;
   }
 
@@ -265,6 +266,49 @@ class FeatureStore {
     return t;
   }
 
+  get homeFilterOptions(){
+    let homeFilters = new Set(layerConfig.homeSearchFilters);
+    let typeOptions = new Set(['composite', 'multi-split', 'multi']);
+    let options = []
+
+    for(let f of this.filters){
+      if(!homeFilters.has(f.fieldName) || !typeOptions.has(f.type)){
+        continue;
+      }
+      let newOptions;
+      if(f.type === 'composite'){
+        newOptions = f.subFilters.reduce((acc, sf) => {
+          if(!typeOptions.has(sf.type)){
+            return acc;
+          }
+          const sfOpts = sf.options.map(o => [sf, o[0]]);
+          acc = acc.concat(sfOpts);
+          return acc;
+        }, []);
+      } else {
+        newOptions = f.options.map(o => [f, o[0]]);
+      }
+      options = options.concat(newOptions);
+    }
+    return options;
+  }
+
+  get filteredHomeFilterOptions(){
+    if(!this.homeSearchString || this.homeSearchString.length < 1){
+      return this.homeFilterOptions;
+    }
+    let searchLower = this.homeSearchString.toLowerCase();
+
+    return this.homeFilterOptions.filter(o => {
+      let optionValue = o[1];
+      if(!optionValue){
+        return false;
+      }
+      let lwrV = o[1].toLowerCase();
+      return lwrV.includes(searchLower);
+    });
+  }
+
   _buildFeautres(features, layer){
     return features.reduce((acc, c) => {
       for(let f of layer.fields){
@@ -317,7 +361,6 @@ class FeatureStore {
         return this.service.fetchAttachMap(this.layer, this.features)
       })
       .then(map => {
-        console.log(map);
         this.featureAttachments = map;
         return this.service.queryRelatedRecords(this.layer);
       })
@@ -354,9 +397,22 @@ class FeatureStore {
     }
   }
 
+  setHomeSearchString(str){
+    this.homeSearchString = str;
+  }
+
+  setFilterOption(filter, option){
+    let typeOptions = new Set(['multi-split', 'multi']);
+    if(!filter || !typeOptions.has(filter.type)){
+      return;
+    }
+    filter.setMultiOption(option, true);
+  }
+
 }
 
 decorate(FeatureStore, {
+  homeSearchString: observable,
   genSearchString: observable,
   features: observable,
   featureAttachments: observable,
@@ -374,6 +430,8 @@ decorate(FeatureStore, {
   filteredEvents: computed,
   emailIdMap: computed,
   sortedStreaks: computed,
+  homeFilterOptions: computed,
+  filteredHomeFilterOptions: computed,
   setGeneralSearchString: action.bound,
   load: action.bound,
   loadAttachments: action.bound,
@@ -381,7 +439,9 @@ decorate(FeatureStore, {
   updateFilterExtent: action.bound,
   setIsFilterByExtent: action.bound,
   attIsLoadMap: observable,
-  setAttIsLoad: action.bound
+  setAttIsLoad: action.bound,
+  setHomeSearchString: action.bound,
+  setFilterOption: action.bound
 })
 
 export default FeatureStore;
