@@ -12,7 +12,7 @@ const FilterGroup = observer(({filterObjs, dark}) => {
   const filterViews = filterObjs.map((f, i) => {
     if(f.type === 'binary'){
       return (
-        <div key={f.label} className="float-left d-none d-sm-block mr-2">
+        <div key={f.label} className="float-left d-none d-sm-block ml-2">
           <BinaryFilter filterObj={f} dark={dark}/>
         </div>
       )
@@ -45,14 +45,14 @@ const FilterGroup = observer(({filterObjs, dark}) => {
     )
     if(i === 2){
       return (
-        <div key={f.label} className="float-right d-none d-sm-block mr-2">
+        <div key={f.label} className="float-right d-none d-sm-block ml-2">
           {dropdownFilter}
         </div>
       )
     }
 
     return (
-      <DropdownFilter key={f.label} className="mr-2" dark={dark} filterObj={f}>
+      <DropdownFilter key={f.label} className="ml-2" dark={dark} filterObj={f}>
         {filterView}
       </DropdownFilter>
     )

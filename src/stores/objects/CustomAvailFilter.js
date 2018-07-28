@@ -7,7 +7,7 @@ class CustomAvailFilter extends BaseFilter{
     super(fieldName);
     this.featureStore = featureStore;
     this.type = 'binary';
-    this.isActive = true;
+    this.isActive = false;
   }
 
   get availOptions(){

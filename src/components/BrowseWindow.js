@@ -49,7 +49,7 @@ const BrowseWindow = observer(class BrowseWindow extends Component {
     }
 
     return (
-      <Container className="mt-3">
+      <Container fluid className="mt-3">
         <Row className='mb-2'>
           <FilterGroup dark filterObjs={this.featureStore.filters}/>
         </Row>

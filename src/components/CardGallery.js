@@ -39,23 +39,23 @@ const CardGallery = observer(class CardGallery extends React.Component{
   }
 
   _onLoad(e){
-    console.log('here', e.target.src)
     this.setState({[e.target.src]: true});
   }
 
 
   render(){
-    const featureAttrs = this.featureStore.filteredAttributes;
+    const features = this.featureStore.features;
     const attachMap = this.featureStore.featureAttachments;
   
     // Iterates over all features to create a new card for each
     const fTypes = layerConfig.fieldTypes;
   
     let cards;
-    if(!featureAttrs || featureAttrs.length < 1){
+    if(!features || features.length < 1){
       cards = ['1','2','3'].map(i => <MockCard key={i}/>)
     } else {
-      cards = featureAttrs.slice(0,3).map(fa => {
+      cards = features.slice(0,3).map(f => {
+        const fa = f.attributes;
         const objId = fa[fTypes.oid];
         const attUrl = attachMap.get(objId);
         const att = this.state.hasOwnProperty(attUrl) ? attUrl : null;

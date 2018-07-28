@@ -29,6 +29,10 @@ class CompositeFilter extends BaseFilter{
     }
   }
 
+  get subFilters(){
+    return this.fields.map(f => this.filterMap.get(f));
+  }
+
   get isActive(){
     for(let f of this.fields){
       const flt = this.filterMap.get(f);
