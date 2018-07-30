@@ -1,12 +1,9 @@
 import React from 'react';
 import CardGallery from './CardGallery';
-import FilterGroup from './filters/FilterGroup';
 import {observer} from'mobx-react';
 import { Link } from "react-router-dom";
 import HomeCanvas from '../components/HomeCanvas';
-import {layerConfig} from '../config/config';
 import Utils from '../utils/Utils';
-import backImg from '../resources/group-stars.png';
 import './HomeWindow.css';
 // import SelectFilter from './SelectFilter';
 import {
@@ -51,12 +48,6 @@ const HomeWindow = observer( class HomeWindow extends React.Component {
     this.timeout = window.setTimeout(this.updateSuggest, ROTATEDELAY);
   }
 
-  componentWillUnmount(){
-    if(this.timeout){
-      window.clearTimeout(this.timeout);
-    }
-  }
-
   onMouseMove(e){
     if(this.homeCanvas){
       this.homeCanvas.onMouseMove(e);
@@ -66,6 +57,9 @@ const HomeWindow = observer( class HomeWindow extends React.Component {
   componentWillUnmount(){
     if(this.homeCanvas){
       this.homeCanvas.unmount();
+    }
+    if(this.timeout){
+      window.clearTimeout(this.timeout);
     }
   }
 
@@ -82,7 +76,7 @@ const HomeWindow = observer( class HomeWindow extends React.Component {
   }
 
   onSearchKeyDown(e){
-    if (e.which == 13 || e.keyCode == 13) {
+    if (e.which === 13 || e.keyCode === 13) {
       this.featureStore.setGeneralSearchString(this.featureStore.homeSearchString);
       this.featureStore.setHomeSearchString('');
       this.props.history.push(`/browse`);

@@ -1,4 +1,4 @@
-import {decorate, observable, action, computed, autorun, toJS } from 'mobx';
+import {decorate, observable, action, computed, autorun} from 'mobx';
 import {mapConfig, layerConfig} from '../config/config';
 import {NumFilter, MultiSplitFilter, MultiFilter,
   CompositeFilter, TimeSinceFilter, CustomAvailFilter} from './objects/Filters';

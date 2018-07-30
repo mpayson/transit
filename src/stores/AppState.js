@@ -6,23 +6,8 @@ class AppState {
   windowIndex
 
   constructor(){
-    this.windowIndex = 1;
-    this.currentPage = 1;
-    this.itemsPerPage = 3;
     this.browsePane = "map";
     this.profileTab = 0;
-  }
-
-  setWindowIndex(i){
-    this.windowIndex = i;
-  }
-
-  setCurrentPage(i){
-    this.currentPage = i;
-  }
-
-  setItemsPerPage(i){
-    this.itemsPerPage = i;
   }
 
   setBrowsePane(paneStr){
@@ -36,12 +21,6 @@ class AppState {
 }
 
 decorate(AppState, {
-  windowIndex: observable,
-  setWindowIndex: action.bound,
-  currentPage: observable,
-  setCurrentPage: action.bound,
-  itemsPerPage: observable,
-  setItemsPerPage: action.bound,
   setBrowsePane: action.bound,
   profileTab: observable,
   setProfileTab: action.bound,

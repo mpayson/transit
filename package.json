@@ -9,7 +9,7 @@
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
     "moment": "^2.22.2",
-    "npm": "^6.1.0",
+    "npm": "^6.2.0",
     "react": "^16.4.1",
     "react-big-calendar": "^0.19.1",
     "react-dom": "^16.4.1",
@@ -30,7 +30,7 @@
     "clean": "gh-pages-clean"
   },
   "devDependencies": {
-    "calcite-web": "github:Esri/calcite-web#v1.0.1",
+    "canvas-prebuilt": "^1.6.5-prerelease.1",
     "mobx-react-devtools": "^6.0.1"
   },
   "homepage": "https://mpayson.github.io/transit"
