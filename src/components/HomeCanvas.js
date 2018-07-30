@@ -1,6 +1,6 @@
 const numDots = 100;
 // Set the colors you want to support in this array
-const colors = ['#46B482', '#5E4C80', '#955DFB', '#5AB8E8'];
+const colors = ['rgba(70,180,130, 0.5)', 'rgba(94,76,128, 0.5)', 'rgb(149,93,251,0.5)', 'rgba(90,184,232,0.5)'];
 const radii = [1.5, 2.5, 3.5];
 const mouseRadius = 150;
 
@@ -21,7 +21,6 @@ class Dot {
   }
 
   connect(ctx, toPt){
-    ctx.globalAlpha = 0.8;
     ctx.beginPath();
     ctx.moveTo(this.x, this.y);
     ctx.lineTo(toPt.x, toPt.y);
@@ -30,7 +29,6 @@ class Dot {
   }
 
   draw(ctx){
-    ctx.globalAlpha = 0.8;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
     ctx.fillStyle = this.color;
